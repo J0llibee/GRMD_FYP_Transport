@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>九巴到站時間 & 各區通宵巴士查詢</title>
+    <style>
+        :root {
+            --kmb-red: #e30613;
+            --kmb-dark: #b8000b;
+            --bg-color: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-main: #222222;
+            --text-sub: #666666;
+            --night-bg: #1e293b;
+            --night-accent: #fbbf24;
+            --night-text: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: var(--kmb-red);
+            color: white;
+            padding: 18px 20px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.3s;
+        }
+
+        header.night-theme {
+            background-color: var(--night-bg);
+        }
+
+        header h1 {
+            font-size: 1.35rem;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* 頂部主功能切換器 */
+        .mode-switcher {
+            display: flex;
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: transparent;
+            color: #475569;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #ffffff;
+            color: var(--kmb-red);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .mode-btn.night-mode.active {
+            background: var(--night-bg);
+            color: var(--night-accent);
+        }
+
+        .search-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        select {
+            padding: 12px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background-color: #fff;
+            color: var(--text-main);
+            outline: none;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--kmb-red);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        button.primary-btn {
+            background-color: var(--kmb-red);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        button.primary-btn:hover {
+            background-color: var(--kmb-dark);
+        }
+
+        .quick-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .tag {
+            background: #eee;
+            color: #333;
+            padding: 4px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .tag:hover {
+            background: #ddd;
+        }
+
+        /* 站點選擇列表 */
+        .stop-list {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            max-height: 280px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .stop-list-header {
+            padding: 10px 18px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            position: sticky;
+            top: 0;
+        }
+
+        .stop-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stop-item:last-child {
+            border-bottom: none;
+        }
+
+        .stop-item:hover {
+            background-color: #fff5f5;
+        }
+
+        .district-pill {
+            display: inline-block;
+            font-size: 0.72rem;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .stop-id-badge {
+            font-size: 0.75rem;
+            color: #888;
+            font-family: monospace;
+        }
+
+        /* 各區通宵路線總覽卡片 */
+        .district-night-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--night-bg);
+            overflow: hidden;
+        }
+
+        .dn-header {
+            padding: 15px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .dn-header:hover {
+            background: #f8fafc;
+        }
+
+        .dn-route-badge {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--night-bg);
+            margin-right: 10px;
+        }
+
+        .dn-stops-drawer {
+            display: none;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 12px 18px;
+        }
+
+        .dn-stops-drawer.open {
+            display: block;
+        }
+
+        .dn-drawer-hint {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .dn-stop-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dn-stop-chip {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #1e293b;
+            transition: all 0.15s;
+        }
+
+        .dn-stop-chip:hover {
+            background: var(--night-bg);
+            color: var(--night-accent);
+            border-color: var(--night-bg);
+        }
+
+        /* 到站時間結果區與日間/通宵篩選 */
+        .eta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 0 5px;
+        }
+
+        .eta-title {
+            font-size: 1.15rem;
+            font-weight: bold;
+        }
+
+        .refresh-btn {
+            background: transparent;
+            color: var(--kmb-red);
+            border: 1px solid var(--kmb-red);
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .refresh-btn:hover {
+            background: var(--kmb-red);
+            color: white;
+        }
+
+        .service-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 9px 12px;
+            border: 1px solid #ddd;
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--kmb-red);
+            color: white;
+            border-color: var(--kmb-red);
+        }
+
+        .tab-btn.night-tab.active {
+            background: var(--night-bg);
+            color: var(--night-text);
+            border-color: var(--night-bg);
+        }
+
+        .route-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid var(--kmb-red);
+        }
+
+        .route-card.is-night {
+            border-left-color: var(--night-bg);
+        }
+
+        .route-info {
+            flex: 1;
+        }
+
+        .route-number-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .route-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--kmb-red);
+        }
+
+        .route-card.is-night .route-number {
+            color: var(--night-bg);
+        }
+
+        .badge-night {
+            background: var(--night-bg);
+            color: var(--night-accent);
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .badge-day {
+            background: #fef3c7;
+            color: #b45309;
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .route-dest {
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .route-dest span {
+            color: var(--text-sub);
+            font-size: 0.85rem;
+        }
+
+        .eta-times {
+            text-align: right;
+            min-width: 110px;
+        }
+
+        .eta-primary {
+            font-size: 1.35rem;
+            font-weight: bold;
+            color: #0070f3;
+        }
+
+        .eta-primary.arriving {
+            color: #10b981;
+        }
+
+        .eta-secondary {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .eta-rmk {
+            font-size: 0.75rem;
+            color: #d97706;
+            margin-top: 2px;
+        }
+
+        .status-msg {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-sub);
+            background: var(--card-bg);
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 520px) {
+            .filter-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header id="mainHeader">
+    <h1>🚌 九巴實時到站 & 通宵路線查詢</h1>
+</header>
+
+<div class="container">
+    <!-- 主模式切換 -->
+    <div class="mode-switcher">
+        <button class="mode-btn active" id="modeBtn-STOP" onclick="switchMode('STOP')">🔍 依車站查詢</button>
+        <button class="mode-btn night-mode" id="modeBtn-DISTRICT_NIGHT" onclick="switchMode('DISTRICT_NIGHT')">🌙 各區通宵巴士總覽</button>
+    </div>
+
+    <!-- 模式 A：依車站查詢 -->
+    <div id="panel-STOP" class="search-box">
+        <div class="filter-row">
+            <select id="districtSelect" onchange="handleSearch()">
+                <option value="ALL">📍 全港所有地區</option>
+                <optgroup label="九龍">
+                    <option value="YTM">油尖旺區</option>
+                    <option value="SSP">深水埗區</option>
+                    <option value="KLC">九龍城區</option>
+                    <option value="WTS">黃大仙區</option>
+                    <option value="KT">觀塘區</option>
+                </optgroup>
+                <optgroup label="新界">
+                    <option value="ST">沙田區</option>
+                    <option value="TP">大埔區</option>
+                    <option value="NORTH">北區</option>
+                    <option value="TM">屯門區</option>
+                    <option value="YL">元朗區</option>
+                    <option value="TW_KC">荃灣 / 葵青區</option>
+                    <option value="SK">西貢 / 將軍澳</option>
+                </optgroup>
+                <optgroup label="港島及離島">
+                    <option value="HKI">港島區 (過海線)</option>
+                    <option value="LANTAU">大嶼山 / 機場</option>
+                </optgroup>
+            </select>
+
+            <div class="input-group">
+                <input type="text" id="searchInput" placeholder="輸入站名 (如: 轉車站) 或留空瀏覽該區..." />
+                <button class="primary-btn" onclick="handleSearch()">搜尋</button>
+            </div>
+        </div>
+
+        <div class="quick-tags">
+            <span>熱門車站：</span>
+            <span class="tag" onclick="quickSelect('BFA3460955AC820C', '紅磡站 (海底隧道)')">紅磡站</span>
+            <span class="tag" onclick="quickSelect('A60303B18A76E284', '旺角奶路臣街')">旺角奶路臣街</span>
+            <span class="tag" onclick="quickSelect('2843A6857690F452', '沙田市中心總站')">沙田市中心</span>
+            <span class="tag" onclick="quickSelect('643568D9895252D6', '屯門公路轉車站')">屯公轉車站</span>
+        </div>
+    </div>
+
+    <!-- 模式 B：各區通宵巴士總覽 -->
+    <div id="panel-DISTRICT_NIGHT" class="search-box" style="display: none; border-top: 4px solid var(--night-bg);">
+        <div class="filter-row" style="margin-bottom: 10px;">
+            <select id="nightDistrictSelect" onchange="loadDistrictNightRoutes()" style="flex: 1;">
+                <option value="ALL">🌙 全港所有通宵巴士路線</option>
+                <optgroup label="九龍">
+                    <option value="YTM" selected>油尖旺區 (旺角 / 尖沙咀 / 佐敦)</option>
+                    <option value="SSP">深水埗區 (美孚 / 長沙灣 / 深水埗)</option>
+                    <option value="KLC">九龍城區 (紅磡 / 土瓜灣 / 九龍塘)</option>
+                    <option value="WTS">黃大仙區 (黃大仙 / 鑽石山 / 彩虹)</option>
+                    <option value="KT">觀塘區 (九龍灣 / 觀塘 / 藍田)</option>
+                </optgroup>
+                <optgroup label="新界">
+                    <option value="ST">沙田區 (沙田 / 大圍 / 馬鞍山)</option>
+                    <option value="TP">大埔區</option>
+                    <option value="NORTH">北區 (上水 / 粉嶺)</option>
+                    <option value="TM">屯門區</option>
+                    <option value="YL">元朗區 (元朗 / 天水圍)</option>
+                    <option value="TW_KC">荃灣 / 葵青區</option>
+                    <option value="SK">西貢 / 將軍澳</option>
+                </optgroup>
+                <optgroup label="港島及離島">
+                    <option value="HKI">港島區 (過海通宵線)</option>
+                    <option value="LANTAU">大嶼山 / 機場 / 港珠澳大橋</option>
+                </optgroup>
+            </select>
+            <input type="text" id="nightRouteFilterInput" placeholder="過濾路線編號 (如 N241)..." oninput="renderDistrictNightList()" style="flex: 1;" />
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-sub);">
+            💡 提示：點擊下方任何一條通宵路線，可展開該路線在該區的停靠站，再點選站名即可查看實時到站時間。
+        </div>
+    </div>
+
+    <!-- 搜尋出來的巴士站列表 -->
+    <div id="stopList" class="stop-list"></div>
+
+    <!-- 各區通宵巴士列表結果區 -->
+    <div id="districtNightSection" style="display: none;">
+        <div class="eta-header">
+            <div class="eta-title" id="districtNightTitle">🌙 該區通宵路線</div>
+        </div>
+        <div id="districtNightResults"></div>
+    </div>
+
+    <!-- 單站到站時間顯示區 -->
+    <div id="etaSection" style="display: none;">
+        <div class="eta-header">
+            <div class="eta-title" id="currentStopTitle">站點名稱</div>
+            <button class="refresh-btn" onclick="refreshCurrentEta()">↻ 刷新 (<span id="countdown">30</span>s)</button>
+        </div>
+
+        <!-- 日間 / 通宵路線切換按鈕 -->
+        <div class="service-tabs">
+            <button class="tab-btn active" id="tab-ALL" onclick="setServiceFilter('ALL')">全部路線 (<span id="count-ALL">0</span>)</button>
+            <button class="tab-btn" id="tab-DAY" onclick="setServiceFilter('DAY')">☀️ 日間 (<span id="count-DAY">0</span>)</button>
+            <button class="tab-btn night-tab" id="tab-NIGHT" onclick="setServiceFilter('NIGHT')">🌙 通宵 (<span id="count-NIGHT">0</span>)</button>
+        </div>
+
+        <div id="etaResults"></div>
+    </div>
+
+    <div id="statusBox" class="status-msg">
+        正在載入全港九巴站點資料庫，請稍候...
+    </div>
+</div>
+
+<script>
+    const API_BASE = 'https://data.etabus.gov.hk/v1/transport/kmb';
+    let allStops = [];
+    let stopsMap = {}; // stop_id -> stop object
+    let cachedAllRoutes = null;
+    let cachedRouteStops = null;
+    let currentDistrictNightData = [];
+
+    let currentStopId = null;
+    let currentStopName = '';
+    let currentGroupedRoutes = [];
+    let currentServiceFilter = 'ALL'; // 'ALL' | 'DAY' | 'NIGHT'
+    let refreshTimer = null;
+    let countdownValue = 30;
+
+    const DISTRICT_NAMES = {
+        ALL: '全港',
+        YTM: '油尖旺區', SSP: '深水埗區', KLC: '九龍城區', WTS: '黃大仙區', KT: '觀塘區',
+        ST: '沙田區', TP: '大埔區', NORTH: '北區', TM: '屯門區', YL: '元朗區',
+        TW_KC: '荃灣/葵青區', SK: '西貢/將軍澳', HKI: '港島區', LANTAU: '大嶼山/機場', OTHER: '其他'
+    };
+
+    // 1. 依據站點經緯度 (lat, long) 自動判斷香港分區
+    function detectDistrict(latStr, longStr) {
+        const lat = parseFloat(latStr);
+        const lng = parseFloat(longStr);
+        if (isNaN(lat) || isNaN(lng)) return 'OTHER';
+
+        if (lng < 113.96 && lat < 22.34) return 'LANTAU';
+        if (lat < 22.292 && lng > 114.11 && lng < 114.26) return 'HKI';
+        if (lng < 114.015 && lat >= 22.34 && lat < 22.42) return 'TM';
+        if (lng < 114.095 && lat >= 22.42) return 'YL';
+        if (lng >= 114.06 && lng < 114.155 && lat >= 22.345 && lat < 22.42) return 'TW_KC';
+        if (lng >= 114.155 && lng < 114.235 && lat >= 22.355 && lat < 22.435) return 'ST';
+        if (lng >= 114.12 && lng < 114.23 && lat >= 22.435 && lat < 22.485) return 'TP';
+        if (lng >= 114.095 && lat >= 22.485) return 'NORTH';
+        if (lng >= 114.235 && lat >= 22.29 && lat < 22.42) return 'SK';
+        if (lng >= 114.135 && lng < 114.166 && lat >= 22.326 && lat < 22.35) return 'SSP';
+        if (lng >= 114.155 && lng < 114.182 && lat >= 22.293 && lat < 22.326) return 'YTM';
+        if (lng >= 114.175 && lng < 114.205 && lat >= 22.305 && lat < 22.338) return 'KLC';
+        if (lng >= 114.185 && lng < 114.215 && lat >= 22.334 && lat < 22.356) return 'WTS';
+        if (lng >= 114.205 && lng < 114.245 && lat >= 22.29 && lat < 22.338) return 'KT';
+        return 'OTHER';
+    }
+
+    // 判斷是否為通宵路線 (N字頭 或 特定深宵特別線)
+    function isOvernightRoute(routeNumber) {
+        const r = routeNumber.toUpperCase().trim();
+        if (r.startsWith('N')) return true;
+        const specialOvernight = ['270S', '271S', '293S'];
+        return specialOvernight.includes(r);
+    }
+
+    // 2. 初始化載入站點資料庫
+    window.addEventListener('DOMContentLoaded', async () => {
+        const statusBox = document.getElementById('statusBox');
+        try {
+            const response = await fetch(`${API_BASE}/stop`);
+            const json = await response.json();
+            allStops = (json.data || []).map(stop => {
+                const enriched = {
+                    ...stop,
+                    district: detectDistrict(stop.lat, stop.long)
+                };
+                stopsMap[stop.stop] = enriched;
+                return enriched;
+            });
+            statusBox.innerHTML = '✅ 資料庫就緒！請選擇地區、輸入站名，或切換至「🌙 各區通宵巴士總覽」。';
+        } catch (error) {
+            console.error('載入站點失敗:', error);
+            statusBox.innerHTML = '⚠️ 無法載入站點列表，請檢查網絡連線。';
+        }
+    });
+
+    // 主模式切換 ('STOP' | 'DISTRICT_NIGHT')
+    function switchMode(mode) {
+        const isNightMode = mode === 'DISTRICT_NIGHT';
+        document.getElementById('mainHeader').classList.toggle('night-theme', isNightMode);
+        document.getElementById('modeBtn-STOP').classList.toggle('active', !isNightMode);
+        document.getElementById('modeBtn-DISTRICT_NIGHT').classList.toggle('active', isNightMode);
+
+        document.getElementById('panel-STOP').style.display = isNightMode ? 'none' : 'block';
+        document.getElementById('panel-DISTRICT_NIGHT').style.display = isNightMode ? 'block' : 'none';
+        document.getElementById('stopList').style.display = 'none';
+
+        if (isNightMode) {
+            document.getElementById('etaSection').style.display = 'none';
+            loadDistrictNightRoutes();
+        } else {
+            document.getElementById('districtNightSection').style.display = 'none';
+        }
+    }
+
+    // ==========================================
+    // 功能區一：各區通宵巴士總覽
+    // ==========================================
+    async function loadDistrictNightRoutes() {
+        const selectedDistrict = document.getElementById('nightDistrictSelect').value;
+        const statusBox = document.getElementById('statusBox');
+        const section = document.getElementById('districtNightSection');
+
+        section.style.display = 'none';
+        statusBox.style.display = 'block';
+        statusBox.innerHTML = '⏳ 正在分析全港通宵路線與各區站點對應（首次載入約需 2-3 秒）...';
+
+        try {
+            // 平行抓取並快取全港路線表 (/route) 與 路線-站點對照表 (/route-stop)
+            if (!cachedAllRoutes || !cachedRouteStops) {
+                const [routeRes, routeStopRes] = await Promise.all([
+                    fetch(`${API_BASE}/route`),
+                    fetch(`${API_BASE}/route-stop`)
+                ]);
+                const routeJson = await routeRes.json();
+                const routeStopJson = await routeStopRes.json();
+
+                cachedAllRoutes = (routeJson.data || []).filter(r => isOvernightRoute(r.route));
+                cachedRouteStops = (routeStopJson.data || []).filter(rs => isOvernightRoute(rs.route));
+            }
+
+            // 建立每條通宵路線 (route + bound + service_type) 停靠站清單
+            const routeStopsIndex = {};
+            cachedRouteStops.forEach(rs => {
+                const key = `${rs.route}_${rs.bound}_${rs.service_type}`;
+                if (!routeStopsIndex[key]) routeStopsIndex[key] = [];
+                const stopObj = stopsMap[rs.stop];
+                if (stopObj) {
+                    routeStopsIndex[key].push({
+                        seq: parseInt(rs.seq, 10),
+                        stopId: stopObj.stop,
+                        name_tc: stopObj.name_tc,
+                        district: stopObj.district
+                    });
+                }
+            });
+
+            // 篩選出有經過選定分區的通宵路線
+            const matchedRoutes = [];
+            cachedAllRoutes.forEach(r => {
+                const key = `${r.route}_${r.bound}_${r.service_type}`;
+                const stopsOnRoute = (routeStopsIndex[key] || []).sort((a, b) => a.seq - b.seq);
+
+                const stopsInDistrict = selectedDistrict === 'ALL'
+                    ? stopsOnRoute
+                    : stopsOnRoute.filter(s => s.district === selectedDistrict);
+
+                if (stopsInDistrict.length > 0) {
+                    // 去除同一路線同一方向重複的站名（保留首個站點 ID）
+                    const uniqueStops = [];
+                    const seenNames = new Set();
+                    stopsInDistrict.forEach(s => {
+                        if (!seenNames.has(s.name_tc)) {
+                            seenNames.add(s.name_tc);
+                            uniqueStops.push(s);
+                        }
+                    });
+
+                    matchedRoutes.push({
+                        ...r,
+                        key,
+                        stopsInDistrict: uniqueStops
+                    });
+                }
+            });
+
+            // 依路線編號自然排序 (例如 N36, N73, N241)
+            matchedRoutes.sort((a, b) => a.route.localeCompare(b.route, undefined, { numeric: true }));
+            currentDistrictNightData = matchedRoutes;
+
+            statusBox.style.display = 'none';
+            section.style.display = 'block';
+            renderDistrictNightList();
+
+        } catch (err) {
+            console.error('載入各區通宵巴士失敗:', err);
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = '❌ 載入通宵路線資料失敗，請稍後再試。';
+        }
+    }
+
+    function renderDistrictNightList() {
+        const selectedDistrict = document.getElementById('nightDistrictSelect').value;
+        const keyword = document.getElementById('nightRouteFilterInput').value.trim().toUpperCase();
+        const titleEl = document.getElementById('districtNightTitle');
+        const resultsEl = document.getElementById('districtNightResults');
+
+        const filtered = currentDistrictNightData.filter(r => 
+            !keyword || r.route.toUpperCase().includes(keyword) || r.dest_tc.includes(keyword) || r.orig_tc.includes(keyword)
+        );
+
+        titleEl.textContent = `🌙 ${DISTRICT_NAMES[selectedDistrict]}通宵巴士 (${filtered.length} 個方向/班次)`;
+
+        if (filtered.length === 0) {
+            resultsEl.innerHTML = `<div class="status-msg">找不到符合條件的通宵巴士路線。</div>`;
+            return;
+        }
+
+        resultsEl.innerHTML = filtered.map((r, idx) => `
+            <div class="district-night-card">
+                <div class="dn-header" onclick="toggleNightDrawer(${idx})">
+                    <div>
+                        <div style="display:flex; align-items:center; margin-bottom:4px;">
+                            <span class="dn-route-badge">${r.route}</span>
+                            <span class="badge-night">通宵服務</span>
+                            ${r.service_type !== '1' ? `<span class="district-pill">特別班次</span>` : ''}
+                        </div>
+                        <div class="route-dest">
+                            <span>由</span> ${r.orig_tc} <span>往</span> <strong>${r.dest_tc}</strong>
+                        </div>
+                    </div>
+                    <div style="text-align:right; color:#475569; font-size:0.85rem;">
+                        <div>${selectedDistrict === 'ALL' ? `共 ${r.stopsInDistrict.length} 站` : `本區 ${r.stopsInDistrict.length} 站`}</div>
+                        <div style="color:var(--kmb-red); font-weight:bold; margin-top:4px;">查看站點 ▾</div>
+                    </div>
+                </div>
+                <div class="dn-stops-drawer" id="dn-drawer-${idx}">
+                    <div class="dn-drawer-hint">點擊車站查詢該站實時到站時間：</div>
+                    <div class="dn-stop-chips">
+                        ${r.stopsInDistrict.slice(0, 40).map(s => `
+                            <span class="dn-stop-chip" onclick="jumpToStopEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}')">
+                                📍 ${s.name_tc}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function toggleNightDrawer(idx) {
+        const drawer = document.getElementById(`dn-drawer-${idx}`);
+        if (drawer) drawer.classList.toggle('open');
+    }
+
+    // 從通宵路線清單點擊站點，直接查詢該站 ETA 並預設切換至「通宵」分頁
+    function jumpToStopEta(stopId, stopName) {
+        currentServiceFilter = 'NIGHT';
+        ['ALL', 'DAY', 'NIGHT'].forEach(type => {
+            document.getElementById(`tab-${type}`).classList.toggle('active', type === 'NIGHT');
+        });
+        fetchStopEta(stopId, stopName, true);
+    }
+
+    // ==========================================
+    // 功能區二：依車站查詢 & 實時到站時間
+    // ==========================================
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleSearch();
+    });
+
+    function handleSearch() {
+        const query = document.getElementById('searchInput').value.trim();
+        const selectedDistrict = document.getElementById('districtSelect').value;
+        const stopListEl = document.getElementById('stopList');
+        const statusBox = document.getElementById('statusBox');
+
+        if (/^[A-Fa-f0-9]{16}$/.test(query)) {
+            stopListEl.style.display = 'none';
+            const matched = allStops.find(s => s.stop.toUpperCase() === query.toUpperCase());
+            const name = matched ? matched.name_tc : `站點 ID: ${query.toUpperCase()}`;
+            fetchStopEta(query.toUpperCase(), name);
+            return;
+        }
+
+        if (!query && selectedDistrict === 'ALL') {
+            stopListEl.style.display = 'none';
+            return;
+        }
+
+        const matches = allStops.filter(stop => {
+            const matchDistrict = (selectedDistrict === 'ALL') || (stop.district === selectedDistrict);
+            const matchText = !query || 
+                stop.name_tc.includes(query) || 
+                stop.name_en.toLowerCase().includes(query.toLowerCase());
+            return matchDistrict && matchText;
+        });
+
+        if (matches.length === 0) {
+            stopListEl.style.display = 'none';
+            document.getElementById('etaSection').style.display = 'none';
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = `在所選條件下找不到符合的巴士站。`;
+            return;
+        }
+
+        statusBox.style.display = 'none';
+        const limit = 50;
+        const headerText = `找到 ${matches.length} 個站點` + (matches.length > limit ? `（顯示前 ${limit} 個，可輸入關鍵字縮小範圍）` : '');
+
+        stopListEl.innerHTML = `
+            <div class="stop-list-header">${headerText}</div>
+            ${matches.slice(0, limit).map(stop => `
+                <div class="stop-item" onclick="selectStop('${stop.stop}', '${stop.name_tc.replace(/'/g, "\\'")}')">
+                    <div>
+                        <strong>${stop.name_tc}</strong>
+                        <span class="district-pill">${DISTRICT_NAMES[stop.district] || ''}</span><br>
+                        <small style="color:#666">${stop.name_en}</small>
+                    </div>
+                    <span class="stop-id-badge">${stop.stop}</span>
+                </div>
+            `).join('')}
+        `;
+        stopListEl.style.display = 'block';
+    }
+
+    function quickSelect(stopId, stopName) {
+        document.getElementById('searchInput').value = stopName;
+        document.getElementById('stopList').style.display = 'none';
+        fetchStopEta(stopId, stopName);
+    }
+
+    function selectStop(stopId, stopName) {
+        document.getElementById('stopList').style.display = 'none';
+        fetchStopEta(stopId, stopName);
+    }
+
+    async function fetchStopEta(stopId, stopName, scrollToResult = false) {
+        currentStopId = stopId;
+        currentStopName = stopName;
+
+        const statusBox = document.getElementById('statusBox');
+        const etaSection = document.getElementById('etaSection');
+        const titleEl = document.getElementById('currentStopTitle');
+
+        statusBox.style.display = 'block';
+        statusBox.innerHTML = '⏳ 正在向政府伺服器查詢到站時間...';
+        etaSection.style.display = 'none';
+
+        try {
+            const res = await fetch(`${API_BASE}/stop-eta/${stopId}`);
+            const json = await res.json();
+            const rawData = json.data || [];
+
+            statusBox.style.display = 'none';
+            etaSection.style.display = 'block';
+            titleEl.textContent = `📍 ${stopName}`;
+
+            const groupedMap = {};
+            rawData.forEach(item => {
+                const key = `${item.route}_${item.dir}_${item.service_type}`;
+                if (!groupedMap[key]) {
+                    groupedMap[key] = {
+                        route: item.route,
+                        dest_tc: item.dest_tc,
+                        isNight: isOvernightRoute(item.route),
+                        etas: []
+                    };
+                }
+                groupedMap[key].etas.push(item);
+            });
+
+            currentGroupedRoutes = Object.values(groupedMap);
+            renderFilteredRoutes();
+            resetAutoRefresh();
+
+            if (scrollToResult) {
+                etaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+        } catch (error) {
+            console.error('查詢 ETA 失敗:', error);
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = '❌ 查詢失敗，請檢查網絡連線或確認 Stop ID 是否正確。';
+        }
+    }
+
+    function setServiceFilter(filterType) {
+        currentServiceFilter = filterType;
+        ['ALL', 'DAY', 'NIGHT'].forEach(type => {
+            document.getElementById(`tab-${type}`).classList.toggle('active', type === filterType);
+        });
+        renderFilteredRoutes();
+    }
+
+    function renderFilteredRoutes() {
+        const etaResults = document.getElementById('etaResults');
+
+        const dayRoutes = currentGroupedRoutes.filter(r => !r.isNight);
+        const nightRoutes = currentGroupedRoutes.filter(r => r.isNight);
+
+        document.getElementById('count-ALL').textContent = currentGroupedRoutes.length;
+        document.getElementById('count-DAY').textContent = dayRoutes.length;
+        document.getElementById('count-NIGHT').textContent = nightRoutes.length;
+
+        let displayList = currentGroupedRoutes;
+        if (currentServiceFilter === 'DAY') displayList = dayRoutes;
+        if (currentServiceFilter === 'NIGHT') displayList = nightRoutes;
+
+        if (displayList.length === 0) {
+            const emptyLabel = currentServiceFilter === 'NIGHT' ? '通宵' : (currentServiceFilter === 'DAY' ? '日間' : '');
+            etaResults.innerHTML = `<div class="status-msg">此站點目前沒有${emptyLabel}巴士路線資料。</div>`;
+            return;
+        }
+
+        const cardsHtml = displayList.map(group => {
+            group.etas.sort((a, b) => a.eta_seq - b.eta_seq);
+
+            const firstBus = group.etas[0];
+            const nextBuses = group.etas.slice(1);
+
+            const primaryText = formatEtaTime(firstBus.eta, firstBus.rmk_tc);
+            const isArriving = primaryText === '即將抵達' || primaryText === '1 分鐘';
+
+            const secondaryHtml = nextBuses
+                .filter(b => b.eta || b.rmk_tc)
+                .map(b => formatEtaTime(b.eta, b.rmk_tc))
+                .join(' / ');
+
+            const serviceBadge = group.isNight
+                ? `<span class="badge-night">🌙 通宵</span>`
+                : `<span class="badge-day">☀️ 日間</span>`;
+
+            return `
+                <div class="route-card ${group.isNight ? 'is-night' : ''}">
+                    <div class="route-info">
+                        <div class="route-number-row">
+                            <span class="route-number">${group.route}</span>
+                            ${serviceBadge}
+                        </div>
+                        <div class="route-dest"><span>往</span> ${group.dest_tc}</div>
+                        ${firstBus.rmk_tc ? `<div class="eta-rmk">※ ${firstBus.rmk_tc}</div>` : ''}
+                    </div>
+                    <div class="eta-times">
+                        <div class="eta-primary ${isArriving ? 'arriving' : ''}">${primaryText}</div>
+                        ${secondaryHtml ? `<div class="eta-secondary">下班: ${secondaryHtml}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        etaResults.innerHTML = cardsHtml;
+    }
+
+    function formatEtaTime(etaString, remark) {
+        if (!etaString) {
+            return remark || '暫無班次';
+        }
+        const now = new Date();
+        const etaTime = new Date(etaString);
+        const diffMs = etaTime - now;
+        const diffMins = Math.floor(diffMs / 60000);
+
+        if (diffMins <= 0) {
+            return '即將抵達';
+        }
+        return `${diffMins} 分鐘`;
+    }
+
+    function resetAutoRefresh() {
+        clearInterval(refreshTimer);
+        countdownValue = 30;
+        document.getElementById('countdown').textContent = countdownValue;
+
+        refreshTimer = setInterval(() => {
+            countdownValue--;
+            document.getElementById('countdown').textContent = countdownValue;
+            if (countdownValue <= 0) {
+                refreshCurrentEta();
+            }
+        }, 1000);
+    }
+
+    function refreshCurrentEta() {
+        if (currentStopId) {
+            fetchStopEta(currentStopId, currentStopName);
+        }
+    }
+</script>
+
+</body>
+</html>
