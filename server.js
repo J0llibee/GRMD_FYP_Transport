@@ -1,0 +1,635 @@
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+const XLSX = require('xlsx');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0';
+const TIMEZONE = 'Asia/Hong_Kong';
+
+const KMB_API = 'https://data.etabus.gov.hk/v1/transport/kmb';
+const CTB_API = 'https://rt.data.gov.hk/v1/transport/citybus-nwfb';
+
+const DATA_DIR = process.env.DATA_DIR || __dirname;
+if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+const BOOKMARKS_FILE = path.join(DATA_DIR, 'bookmarks.json');
+
+// 取得香港時區各時間欄位
+function getHkTimeParts(ts = Date.now()) {
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+        timeZone: TIMEZONE,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+    const parts = {};
+    formatter.formatToParts(new Date(ts)).forEach(p => {
+        if (p.type !== 'literal') parts[p.type] = p.value;
+    });
+    return parts;
+}
+
+function formatTime(ts) {
+    if (!ts) return '';
+    const p = getHkTimeParts(ts);
+    return `${p.hour}:${p.minute}:${p.second}`;
+}
+
+function formatDate(ts) {
+    const p = getHkTimeParts(ts);
+    return `${p.year}-${p.month}-${p.day}`;
+}
+
+// 每次啟動建立專屬香港時間戳記檔名：bus_arrival_records_DDMMYY_HHMMSS.xlsx
+function getStartupSessionTag() {
+    const p = getHkTimeParts(Date.now());
+    const yy = p.year.slice(-2);
+    return `${p.day}${p.month}${yy}_${p.hour}${p.minute}${p.second}`;
+}
+
+const SESSION_TAG = getStartupSessionTag();
+const EXCEL_FILENAME = `bus_arrival_records_${SESSION_TAG}.xlsx`;
+const EXCEL_FILE = path.join(DATA_DIR, EXCEL_FILENAME);
+const TRIPS_JSON_FILE = path.join(DATA_DIR, `trip_records_${SESSION_TAG}.json`);
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static(__dirname));
+
+// 載入已儲存的 Bookmarks，若雲端重啟清空則讀取環境變數 DEFAULT_BOOKMARKS
+// 環境變數格式範例：DEFAULT_BOOKMARKS=CTB:798:outbound,KMB:968:outbound
+function loadInitialBookmarks() {
+    if (fs.existsSync(BOOKMARKS_FILE)) {
+        try {
+            return JSON.parse(fs.readFileSync(BOOKMARKS_FILE, 'utf8'));
+        } catch (e) { /* ignore */ }
+    }
+    const envRaw = (process.env.DEFAULT_BOOKMARKS || '').trim();
+    if (!envRaw) return [];
+
+    const nowStr = `${formatDate(Date.now())} ${formatTime(Date.now())}`;
+    return envRaw.split(',').map(entry => {
+        const [op, route, dirParam = 'outbound', serviceType = '1'] = entry.trim().split(':');
+        if (!op || !route) return null;
+        const operator = op.toUpperCase();
+        return {
+            id: `${operator}_${route.toUpperCase()}_${dirParam}_${serviceType}`,
+            operator,
+            route: route.toUpperCase(),
+            dirParam,
+            serviceType,
+            origTc: '(雲端預設)',
+            destTc: '(雲端預設)',
+            addedAt: nowStr
+        };
+    }).filter(Boolean);
+}
+
+let bookmarks = loadInitialBookmarks();
+let trips = {};
+let activeStopTrackers = {};
+
+let routeStopsCache = {};
+let kmbStopsMap = {};
+let ctbStopsMap = {};
+let isPolling = false;
+let lastPollTimeStr = '尚未執行';
+
+function saveBookmarks() {
+    fs.writeFileSync(BOOKMARKS_FILE, JSON.stringify(bookmarks, null, 2));
+}
+
+function pruneOldTrips(nowTs) {
+    // 清理超過 6 小時的舊班次，避免雲端免費容器記憶體溢出
+    const cutoff = nowTs - 6 * 3600 * 1000;
+    Object.keys(trips).forEach(id => {
+        if (trips[id].departureTs < cutoff) {
+            delete trips[id];
+        }
+    });
+}
+
+function saveToExcel() {
+    const sortedTrips = Object.values(trips).sort((a, b) => b.departureTs - a.departureTs);
+
+    const detailRows = [];
+    sortedTrips.forEach(trip => {
+        const stopList = Object.values(trip.stops).sort((a, b) => a.seq - b.seq);
+        stopList.forEach(st => {
+            detailRows.push({
+                '日期': trip.date,
+                '營辦商': trip.operator === 'KMB' ? '九巴 KMB' : '城巴 CTB',
+                '路線': trip.route,
+                '方向': trip.dirParam === 'outbound' ? '去程' : '回程',
+                '班次識別(總站開出時間)': trip.departureTimeStr + (trip.isEstimatedDep ? ' (途中估算)' : ''),
+                '站序': st.seq,
+                '車站名稱': st.stopName,
+                '最初預計時間': st.scheduledEtaTs ? formatTime(st.scheduledEtaTs) : '',
+                '實際到達時間': st.actualArrivalTs ? formatTime(st.actualArrivalTs) : '行駛中...',
+                '由總站起累積時間(分鐘)': st.cumulativeMins !== null ? st.cumulativeMins : '',
+                '狀態': st.status
+            });
+        });
+    });
+
+    const matrixRows = sortedTrips.map(trip => {
+        const row = {
+            '日期': trip.date,
+            '路線': `${trip.route} (${trip.operator === 'KMB' ? '九巴' : '城巴'})`,
+            '方向': trip.dirParam === 'outbound' ? '去程' : '回程',
+            '班次(總站開出時間)': trip.departureTimeStr + (trip.isEstimatedDep ? ' (途中估算)' : '')
+        };
+        const stopList = Object.values(trip.stops).sort((a, b) => a.seq - b.seq);
+        stopList.forEach(st => {
+            const colName = `第${st.seq}站_${st.stopName}`;
+            row[colName] = st.actualArrivalTs
+                ? `${formatTime(st.actualArrivalTs)} (+${st.cumulativeMins}分)`
+                : (st.scheduledEtaTs ? `預計 ${formatTime(st.scheduledEtaTs)}` : '');
+        });
+        return row;
+    });
+
+    const wb = XLSX.utils.book_new();
+
+    const wsDetail = XLSX.utils.json_to_sheet(
+        detailRows.length > 0 ? detailRows : [{ '提示': '尚無監察記錄，請在網頁將路線加入 Bookmark' }]
+    );
+    wsDetail['!cols'] = [
+        { wch: 12 }, { wch: 10 }, { wch: 8 }, { wch: 8 }, { wch: 24 },
+        { wch: 6 }, { wch: 26 }, { wch: 18 }, { wch: 16 }, { wch: 22 }, { wch: 16 }
+    ];
+    XLSX.utils.book_append_sheet(wb, wsDetail, '班次行程及累積時間');
+
+    const wsMatrix = XLSX.utils.json_to_sheet(
+        matrixRows.length > 0 ? matrixRows : [{ '提示': '尚無班次矩陣資料' }]
+    );
+    XLSX.utils.book_append_sheet(wb, wsMatrix, '班次累積時間矩陣');
+
+    const bmRows = bookmarks.map(b => ({
+        '營辦商': b.operator === 'KMB' ? '九巴 KMB' : '城巴 CTB',
+        '路線': b.route,
+        '方向': b.dirParam === 'outbound' ? '去程' : '回程',
+        '起點': b.origTc || '',
+        '終點': b.destTc || '',
+        '加入監察時間': b.addedAt
+    }));
+    const wsBm = XLSX.utils.json_to_sheet(bmRows.length > 0 ? bmRows : [{ '提示': '尚無收藏路線' }]);
+    XLSX.utils.book_append_sheet(wb, wsBm, '已Bookmark路線');
+
+    try {
+        XLSX.writeFile(wb, EXCEL_FILE);
+    } catch (err) {
+        console.error('⚠️ 寫入 Excel 失敗:', err.message);
+    }
+    fs.writeFileSync(TRIPS_JSON_FILE, JSON.stringify(trips, null, 2));
+}
+
+async function ensureKmbStops() {
+    if (Object.keys(kmbStopsMap).length > 0) return;
+    const res = await fetch(`${KMB_API}/stop`);
+    const json = await res.json();
+    (json.data || []).forEach(s => {
+        kmbStopsMap[s.stop] = (s.name_tc || s.name_en || s.stop).trim();
+    });
+}
+
+async function getRouteStops(operator, route, dirParam, serviceType = '1') {
+    const key = `${operator}_${route}_${dirParam}_${serviceType}`;
+    if (routeStopsCache[key]) return routeStopsCache[key];
+
+    if (operator === 'KMB') {
+        await ensureKmbStops();
+        const res = await fetch(`${KMB_API}/route-stop/${route}/${dirParam}/${serviceType}`);
+        const json = await res.json();
+        const list = (json.data || []).map(item => ({
+            seq: parseInt(item.seq, 10),
+            stopId: item.stop,
+            stopName: kmbStopsMap[item.stop] || item.stop
+        }));
+        routeStopsCache[key] = list;
+        return list;
+    } else {
+        const res = await fetch(`${CTB_API}/route-stop/ctb/${route}/${dirParam}`);
+        const json = await res.json();
+        const list = await Promise.all((json.data || []).map(async item => {
+            if (!ctbStopsMap[item.stop]) {
+                try {
+                    const sRes = await fetch(`${CTB_API}/stop/${item.stop}`);
+                    const sJson = await sRes.json();
+                    ctbStopsMap[item.stop] = (sJson.data?.name_tc || sJson.data?.name_en || item.stop).trim();
+                } catch {
+                    ctbStopsMap[item.stop] = item.stop;
+                }
+            }
+            return {
+                seq: parseInt(item.seq, 10),
+                stopId: item.stop,
+                stopName: ctbStopsMap[item.stop]
+            };
+        }));
+        routeStopsCache[key] = list;
+        return list;
+    }
+}
+
+function isEtaConsistentWithTrip(trip, seq, etaTs) {
+    const diffFromDepMins = (etaTs - trip.departureTs) / 60000;
+
+    const minFromDepMins = (seq - 1) * 0.6;
+    const maxFromDepMins = seq * 8;
+    if (diffFromDepMins < minFromDepMins || diffFromDepMins > maxFromDepMins) {
+        return false;
+    }
+
+    const prevSeqs = Object.keys(trip.stops)
+        .map(Number)
+        .filter(s => s < seq && (trip.stops[s].actualArrivalTs || trip.stops[s].scheduledEtaTs));
+
+    if (prevSeqs.length > 0) {
+        const latestPrevSeq = Math.max(...prevSeqs);
+        const prevRefTs = trip.stops[latestPrevSeq].actualArrivalTs || trip.stops[latestPrevSeq].scheduledEtaTs;
+        const stepDiffSecs = (etaTs - prevRefTs) / 1000;
+        const seqGap = seq - latestPrevSeq;
+
+        if (stepDiffSecs < seqGap * 15 || stepDiffSecs > seqGap * 15 * 60) {
+            return false;
+        }
+    }
+
+    const nextSeqs = Object.keys(trip.stops)
+        .map(Number)
+        .filter(s => s > seq && (trip.stops[s].actualArrivalTs || trip.stops[s].scheduledEtaTs));
+
+    if (nextSeqs.length > 0) {
+        const earliestNextSeq = Math.min(...nextSeqs);
+        const nextRefTs = trip.stops[earliestNextSeq].actualArrivalTs || trip.stops[earliestNextSeq].scheduledEtaTs;
+        const stepDiffSecs = (nextRefTs - etaTs) / 1000;
+        const seqGap = earliestNextSeq - seq;
+
+        if (stepDiffSecs < seqGap * 15) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, scheduledEtaTs, stopsList) {
+    if (seq === 1) {
+        const preciseDepTs = (scheduledEtaTs && Math.abs(arrivalTs - scheduledEtaTs) <= 90000)
+            ? scheduledEtaTs
+            : arrivalTs;
+        const depTimeStr = formatTime(preciseDepTs);
+        const tripId = `${routeKeyPrefix}_DEP_${preciseDepTs}`;
+
+        const newTrip = {
+            tripId,
+            routeKeyPrefix,
+            date: formatDate(preciseDepTs),
+            operator: meta.operator,
+            route: meta.route,
+            dirParam: meta.dirParam,
+            destTc: meta.destTc,
+            departureTs: preciseDepTs,
+            departureTimeStr: depTimeStr,
+            isEstimatedDep: false,
+            stops: {}
+        };
+        stopsList.forEach(s => {
+            newTrip.stops[s.seq] = {
+                seq: s.seq,
+                stopName: s.stopName,
+                scheduledEtaTs: s.seq === 1 ? (scheduledEtaTs || preciseDepTs) : null,
+                actualArrivalTs: s.seq === 1 ? preciseDepTs : null,
+                cumulativeMins: s.seq === 1 ? 0 : null,
+                status: s.seq === 1 ? '已由總站開出' : '待抵達'
+            };
+        });
+        trips[tripId] = newTrip;
+        return newTrip;
+    }
+
+    const candidateTrips = Object.values(trips)
+        .filter(t => t.routeKeyPrefix === routeKeyPrefix)
+        .sort((a, b) => Number(a.isEstimatedDep) - Number(b.isEstimatedDep));
+
+    let bestTrip = null;
+    let smallestTimeGap = Infinity;
+
+    for (const trip of candidateTrips) {
+        if (arrivalTs <= trip.departureTs) continue;
+
+        const elapsedMins = (arrivalTs - trip.departureTs) / 60000;
+        if (elapsedMins > 150) continue;
+
+        const allRecordedSeqs = Object.keys(trip.stops)
+            .map(Number)
+            .filter(s => trip.stops[s].actualArrivalTs !== null);
+        const highestSeqSoFar = allRecordedSeqs.length > 0 ? Math.max(...allRecordedSeqs) : 0;
+
+        if (seq <= highestSeqSoFar) continue;
+
+        if (highestSeqSoFar > 0) {
+            const prevArrivalTs = trip.stops[highestSeqSoFar].actualArrivalTs;
+            const stepDiffSecs = (arrivalTs - prevArrivalTs) / 1000;
+            const stepDiffMins = stepDiffSecs / 60;
+            const seqGap = seq - highestSeqSoFar;
+
+            const minRequiredSecs = seqGap === 1 ? 25 : seqGap * 35;
+            const maxAllowedMins = seqGap * 15;
+
+            if (stepDiffSecs >= minRequiredSecs && stepDiffMins <= maxAllowedMins) {
+                if (stepDiffMins < smallestTimeGap) {
+                    smallestTimeGap = stepDiffMins;
+                    bestTrip = trip;
+                }
+            }
+        } else {
+            const minRequiredMinsFromDep = (seq - 1) * 0.6;
+            const maxAllowedMinsFromDep = seq * 10;
+            if (elapsedMins >= minRequiredMinsFromDep && elapsedMins <= maxAllowedMinsFromDep) {
+                if (elapsedMins < smallestTimeGap) {
+                    smallestTimeGap = elapsedMins;
+                    bestTrip = trip;
+                }
+            }
+        }
+    }
+
+    if (!bestTrip) {
+        const estDepTs = arrivalTs - (seq - 1) * 2.1 * 60000;
+
+        const overlappingTrip = candidateTrips.find(t => {
+            const allRecordedSeqs = Object.keys(t.stops).map(Number).filter(s => t.stops[s].actualArrivalTs !== null);
+            const highestSeqSoFar = allRecordedSeqs.length > 0 ? Math.max(...allRecordedSeqs) : 0;
+            return seq > highestSeqSoFar && Math.abs(t.departureTs - estDepTs) <= 5 * 60000;
+        });
+
+        if (overlappingTrip) {
+            bestTrip = overlappingTrip;
+        } else {
+            const estDepStr = formatTime(estDepTs);
+            const estBucket = Math.round(estDepTs / (5 * 60000));
+            const tripId = `${routeKeyPrefix}_EST_${estBucket}`;
+
+            if (!trips[tripId]) {
+                trips[tripId] = {
+                    tripId,
+                    routeKeyPrefix,
+                    date: formatDate(arrivalTs),
+                    operator: meta.operator,
+                    route: meta.route,
+                    dirParam: meta.dirParam,
+                    destTc: meta.destTc,
+                    departureTs: estDepTs,
+                    departureTimeStr: estDepStr,
+                    isEstimatedDep: true,
+                    stops: {}
+                };
+                stopsList.forEach(s => {
+                    trips[tripId].stops[s.seq] = {
+                        seq: s.seq,
+                        stopName: s.stopName,
+                        scheduledEtaTs: null,
+                        actualArrivalTs: null,
+                        cumulativeMins: null,
+                        status: '途中切入追蹤'
+                    };
+                });
+            }
+            bestTrip = trips[tripId];
+        }
+    }
+
+    const cumMins = Math.max(0, Math.round((arrivalTs - bestTrip.departureTs) / 60000));
+    const existingSched = bestTrip.stops[seq]?.scheduledEtaTs;
+    const validSched = (scheduledEtaTs && isEtaConsistentWithTrip(bestTrip, seq, scheduledEtaTs))
+        ? scheduledEtaTs
+        : (existingSched || null);
+
+    bestTrip.stops[seq] = {
+        seq,
+        stopName: stopsList.find(s => s.seq === seq)?.stopName || `第${seq}站`,
+        scheduledEtaTs: validSched,
+        actualArrivalTs: arrivalTs,
+        cumulativeMins: cumMins,
+        status: '已到站'
+    };
+
+    return bestTrip;
+}
+
+async function pollBookmarkedRoutes() {
+    if (isPolling || bookmarks.length === 0) return;
+    isPolling = true;
+    const now = Date.now();
+
+    try {
+        pruneOldTrips(now);
+
+        for (const bm of bookmarks) {
+            const serviceType = bm.serviceType || '1';
+            const routeKeyPrefix = `${bm.operator}_${bm.route}_${bm.dirParam}_${serviceType}`;
+            const stops = await getRouteStops(bm.operator, bm.route, bm.dirParam, serviceType);
+            if (stops.length === 0) continue;
+
+            const targetDirCode = bm.dirParam === 'outbound' ? 'O' : 'I';
+            const currentSeenTrackerKeys = new Set();
+            const stopAllEtasMap = {};
+
+            if (bm.operator === 'KMB') {
+                const res = await fetch(`${KMB_API}/route-eta/${bm.route}/${serviceType}`);
+                const json = await res.json();
+                (json.data || []).forEach(item => {
+                    if (item.dir === targetDirCode && item.eta) {
+                        const seq = parseInt(item.seq, 10);
+                        if (!stopAllEtasMap[seq]) stopAllEtasMap[seq] = [];
+                        stopAllEtasMap[seq].push({
+                            eta_seq: item.eta_seq,
+                            etaTs: new Date(item.eta).getTime(),
+                            rmk: (item.rmk_tc || '').trim()
+                        });
+                    }
+                });
+            } else {
+                const batchSize = 8;
+                for (let i = 0; i < stops.length; i += batchSize) {
+                    const batch = stops.slice(i, i + batchSize);
+                    await Promise.all(batch.map(async s => {
+                        try {
+                            const res = await fetch(`${CTB_API}/eta/ctb/${s.stopId}/${bm.route}`);
+                            const json = await res.json();
+                            const matched = (json.data || [])
+                                .filter(item => item.dir === targetDirCode && item.eta)
+                                .map(item => ({
+                                    eta_seq: item.eta_seq,
+                                    etaTs: new Date(item.eta).getTime(),
+                                    rmk: (item.rmk_tc || '').trim()
+                                }));
+                            if (matched.length > 0) {
+                                stopAllEtasMap[s.seq] = matched;
+                            }
+                        } catch (e) { /* ignore */ }
+                    }));
+                }
+            }
+
+            const sortedStops = [...stops].sort((a, b) => a.seq - b.seq);
+            const activeTrips = Object.values(trips)
+                .filter(t => t.routeKeyPrefix === routeKeyPrefix && !t.isEstimatedDep)
+                .sort((a, b) => a.departureTs - b.departureTs);
+
+            sortedStops.forEach(s => {
+                const etaList = (stopAllEtasMap[s.seq] || []).sort((a, b) => a.eta_seq - b.eta_seq);
+                if (etaList.length === 0) return;
+
+                const firstInfo = etaList[0];
+                const bucket = Math.round(firstInfo.etaTs / (10 * 60000));
+                const trackerKey = `${routeKeyPrefix}_SEQ_${s.seq}_${bucket}`;
+                currentSeenTrackerKeys.add(trackerKey);
+
+                if (!activeStopTrackers[trackerKey]) {
+                    activeStopTrackers[trackerKey] = {
+                        trackerKey,
+                        routeKeyPrefix,
+                        seq: s.seq,
+                        scheduledEtaTs: firstInfo.etaTs,
+                        latestEtaTs: firstInfo.etaTs,
+                        lastSeenTs: now,
+                        missCount: 0
+                    };
+                } else {
+                    activeStopTrackers[trackerKey].latestEtaTs = firstInfo.etaTs;
+                    activeStopTrackers[trackerKey].lastSeenTs = now;
+                    activeStopTrackers[trackerKey].missCount = 0;
+                }
+
+                activeTrips.forEach(t => {
+                    if (t.stops[s.seq] && !t.stops[s.seq].actualArrivalTs && !t.stops[s.seq].scheduledEtaTs) {
+                        const matchingEta = etaList.find(item => isEtaConsistentWithTrip(t, s.seq, item.etaTs));
+                        if (matchingEta) {
+                            t.stops[s.seq].scheduledEtaTs = matchingEta.etaTs;
+                        }
+                    }
+                });
+            });
+
+            Object.keys(activeStopTrackers).forEach(tKey => {
+                const tr = activeStopTrackers[tKey];
+                if (tr.routeKeyPrefix === routeKeyPrefix && !currentSeenTrackerKeys.has(tKey)) {
+                    tr.missCount = (tr.missCount || 0) + 1;
+
+                    const isWithinArrivalWindow = now >= tr.latestEtaTs - 45000 && now <= tr.latestEtaTs + 15 * 60000;
+
+                    if (isWithinArrivalWindow) {
+                        const realisticArrivalTs = Math.min(now, Math.max(tr.latestEtaTs, now - 15000));
+                        findOrCreateTripForStopArrival(
+                            routeKeyPrefix,
+                            bm,
+                            tr.seq,
+                            realisticArrivalTs,
+                            tr.scheduledEtaTs,
+                            stops
+                        );
+                        delete activeStopTrackers[tKey];
+                    } else if (tr.missCount >= 2 || now > tr.latestEtaTs + 15 * 60000) {
+                        delete activeStopTrackers[tKey];
+                    }
+                }
+            });
+        }
+
+        lastPollTimeStr = formatTime(now);
+        saveToExcel();
+        console.log(`[${lastPollTimeStr}] 監察完成，已寫入 ${EXCEL_FILENAME}（追蹤 ${Object.keys(trips).length} 個班次）`);
+    } catch (err) {
+        console.error('背景監察錯誤:', err.message);
+    } finally {
+        isPolling = false;
+    }
+}
+
+// ==========================================
+// REST API（含健康檢查端點供 UptimeRobot 喚醒）
+// ==========================================
+app.get('/health', (req, res) => {
+    res.status(200).json({ ok: true, time: formatTime(Date.now()) });
+});
+
+app.get('/api/status', (req, res) => {
+    res.json({
+        running: true,
+        excelFileName: EXCEL_FILENAME,
+        excelPath: EXCEL_FILE,
+        lastPollTime: lastPollTimeStr,
+        bookmarkCount: bookmarks.length,
+        tripCount: Object.keys(trips).length,
+        bookmarks
+    });
+});
+
+app.post('/api/bookmarks/toggle', (req, res) => {
+    const { operator, route, dirParam, serviceType = '1', origTc = '', destTc = '' } = req.body;
+    const id = `${operator}_${route}_${dirParam}_${serviceType}`;
+    const idx = bookmarks.findIndex(b => b.id === id);
+
+    let bookmarked = false;
+    if (idx >= 0) {
+        bookmarks.splice(idx, 1);
+    } else {
+        bookmarks.push({
+            id,
+            operator,
+            route,
+            dirParam,
+            serviceType,
+            origTc,
+            destTc,
+            addedAt: `${formatDate(Date.now())} ${formatTime(Date.now())}`
+        });
+        bookmarked = true;
+    }
+
+    saveBookmarks();
+    saveToExcel();
+    if (bookmarked) pollBookmarkedRoutes();
+
+    res.json({ bookmarked, bookmarks });
+});
+
+app.get('/api/trips', (req, res) => {
+    const list = Object.values(trips)
+        .sort((a, b) => b.departureTs - a.departureTs)
+        .slice(0, 50);
+    res.json({ trips: list, lastPollTime: lastPollTimeStr });
+});
+
+app.get('/api/download-excel', (req, res) => {
+    saveToExcel();
+    if (fs.existsSync(EXCEL_FILE)) {
+        res.download(EXCEL_FILE, EXCEL_FILENAME);
+    } else {
+        res.status(404).send('尚未產生 Excel 檔案');
+    }
+});
+
+saveBookmarks();
+saveToExcel();
+setInterval(pollBookmarkedRoutes, 30000);
+
+app.listen(PORT, HOST, () => {
+    console.log('====================================================');
+    console.log(`✅ 雲端巴士班次與累積時間監察系統已啟動：http://${HOST}:${PORT}`);
+    console.log(`📊 本次啟動新建 Excel 記錄檔：${EXCEL_FILENAME}`);
+    console.log('====================================================');
+    if (bookmarks.length > 0) pollBookmarkedRoutes();
+});

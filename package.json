@@ -1,0 +1,17 @@
+{
+  "name": "hk-bus-excel-monitor",
+  "version": "1.0.0",
+  "description": "HK KMB & CTB Real-time Arrival & Cumulative Travel Time Excel Monitor",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "xlsx": "^0.18.5"
+  }
+}
