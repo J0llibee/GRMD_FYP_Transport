@@ -110,7 +110,7 @@ function saveBookmarks() {
 
 function pruneOldTrips(nowTs) {
     // 清理超過 6 小時的舊班次，避免雲端免費容器記憶體溢出
-    const cutoff = nowTs - 6 * 3600 * 1000;
+    const cutoff = nowTs - 24 * 3600 * 1000;
     Object.keys(trips).forEach(id => {
         if (trips[id].departureTs < cutoff) {
             delete trips[id];
