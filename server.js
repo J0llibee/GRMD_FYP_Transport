@@ -19,7 +19,6 @@ if (!fs.existsSync(DATA_DIR)) {
 
 const BOOKMARKS_FILE = path.join(DATA_DIR, 'bookmarks.json');
 
-// 取得香港時區各時間欄位
 function getHkTimeParts(ts = Date.now()) {
     const formatter = new Intl.DateTimeFormat('en-GB', {
         timeZone: TIMEZONE,
@@ -49,7 +48,6 @@ function formatDate(ts) {
     return `${p.year}-${p.month}-${p.day}`;
 }
 
-// 每次啟動建立專屬香港時間戳記檔名：bus_arrival_records_DDMMYY_HHMMSS.xlsx
 function getStartupSessionTag() {
     const p = getHkTimeParts(Date.now());
     const yy = p.year.slice(-2);
@@ -65,7 +63,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// 載入已儲存的 Bookmarks，若雲端重啟清空則讀取環境變數 DEFAULT_BOOKMARKS
 function loadInitialBookmarks() {
     if (fs.existsSync(BOOKMARKS_FILE)) {
         try {
@@ -107,7 +104,6 @@ function saveBookmarks() {
     fs.writeFileSync(BOOKMARKS_FILE, JSON.stringify(bookmarks, null, 2));
 }
 
-// 自動為「(雲端預設)」路線從九巴／城巴 API 補回真實中文起訖點名稱
 async function resolveDefaultBookmarkNames() {
     let updated = false;
     for (const bm of bookmarks) {
@@ -142,8 +138,7 @@ async function resolveDefaultBookmarkNames() {
 }
 
 function pruneOldTrips(nowTs) {
-    // 清理超過 8 小時的舊班次，避免雲端免費容器記憶體溢出
-    const cutoff = nowTs - 24 * 3600 * 1000;
+    const cutoff = nowTs - 8 * 3600 * 1000;
     Object.keys(trips).forEach(id => {
         if (trips[id].departureTs < cutoff) {
             delete trips[id];
@@ -277,8 +272,8 @@ async function getRouteStops(operator, route, dirParam, serviceType = '1') {
 function isEtaConsistentWithTrip(trip, seq, etaTs) {
     const diffFromDepMins = (etaTs - trip.departureTs) / 60000;
 
-    // 允許第 2-4 站短距站在開出後 15 秒內即出現 ETA
-    const minFromDepMins = (seq - 1) * 0.25;
+    // 總站開出至第 seq 站：至少需 (seq - 1) * 0.45 分鐘（相鄰前 3 站放寬至 0.2 分鐘）
+    const minFromDepMins = seq <= 4 ? (seq - 1) * 0.2 : (seq - 1) * 0.45;
     const maxFromDepMins = seq * 8;
     if (diffFromDepMins < minFromDepMins || diffFromDepMins > maxFromDepMins) {
         return false;
@@ -294,7 +289,9 @@ function isEtaConsistentWithTrip(trip, seq, etaTs) {
         const stepDiffSecs = (etaTs - prevRefTs) / 1000;
         const seqGap = seq - latestPrevSeq;
 
-        if (stepDiffSecs < seqGap * 10 || stepDiffSecs > seqGap * 15 * 60) {
+        // 跨多站時，每站至少需要 20 秒物理行車時間，防止瞬移串線
+        const minStepSecs = seqGap === 1 ? 10 : seqGap * 20;
+        if (stepDiffSecs < minStepSecs || stepDiffSecs > seqGap * 15 * 60) {
             return false;
         }
     }
@@ -309,7 +306,8 @@ function isEtaConsistentWithTrip(trip, seq, etaTs) {
         const stepDiffSecs = (nextRefTs - etaTs) / 1000;
         const seqGap = earliestNextSeq - seq;
 
-        if (stepDiffSecs < seqGap * 10) {
+        const minStepSecs = seqGap === 1 ? 10 : seqGap * 20;
+        if (stepDiffSecs < minStepSecs) {
             return false;
         }
     }
@@ -350,12 +348,12 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             };
         });
 
-        // 若剛在 3.5 分鐘內有搶先建立的估算班次（同班車第 2~4 站先消失），全部吸收合併
+        // 吸收合併剛在 3.5 分鐘內搶先建立了第 2~4 站記錄的估算車
         Object.keys(trips).forEach(oldId => {
             const oldT = trips[oldId];
             if (oldT.routeKeyPrefix === routeKeyPrefix && oldT.isEstimatedDep && Math.abs(oldT.departureTs - preciseDepTs) <= 3.5 * 60000) {
                 Object.values(oldT.stops).forEach(st => {
-                    if (st.seq > 1 && st.actualArrivalTs) {
+                    if (st.seq > 1 && st.seq <= 5 && st.actualArrivalTs) {
                         const fixedArrival = Math.max(preciseDepTs, st.actualArrivalTs);
                         newTrip.stops[st.seq] = {
                             ...st,
@@ -377,7 +375,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
         .filter(t => t.routeKeyPrefix === routeKeyPrefix)
         .sort((a, b) => Number(a.isEstimatedDep) - Number(b.isEstimatedDep));
 
-    // 防重報檢查：同一站若在 2.5 分鐘內已記錄過，視為 API 重複刷新直接忽略（不影響 5~10 分鐘一班的後車）
+    // 防重報檢查：同一站若在 2.5 分鐘內已記錄過，視為 API 重複刷新直接忽略
     const duplicateStopTrip = candidateTrips.find(t => {
         const existing = t.stops[seq];
         return existing && existing.actualArrivalTs && Math.abs(arrivalTs - existing.actualArrivalTs) <= 2.5 * 60000;
@@ -387,7 +385,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
     }
 
     let bestTrip = null;
-    let smallestTimeGap = Infinity;
+    let smallestScore = Infinity;
 
     for (const trip of candidateTrips) {
         if (arrivalTs < trip.departureTs - 15000) continue;
@@ -395,12 +393,21 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
         const elapsedMins = (arrivalTs - trip.departureTs) / 60000;
         if (elapsedMins > 150) continue;
 
+        // 物理最低行車時間校驗：防止剛開出 3 分鐘的新車吸走遠方（如中環/轉車站）前前車的過站紀錄！
+        const minTotalTripMins = seq <= 4 ? (seq - 1) * 0.2 : (seq - 1) * 0.45;
+        if (elapsedMins < minTotalTripMins) continue;
+
+        // 若該站已有最初預計時間 (scheduledEtaTs)，實際到達時間不應比預計時間早超過 6 分鐘（防止前前車串線）
+        const recordedSched = trip.stops[seq]?.scheduledEtaTs;
+        if (recordedSched && (recordedSched - arrivalTs) / 60000 > 6) {
+            continue;
+        }
+
         const allRecordedSeqs = Object.keys(trip.stops)
             .map(Number)
             .filter(s => trip.stops[s].actualArrivalTs !== null);
         const highestSeqSoFar = allRecordedSeqs.length > 0 ? Math.max(...allRecordedSeqs) : 0;
 
-        // 站序必須往後推進
         if (seq <= highestSeqSoFar) continue;
 
         if (highestSeqSoFar > 0) {
@@ -409,36 +416,47 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             const stepDiffMins = stepDiffSecs / 60;
             const seqGap = seq - highestSeqSoFar;
 
-            // 允許同一輪輪詢同時過多站（stepDiffSecs >= -5 秒），並透過 smallestTimeGap 自動配對最接近的前車或後車
-            if (stepDiffSecs >= -5 && stepDiffMins <= seqGap * 15) {
-                if (stepDiffMins < smallestTimeGap) {
-                    smallestTimeGap = stepDiffMins;
+            // 禁止跨超過 6 站的異常跳接（例如第 7 站直接跳第 29 站）
+            if (seqGap > 6) continue;
+
+            // 單站相鄰允許 -5 秒（同輪輪詢過站）；跨多站每站至少需要 20 秒物理行車時間
+            const minStepSecs = seqGap === 1 ? -5 : (seqGap - 1) * 20;
+            const maxAllowedMins = seqGap * 15;
+
+            if (stepDiffSecs >= minStepSecs && stepDiffMins <= maxAllowedMins) {
+                const score = stepDiffMins + seqGap * 0.5;
+                if (score < smallestScore) {
+                    smallestScore = score;
                     bestTrip = trip;
                 }
             }
         } else {
-            const maxAllowedMinsFromDep = seq * 10;
-            if (elapsedMins >= -0.25 && elapsedMins <= maxAllowedMinsFromDep) {
-                if (elapsedMins < smallestTimeGap) {
-                    smallestTimeGap = elapsedMins;
+            // 若該車僅有第 1 站開出時間，只允許前 6 站直接接上，防止第 1 站直接跳第 23 站
+            if (seq <= 6 && elapsedMins <= seq * 10) {
+                if (elapsedMins < smallestScore) {
+                    smallestScore = elapsedMins;
                     bestTrip = trip;
                 }
             }
         }
     }
 
-    // 3. 途中切入估算班次：改以「總站開出時間差 <= 4 分鐘」防重疊，10 分鐘一班（差 10 分鐘）可正常獨立建立
+    // 3. 途中切入估算班次（用於捕捉系統重啟時已在半路的前車）
     if (!bestTrip) {
-        const estDepTs = arrivalTs - (seq - 1) * 1.8 * 60000;
+        // 優先使用 API 提供的 scheduledEtaTs 來反推開出時間，會比用 arrivalTs 準確得多
+        const refTs = scheduledEtaTs || arrivalTs;
+        const estDepTs = refTs - (seq - 1) * 1.6 * 60000;
 
-        const hasSameDepartureWindowTrip = candidateTrips.some(t => Math.abs(t.departureTs - estDepTs) <= 4 * 60000);
-        if (hasSameDepartureWindowTrip) {
-            // 與現有班次的總站開出時間在 4 分鐘內重疊（屬於同一班車的異常亂序站點），不另建幽靈車
+        // 若與某輛「正式從總站開出」的班次發車時間相差在 5 分鐘內，說明是該正式班次的異常亂序站點，直接丟棄不建幽靈車
+        const conflictsWithFormalTrip = candidateTrips.some(
+            t => !t.isEstimatedDep && Math.abs(t.departureTs - estDepTs) <= 5 * 60000
+        );
+        if (conflictsWithFormalTrip) {
             return null;
         }
 
         const estDepStr = formatTime(estDepTs);
-        const estBucket = Math.round(estDepTs / (4 * 60000));
+        const estBucket = Math.round(estDepTs / (6 * 60000));
         const tripId = `${routeKeyPrefix}_EST_${estBucket}`;
 
         if (!trips[tripId]) {
@@ -582,7 +600,6 @@ async function pollBookmarkedRoutes() {
                 });
             });
 
-            // 按站序從小到大依序處理過站（確保第 1 站先建立班次，第 2、3 站才能立刻歸入）
             const disappearingKeys = Object.keys(activeStopTrackers)
                 .filter(tKey => activeStopTrackers[tKey].routeKeyPrefix === routeKeyPrefix && !currentSeenTrackerKeys.has(tKey))
                 .sort((a, b) => activeStopTrackers[a].seq - activeStopTrackers[b].seq);
