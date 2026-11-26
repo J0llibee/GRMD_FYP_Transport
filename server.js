@@ -18,6 +18,7 @@ if (!fs.existsSync(DATA_DIR)) {
 }
 
 const BOOKMARKS_FILE = path.join(DATA_DIR, 'bookmarks.json');
+const SHAPES_FILE = path.join(__dirname, 'bus_shapes.json');
 
 function getHkTimeParts(ts = Date.now()) {
     const formatter = new Intl.DateTimeFormat('en-GB', {
@@ -62,6 +63,18 @@ const TRIPS_JSON_FILE = path.join(DATA_DIR, `trip_records_${SESSION_TAG}.json`);
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
+
+// 載入香港運輸署官方巴士路線道路軌跡 GeoJSON（若檔案存在）
+let busShapesFeatures = [];
+if (fs.existsSync(SHAPES_FILE)) {
+    try {
+        const parsed = JSON.parse(fs.readFileSync(SHAPES_FILE, 'utf8'));
+        busShapesFeatures = parsed.features || [];
+        console.log(`🗺️ 已載入 ${busShapesFeatures.length} 條官方道路軌跡`);
+    } catch (e) {
+        console.error('⚠️ 載入 bus_shapes.json 失敗:', e.message);
+    }
+}
 
 function loadInitialBookmarks() {
     if (fs.existsSync(BOOKMARKS_FILE)) {
@@ -138,7 +151,7 @@ async function resolveDefaultBookmarkNames() {
 }
 
 function pruneOldTrips(nowTs) {
-    const cutoff = nowTs - 8 * 3600 * 1000;
+    const cutoff = nowTs - 48 * 3600 * 1000;
     Object.keys(trips).forEach(id => {
         if (trips[id].departureTs < cutoff) {
             delete trips[id];
@@ -146,12 +159,55 @@ function pruneOldTrips(nowTs) {
     });
 }
 
-// 識別轉車站或無中繼站的高速公路／隧道節點（處理分站牌無 ETA 跳站與長距離直達路段）
 function isHubOrExpresswayStop(stopName = '') {
     return /轉車站|轉乘站|西隧|紅隧|東隧|大橋|口岸/.test(stopName);
 }
 
-// 事後清洗：將因 ETA 桶位邊界或轉車站跳站而分裂出的「(途中估算)」碎片，精準縫合回主班次
+// 動態計算路線當前平均班距（分鐘），自動適應頻密班次（多車在線）與疏落班次
+function getRouteHeadwayMins(routeKeyPrefix) {
+    const formalTrips = Object.values(trips)
+        .filter(t => t.routeKeyPrefix === routeKeyPrefix && !t.isEstimatedDep)
+        .sort((a, b) => b.departureTs - a.departureTs)
+        .slice(0, 5);
+
+    if (formalTrips.length < 2) return 20;
+
+    const diffs = [];
+    for (let i = 0; i < formalTrips.length - 1; i++) {
+        const gap = (formalTrips[i].departureTs - formalTrips[i + 1].departureTs) / 60000;
+        if (gap >= 2 && gap <= 60) diffs.push(gap);
+    }
+    if (diffs.length === 0) return 20;
+
+    diffs.sort((a, b) => a - b);
+    return diffs[Math.floor(diffs.length / 2)];
+}
+
+// 計算某班車目前相對於基準時間表的「實時誤點偏移量（分鐘）」
+function getTripCurrentDelayMins(trip) {
+    const arrivedWithSched = Object.values(trip.stops)
+        .filter(st => st.actualArrivalTs !== null && st.scheduledEtaTs !== null)
+        .sort((a, b) => b.seq - a.seq);
+
+    if (arrivedWithSched.length === 0) return 0;
+
+    const recent = arrivedWithSched.slice(0, 3);
+    const sumDelay = recent.reduce((acc, st) => acc + (st.actualArrivalTs - st.scheduledEtaTs) / 60000, 0);
+    return sumDelay / recent.length;
+}
+
+// 判斷班次是否仍在行駛中
+function isTripStillActive(trip, nowTs) {
+    if (nowTs - trip.departureTs > 140 * 60000) return false;
+    const seqs = Object.keys(trip.stops).map(Number);
+    if (seqs.length === 0) return false;
+    const maxSeq = Math.max(...seqs);
+    const lastStop = trip.stops[maxSeq];
+    if (lastStop && lastStop.actualArrivalTs !== null) return false;
+    return true;
+}
+
+// 事後清洗：將因漏站、ETA 邊界或相鄰站 30~90 秒亂序回報而分裂的「(途中估算)」碎片自動縫合回主班次
 function stitchFragmentedTrips() {
     const tripIds = Object.keys(trips);
     const formalTrips = tripIds.map(id => trips[id]).filter(t => !t.isEstimatedDep);
@@ -165,9 +221,12 @@ function stitchFragmentedTrips() {
 
         if (estArrivedSeqs.length === 0) continue;
 
+        const headwayMins = getRouteHeadwayMins(est.routeKeyPrefix);
+        const maxStitchWindowMins = Math.min(25, Math.max(5, headwayMins * 0.65));
+
         const candidates = formalTrips.filter(f =>
             f.routeKeyPrefix === est.routeKeyPrefix &&
-            Math.abs(f.departureTs - est.departureTs) <= 25 * 60000
+            Math.abs(f.departureTs - est.departureTs) <= maxStitchWindowMins * 60000
         );
 
         for (const formal of candidates) {
@@ -176,7 +235,7 @@ function stitchFragmentedTrips() {
             for (const seq of estArrivedSeqs) {
                 const estTs = est.stops[seq].actualArrivalTs;
 
-                // 若正式班次在該站已有到站紀錄且時間差超過 90 秒，代表是不同班次（例如 10 分鐘一班的後車）
+                // 若正式班次在該站已有真實到站時間且相差超過 90 秒，代表是不同班次
                 if (formal.stops[seq]?.actualArrivalTs) {
                     if (Math.abs(formal.stops[seq].actualArrivalTs - estTs) > 90000) {
                         canMerge = false;
@@ -184,13 +243,13 @@ function stitchFragmentedTrips() {
                     }
                 }
 
-                // 檢查時間序列是否嚴格單調遞增（前一站 <= 本站 <= 後一站）
+                // 檢查時間序列是否符合單調遞增（允許 90 秒相鄰站 GPS 亂序回報容差）
                 const prevSeqs = Object.keys(formal.stops)
                     .map(Number)
                     .filter(s => s < seq && formal.stops[s].actualArrivalTs !== null);
                 if (prevSeqs.length > 0) {
                     const maxPrevSeq = Math.max(...prevSeqs);
-                    if (estTs < formal.stops[maxPrevSeq].actualArrivalTs - 15000) {
+                    if (estTs < formal.stops[maxPrevSeq].actualArrivalTs - 90000) {
                         canMerge = false;
                         break;
                     }
@@ -201,7 +260,7 @@ function stitchFragmentedTrips() {
                     .filter(s => s > seq && formal.stops[s].actualArrivalTs !== null);
                 if (nextSeqs.length > 0) {
                     const minNextSeq = Math.min(...nextSeqs);
-                    if (estTs > formal.stops[minNextSeq].actualArrivalTs + 15000) {
+                    if (estTs > formal.stops[minNextSeq].actualArrivalTs + 90000) {
                         canMerge = false;
                         break;
                     }
@@ -214,6 +273,7 @@ function stitchFragmentedTrips() {
                         const arrTs = est.stops[seq].actualArrivalTs;
                         formal.stops[seq] = {
                             ...est.stops[seq],
+                            scheduledEtaTs: formal.stops[seq].scheduledEtaTs || est.stops[seq].scheduledEtaTs,
                             cumulativeMins: Math.max(0, Math.round((arrTs - formal.departureTs) / 60000)),
                             status: '已到站'
                         };
@@ -349,13 +409,25 @@ async function getRouteStops(operator, route, dirParam, serviceType = '1') {
     }
 }
 
+// 驗證某個候選 ETA 是否符合這班車的基準時間軸與實時誤點進度
 function isEtaConsistentWithTrip(trip, seq, etaTs) {
     const diffFromDepMins = (etaTs - trip.departureTs) / 60000;
 
     const minFromDepMins = seq <= 4 ? (seq - 1) * 0.2 : (seq - 1) * 0.45;
-    const maxFromDepMins = seq * 8;
+    const maxFromDepMins = seq * 8.5;
     if (diffFromDepMins < minFromDepMins || diffFromDepMins > maxFromDepMins) {
         return false;
+    }
+
+    const existingSched = trip.stops[seq]?.scheduledEtaTs;
+    if (existingSched) {
+        const currentDelayMins = getTripCurrentDelayMins(trip);
+        const expectedTs = existingSched + currentDelayMins * 60000;
+        const headwayMins = getRouteHeadwayMins(trip.routeKeyPrefix);
+        const maxEtaDriftMins = Math.min(8, Math.max(2.5, headwayMins * 0.45));
+        if (Math.abs(etaTs - expectedTs) > maxEtaDriftMins * 60000) {
+            return false;
+        }
     }
 
     const prevSeqs = Object.keys(trip.stops)
@@ -369,7 +441,7 @@ function isEtaConsistentWithTrip(trip, seq, etaTs) {
         const seqGap = seq - latestPrevSeq;
 
         const minStepSecs = seqGap === 1 ? 10 : seqGap * 20;
-        const maxStepSecs = Math.max(seqGap * 15 * 60, 30 * 60);
+        const maxStepSecs = Math.max(seqGap * 15 * 60, 35 * 60);
         if (stepDiffSecs < minStepSecs || stepDiffSecs > maxStepSecs) {
             return false;
         }
@@ -394,8 +466,8 @@ function isEtaConsistentWithTrip(trip, seq, etaTs) {
     return true;
 }
 
-function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, scheduledEtaTs, stopsList) {
-    // 1. 第 1 站（總站）正式開出
+function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, scheduledEtaTs, stopsList, currentStopEtasSnapshot = {}) {
+    // 1. 第 1 站（總站）正式開出：一次性鎖定全線基準時間軸（Baseline Schedule）
     if (seq === 1) {
         const preciseDepTs = (scheduledEtaTs && Math.abs(arrivalTs - scheduledEtaTs) <= 90000)
             ? scheduledEtaTs
@@ -427,6 +499,17 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             };
         });
 
+        // 沿用當輪各站快照，建立整條路線的初始基準時間表
+        stopsList.forEach(s => {
+            if (s.seq === 1) return;
+            const etaCandidates = (currentStopEtasSnapshot[s.seq] || []).sort((a, b) => a.eta_seq - b.eta_seq);
+            const matched = etaCandidates.find(item => isEtaConsistentWithTrip(newTrip, s.seq, item.etaTs));
+            if (matched) {
+                newTrip.stops[s.seq].scheduledEtaTs = matched.etaTs;
+            }
+        });
+
+        // 吸收合併剛在 3.5 分鐘內搶先建立了前幾站記錄的估算車
         Object.keys(trips).forEach(oldId => {
             const oldT = trips[oldId];
             if (oldT.routeKeyPrefix === routeKeyPrefix && oldT.isEstimatedDep && Math.abs(oldT.departureTs - preciseDepTs) <= 3.5 * 60000) {
@@ -435,6 +518,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
                         const fixedArrival = Math.max(preciseDepTs, st.actualArrivalTs);
                         newTrip.stops[st.seq] = {
                             ...st,
+                            scheduledEtaTs: newTrip.stops[st.seq]?.scheduledEtaTs || st.scheduledEtaTs,
                             actualArrivalTs: fixedArrival,
                             cumulativeMins: Math.max(0, Math.round((fixedArrival - preciseDepTs) / 60000))
                         };
@@ -453,6 +537,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
         .filter(t => t.routeKeyPrefix === routeKeyPrefix)
         .sort((a, b) => Number(a.isEstimatedDep) - Number(b.isEstimatedDep));
 
+    // 防重報檢查
     const duplicateStopTrip = candidateTrips.find(t => {
         const existing = t.stops[seq];
         return existing && existing.actualArrivalTs && Math.abs(arrivalTs - existing.actualArrivalTs) <= 2.5 * 60000;
@@ -460,6 +545,9 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
     if (duplicateStopTrip) {
         return duplicateStopTrip;
     }
+
+    const headwayMins = getRouteHeadwayMins(routeKeyPrefix);
+    const allowedDriftMins = Math.min(7.5, Math.max(2.5, headwayMins * 0.45));
 
     let bestTrip = null;
     let smallestScore = Infinity;
@@ -473,79 +561,150 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
         const minTotalTripMins = seq <= 4 ? (seq - 1) * 0.2 : (seq - 1) * 0.45;
         if (elapsedMins < minTotalTripMins) continue;
 
-        const recordedSched = trip.stops[seq]?.scheduledEtaTs;
-        if (recordedSched && (recordedSched - arrivalTs) / 60000 > 6) {
-            continue;
-        }
-
         const allRecordedSeqs = Object.keys(trip.stops)
             .map(Number)
             .filter(s => trip.stops[s].actualArrivalTs !== null);
         const highestSeqSoFar = allRecordedSeqs.length > 0 ? Math.max(...allRecordedSeqs) : 0;
 
-        if (seq <= highestSeqSoFar) continue;
+        // 處理相鄰站亂序回報（例如第 14 站先消失、第 13 站晚 45 秒才消失）
+        if (seq <= highestSeqSoFar) {
+            const prevHighestTs = trip.stops[highestSeqSoFar].actualArrivalTs;
+            const isRecentBackfill =
+                !trip.stops[seq]?.actualArrivalTs &&
+                (highestSeqSoFar - seq) <= 2 &&
+                Math.abs(arrivalTs - prevHighestTs) <= 120000;
 
+            if (!isRecentBackfill) continue;
+        } else if (highestSeqSoFar > 0) {
+            const prevArrivalTs = trip.stops[highestSeqSoFar].actualArrivalTs;
+            const seqGap = seq - highestSeqSoFar;
+            const minStepSecs = seqGap === 1 ? -90 : (seqGap - 1) * 20;
+            if ((arrivalTs - prevArrivalTs) / 1000 < minStepSecs) continue;
+        }
+
+        // 【核心改進 A】優先以「基準時間表 + 動態誤點偏移」進行全局軌跡鎖定（無視中間漏掉多少站）
+        const baselineSchedTs = trip.stops[seq]?.scheduledEtaTs;
+        if (baselineSchedTs) {
+            const delayMins = getTripCurrentDelayMins(trip);
+            const expectedArrivalTs = baselineSchedTs + delayMins * 60000;
+            const driftMins = Math.abs(arrivalTs - expectedArrivalTs) / 60000;
+
+            if (driftMins <= allowedDriftMins) {
+                const seqDistance = highestSeqSoFar > 0 ? Math.abs(seq - highestSeqSoFar) : seq;
+                const score = driftMins + seqDistance * 0.15;
+                if (score < smallestScore) {
+                    smallestScore = score;
+                    bestTrip = trip;
+                }
+                continue;
+            }
+        }
+
+        // 【核心改進 B】若該站基準時間表尚未補齊，退回動態車程區間匹配（支援跨過轉車站／隧道跳站）
         if (highestSeqSoFar > 0) {
             const prevStop = trip.stops[highestSeqSoFar];
             const currStop = trip.stops[seq];
             const prevArrivalTs = prevStop.actualArrivalTs;
             const stepDiffSecs = (arrivalTs - prevArrivalTs) / 1000;
             const stepDiffMins = stepDiffSecs / 60;
-            const seqGap = seq - highestSeqSoFar;
+            const seqGap = Math.abs(seq - highestSeqSoFar);
 
-            // 檢查跳過的站點中是否包含轉車站（分站牌無 ETA 跳站）
             let skippedHub = isHubOrExpresswayStop(prevStop?.stopName) || isHubOrExpresswayStop(currStop?.stopName);
-            for (let k = highestSeqSoFar + 1; k < seq; k++) {
+            const minS = Math.min(highestSeqSoFar, seq);
+            const maxS = Math.max(highestSeqSoFar, seq);
+            for (let k = minS + 1; k < maxS; k++) {
                 if (isHubOrExpresswayStop(trip.stops[k]?.stopName)) skippedHub = true;
             }
 
-            const maxAllowedGap = skippedHub ? 8 : 5;
+            const maxAllowedGap = skippedHub ? 10 : 8;
             if (seqGap > maxAllowedGap) continue;
 
-            // 動態計算合理車程：若有官方預計時間，允許 [預計車程 * 0.65, 預計車程 + 12 分鐘]（適應屯門公路/西隧等 20 分鐘直達路段）
-            let minStepSecs = seqGap === 1 ? -5 : (seqGap - 1) * 20;
-            let maxAllowedMins = seqGap * 15;
+            let minStepSecs = seq <= highestSeqSoFar ? -120 : (seqGap === 1 ? -90 : (seqGap - 1) * 20);
+            let maxAllowedMins = Math.max(seqGap * 15, skippedHub ? 30 : 20);
 
             const currRefEta = currStop?.scheduledEtaTs || scheduledEtaTs;
-            if (prevStop?.scheduledEtaTs && currRefEta && currRefEta > prevStop.scheduledEtaTs) {
+            if (prevStop?.scheduledEtaTs && currRefEta && currRefEta > prevStop.scheduledEtaTs && seq > highestSeqSoFar) {
                 const expectedLegMins = (currRefEta - prevStop.scheduledEtaTs) / 60000;
-                minStepSecs = Math.max(minStepSecs, expectedLegMins * 60 * 0.65);
-                maxAllowedMins = Math.max(maxAllowedMins, expectedLegMins + 12);
-            } else if (skippedHub) {
-                maxAllowedMins = Math.max(maxAllowedMins, 28);
+                minStepSecs = Math.max(minStepSecs, expectedLegMins * 60 * 0.6);
+                maxAllowedMins = Math.max(maxAllowedMins, expectedLegMins + 14);
             }
 
             if (stepDiffSecs >= minStepSecs && stepDiffMins <= maxAllowedMins) {
-                const score = stepDiffMins + seqGap * 0.5;
+                const score = 10 + Math.abs(stepDiffMins) + seqGap * 0.5;
                 if (score < smallestScore) {
                     smallestScore = score;
                     bestTrip = trip;
                 }
             }
         } else {
-            if (seq <= 6 && elapsedMins <= seq * 10) {
-                if (elapsedMins < smallestScore) {
-                    smallestScore = elapsedMins;
+            if (seq <= 8 && elapsedMins <= seq * 10) {
+                const score = 10 + elapsedMins;
+                if (score < smallestScore) {
+                    smallestScore = score;
                     bestTrip = trip;
                 }
             }
         }
     }
 
-    // 3. 途中切入估算班次（用於捕捉系統重啟時已在半路的前車）
+    // 【核心改進 C】活躍班次排他保護：若上述都未命中，檢查同路線是否只有唯一的活躍正式班次正在行駛中
     if (!bestTrip) {
+        const activeFormalTrips = candidateTrips.filter(t => !t.isEstimatedDep && isTripStillActive(t, arrivalTs));
+        if (activeFormalTrips.length === 1) {
+            const soleActive = activeFormalTrips[0];
+            const recordedSeqs = Object.keys(soleActive.stops)
+                .map(Number)
+                .filter(s => soleActive.stops[s].actualArrivalTs !== null);
+            const highestSeq = recordedSeqs.length > 0 ? Math.max(...recordedSeqs) : 0;
+
+            if (seq > highestSeq || (!soleActive.stops[seq]?.actualArrivalTs && highestSeq - seq <= 2)) {
+                const prevTs = highestSeq > 0 ? soleActive.stops[highestSeq].actualArrivalTs : soleActive.departureTs;
+                const gapMins = (arrivalTs - prevTs) / 60000;
+                const seqGap = Math.max(0, seq - highestSeq);
+
+                if (gapMins >= (seqGap - 1) * 0.3 - 2 && gapMins <= 35) {
+                    bestTrip = soleActive;
+                }
+            }
+        }
+    }
+
+    // 3. 途中切入估算班次前，嚴格檢查是否屬於某輛正式班次現役路段附近的亂序站點
+    if (!bestTrip) {
+        const nearFormalTrip = candidateTrips.find(t => {
+            if (t.isEstimatedDep) return false;
+            return Object.values(t.stops).some(st =>
+                st.actualArrivalTs !== null &&
+                Math.abs(st.seq - seq) <= 3 &&
+                Math.abs(st.actualArrivalTs - arrivalTs) <= 3.5 * 60000
+            );
+        });
+        if (nearFormalTrip) {
+            if (!nearFormalTrip.stops[seq]?.actualArrivalTs) {
+                nearFormalTrip.stops[seq] = {
+                    seq,
+                    stopName: stopsList.find(s => s.seq === seq)?.stopName || `第${seq}站`,
+                    scheduledEtaTs: nearFormalTrip.stops[seq]?.scheduledEtaTs || scheduledEtaTs || null,
+                    actualArrivalTs: arrivalTs,
+                    cumulativeMins: Math.max(0, Math.round((arrivalTs - nearFormalTrip.departureTs) / 60000)),
+                    status: '已到站'
+                };
+            }
+            return nearFormalTrip;
+        }
+
         const refTs = scheduledEtaTs || arrivalTs;
         const estDepTs = refTs - (seq - 1) * 1.6 * 60000;
 
         const conflictsWithFormalTrip = candidateTrips.some(
-            t => !t.isEstimatedDep && Math.abs(t.departureTs - estDepTs) <= 5 * 60000
+            t => !t.isEstimatedDep && Math.abs(t.departureTs - estDepTs) <= Math.min(12, headwayMins * 0.5) * 60000
         );
         if (conflictsWithFormalTrip) {
             return null;
         }
 
         const estDepStr = formatTime(estDepTs);
-        const estBucket = Math.round(estDepTs / (6 * 60000));
+        const estBucket = Math.round(estDepTs / (8 * 60000));
         const tripId = `${routeKeyPrefix}_EST_${estBucket}`;
 
         if (!trips[tripId]) {
@@ -578,9 +737,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
 
     const cumMins = Math.max(0, Math.round((arrivalTs - bestTrip.departureTs) / 60000));
     const existingSched = bestTrip.stops[seq]?.scheduledEtaTs;
-    const validSched = (scheduledEtaTs && isEtaConsistentWithTrip(bestTrip, seq, scheduledEtaTs))
-        ? scheduledEtaTs
-        : (existingSched || null);
+    const validSched = existingSched || ((scheduledEtaTs && isEtaConsistentWithTrip(bestTrip, seq, scheduledEtaTs)) ? scheduledEtaTs : null);
 
     bestTrip.stops[seq] = {
         seq,
@@ -679,6 +836,7 @@ async function pollBookmarkedRoutes() {
                     activeStopTrackers[trackerKey].missCount = 0;
                 }
 
+                // 持續為已開出的班次補齊後方尚未抵達站點的基準時間表
                 activeTrips.forEach(t => {
                     if (t.stops[s.seq] && !t.stops[s.seq].actualArrivalTs && !t.stops[s.seq].scheduledEtaTs) {
                         const matchingEta = etaList.find(item => isEtaConsistentWithTrip(t, s.seq, item.etaTs));
@@ -707,7 +865,8 @@ async function pollBookmarkedRoutes() {
                         tr.seq,
                         realisticArrivalTs,
                         tr.scheduledEtaTs,
-                        stops
+                        stops,
+                        stopAllEtasMap
                     );
                     delete activeStopTrackers[tKey];
                 } else if (tr.missCount >= 2 || now > tr.latestEtaTs + 15 * 60000) {
@@ -746,6 +905,32 @@ app.get('/api/status', (req, res) => {
         tripCount: Object.keys(trips).length,
         bookmarks
     });
+});
+
+app.get('/api/route-shape', (req, res) => {
+    const operator = (req.query.operator || '').toUpperCase();
+    const route = (req.query.route || '').toUpperCase();
+    const dirParam = req.query.dirParam || 'outbound';
+    const targetSeq = dirParam === 'outbound' ? '1' : '2';
+
+    let matched = busShapesFeatures.find(f =>
+        f.properties.route === route &&
+        f.properties.operator.includes(operator) &&
+        f.properties.routeSeq === targetSeq
+    );
+
+    if (!matched) {
+        matched = busShapesFeatures.find(f =>
+            f.properties.route === route &&
+            f.properties.operator.includes(operator)
+        ) || busShapesFeatures.find(f => f.properties.route === route);
+    }
+
+    if (matched) {
+        res.json({ found: true, feature: matched });
+    } else {
+        res.json({ found: false });
+    }
 });
 
 app.post('/api/bookmarks/toggle', (req, res) => {
