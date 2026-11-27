@@ -26972,9 +26972,9 @@
         "stopName": "青雲站",
         "stopNameEn": "TSING WUN STATION",
         "scheduledEtaTs": 1795820524000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795820735194,
+        "cumulativeMins": 63,
+        "status": "已到站"
       },
       "31": {
         "seq": 31,
