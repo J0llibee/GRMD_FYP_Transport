@@ -1673,9 +1673,9 @@
         "stopName": "西區海底隧道巴士轉乘站",
         "stopNameEn": "Western Harbour Crossing Bus-Bus Interchange",
         "scheduledEtaTs": 1795797653000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797801787,
+        "cumulativeMins": 43,
+        "status": "已到站"
       },
       "26": {
         "seq": 26,
@@ -2162,18 +2162,18 @@
         "stopName": "屯門赤鱲角隧道轉車站",
         "stopNameEn": "TUEN MUN CHEK LAP KOK TUNNEL BBI",
         "scheduledEtaTs": 1795797548000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797764877,
+        "cumulativeMins": 26,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
         "stopName": "蝴蝶灣",
         "stopNameEn": "BUTTERFLY BEACH",
         "scheduledEtaTs": 1795797685000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797886689,
+        "cumulativeMins": 28,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -2804,18 +2804,18 @@
         "stopName": "石排站",
         "stopNameEn": "SHEK PAI STATION",
         "scheduledEtaTs": 1795797576000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797764877,
+        "cumulativeMins": 11,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
         "scheduledEtaTs": 1795797692000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797845586,
+        "cumulativeMins": 13,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -3055,7 +3055,7 @@
         "seq": 36,
         "stopName": "美孚巴士總站",
         "stopNameEn": "MEI FOO BUS TERMINUS",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795801214000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -3143,18 +3143,18 @@
         "stopName": "大窩口轉車站-大窩口站",
         "stopNameEn": "TAI WO HAU BBI-TAI WO HAU STATION",
         "scheduledEtaTs": 1795797679000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797719587,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
         "stopName": "荃灣眾安街",
         "stopNameEn": "CHUNG ON STREET TSUEN WAN",
         "scheduledEtaTs": 1795797765000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797845586,
+        "cumulativeMins": 13,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
