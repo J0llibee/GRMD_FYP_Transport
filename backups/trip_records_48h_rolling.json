@@ -98,9 +98,9 @@
         "stopName": "太子道西",
         "stopNameEn": "PRINCE EDWARD ROAD WEST",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795770164356,
+        "cumulativeMins": 21,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
@@ -890,18 +890,18 @@
         "stopName": "旺角豉油街",
         "stopNameEn": "SOY STREET MONG KOK",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795770032158,
+        "cumulativeMins": 29,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
         "stopName": "油麻地永星里",
         "stopNameEn": "WING SING LANE YAU MA TEI",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795770164356,
+        "cumulativeMins": 31,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
@@ -1022,18 +1022,18 @@
         "stopName": "東頭邨偉東樓",
         "stopNameEn": "WAI TUNG HOUSE, TUNG TAU ESTATE",
         "scheduledEtaTs": 1795770798000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795770105654,
+        "cumulativeMins": 7,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "東頭邨盈東樓",
         "stopNameEn": "YING TUNG HOUSE, TUNG TAU ESTATE",
         "scheduledEtaTs": 1795770844000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795770164356,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
