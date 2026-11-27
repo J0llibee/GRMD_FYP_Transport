@@ -1967,9 +1967,9 @@
         "stopName": "安定邨",
         "stopNameEn": "ON TING ESTATE",
         "scheduledEtaTs": 1795796975000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795796885187,
+        "cumulativeMins": 28,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
@@ -2395,7 +2395,7 @@
         "seq": 30,
         "stopName": "富泰邨總站",
         "stopNameEn": "FU TAI ESTATE BUS TERMINUS",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795800440000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -2429,18 +2429,18 @@
         "stopName": "國泰城",
         "stopNameEn": "CATHAY CITY",
         "scheduledEtaTs": 1795796729000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795796824880,
+        "cumulativeMins": 7,
+        "status": "已到站"
       },
       "3": {
         "seq": 3,
         "stopName": "機場警署",
         "stopNameEn": "AIRPORT POLICE STATION",
         "scheduledEtaTs": 1795796820000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795796908091,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
@@ -2662,7 +2662,7 @@
         "seq": 28,
         "stopName": "天慈邨",
         "stopNameEn": "TIN TSZ ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795800498000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
