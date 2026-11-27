@@ -25349,9 +25349,9 @@
         "stopName": "屯門碼頭(兆禧苑)",
         "stopNameEn": "TUEN MUN PIER HEAD(SIU HEI COURT)",
         "scheduledEtaTs": 1795819125000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819708376,
+        "cumulativeMins": 75,
+        "status": "已到站"
       },
       "38": {
         "seq": 38,
@@ -25742,18 +25742,18 @@
         "stopName": "聖保祿醫院, 銅鑼灣道",
         "stopNameEn": "St. Paul's Hospital, Tung Lo Wan Road",
         "scheduledEtaTs": 1795819401000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819730889,
+        "cumulativeMins": 69,
+        "status": "已到站"
       },
       "42": {
         "seq": 42,
         "stopName": "銅鑼灣 (摩頓台)",
         "stopNameEn": "Causeway Bay (Moreton Terrace)",
         "scheduledEtaTs": 1795819477000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819788381,
+        "cumulativeMins": 70,
+        "status": "已到站"
       }
     }
   },
@@ -26045,9 +26045,9 @@
         "stopName": "湖景邨湖翠樓, 湖景路",
         "stopNameEn": "Wu Tsui House Wu King Estate, Wu King Road",
         "scheduledEtaTs": 1795819444000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819846386,
+        "cumulativeMins": 66,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
@@ -26873,27 +26873,27 @@
         "stopName": "虎地",
         "stopNameEn": "FU TEI",
         "scheduledEtaTs": 1795819453000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819708376,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
         "scheduledEtaTs": 1795819502000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819708376,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "兆康路",
         "stopNameEn": "SIU HONG ROAD",
         "scheduledEtaTs": 1795819549000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819708376,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
