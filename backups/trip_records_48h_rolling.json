@@ -24635,18 +24635,18 @@
         "stopName": "杜老誌道, 軒尼詩道",
         "stopNameEn": "Tonnochy Road, Hennessy Road",
         "scheduledEtaTs": 1795818225000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818957480,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
         "stopName": "銅鑼灣 - 崇光百貨, 軒尼詩道",
         "stopNameEn": "Causeway Bay - Sogo Department Store, Hennessy Road",
         "scheduledEtaTs": 1795818385000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819067988,
+        "cumulativeMins": 73,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -24947,18 +24947,18 @@
         "stopName": "葵俊苑",
         "stopNameEn": "KWAI CHUN COURT",
         "scheduledEtaTs": 1795818667000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819108785,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "31": {
         "seq": 31,
         "stopName": "新葵興花園",
         "stopNameEn": "SUN KWAI HING GARDENS",
         "scheduledEtaTs": 1795818728000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819108785,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
@@ -25268,18 +25268,18 @@
         "stopName": "石排站",
         "stopNameEn": "SHEK PAI STATION",
         "scheduledEtaTs": 1795818421000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818984986,
+        "cumulativeMins": 63,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
         "stopName": "鳴琴站",
         "stopNameEn": "MING KUM STATION",
         "scheduledEtaTs": 1795818529000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819108785,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "30": {
         "seq": 30,
@@ -25688,18 +25688,18 @@
         "stopName": "金鐘 - 力寶中心, 紅棉路",
         "stopNameEn": "Admiralty - Lippo Centre, Cotton Tree Drive",
         "scheduledEtaTs": 1795818827000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819039288,
+        "cumulativeMins": 57,
+        "status": "已到站"
       },
       "36": {
         "seq": 36,
         "stopName": "金鐘 - 統一中心, 金鐘道",
         "stopNameEn": "Admiralty - United Centre, Queensway",
         "scheduledEtaTs": 1795818869000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819039288,
+        "cumulativeMins": 57,
+        "status": "已到站"
       },
       "37": {
         "seq": 37,
@@ -25964,27 +25964,27 @@
         "stopName": "龍珠島, 青山公路",
         "stopNameEn": "Pearl Island, Castle Peak Road",
         "scheduledEtaTs": 1795818778000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818957480,
+        "cumulativeMins": 51,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
         "stopName": "香港黃金海岸, 青山公路",
         "stopNameEn": "Hong Kong Gold Coast, Castle Peak Road",
         "scheduledEtaTs": 1795818837000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819013687,
+        "cumulativeMins": 52,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
         "stopName": "黃金泳灘, 青山公路",
         "stopNameEn": "Golden Beach, Castle Peak Road",
         "scheduledEtaTs": 1795818893000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795819067988,
+        "cumulativeMins": 53,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
