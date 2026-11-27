@@ -44,18 +44,18 @@
         "stopName": "摩士公園",
         "stopNameEn": "MORSE PARK",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769441354,
+        "cumulativeMins": 9,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
         "stopName": "摩士公園體育館",
         "stopNameEn": "MORSE PARK SPORTS CENTRE",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769474454,
+        "cumulativeMins": 9,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -374,27 +374,27 @@
         "stopName": "拔萃男書院,太子道西",
         "stopNameEn": "DIOCESAN BOYS' SCHOOL, PRINCE EDWARD ROAD WEST",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769441354,
+        "cumulativeMins": 24,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
         "stopName": "協和小學, MOKO",
         "stopNameEn": "HEEP WOH PRIMARY SCHOOL, MOKO",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769474454,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
         "stopName": "太子站, 旺角花墟",
         "stopNameEn": "PRINCE EDWARD STATION, FLOWER MARKET",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769593464,
+        "cumulativeMins": 27,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
@@ -671,6 +671,246 @@
         "actualArrivalTs": 1795769329455,
         "cumulativeMins": 32,
         "status": "已到站"
+      },
+      "21": {
+        "seq": 21,
+        "stopName": "尖沙咀德成街",
+        "stopNameEn": "TAK SHING STREET TSIM SHA TSUI",
+        "scheduledEtaTs": 1795769445000,
+        "actualArrivalTs": 1795769441354,
+        "cumulativeMins": 34,
+        "status": "已到站"
+      },
+      "22": {
+        "seq": 22,
+        "stopName": "金馬倫道,清真寺",
+        "stopNameEn": "CAMERON ROAD, KOWLOON MOSQUE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "23": {
+        "seq": 23,
+        "stopName": "尖沙咀轉車站 - 中間道",
+        "stopNameEn": "TSIM SHA TSUI BBI - MIDDLE ROAD",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "24": {
+        "seq": 24,
+        "stopName": "香港文化中心",
+        "stopNameEn": "HONG KONG CULTURAL CENTRE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "25": {
+        "seq": 25,
+        "stopName": "尖沙咀碼頭,海港城",
+        "stopNameEn": "STAR FERRY, HARBOUR CITY",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      }
+    }
+  },
+  "KMB_1_outbound_1_EST_3741184": {
+    "tripId": "KMB_1_outbound_1_EST_3741184",
+    "routeKeyPrefix": "KMB_1_outbound_1",
+    "date": "2026-11-27",
+    "operator": "KMB",
+    "route": "1",
+    "dirParam": "outbound",
+    "destTc": "尖沙咀碼頭",
+    "destEn": "STAR FERRY",
+    "departureTs": 1795768296000,
+    "departureTimeStr": "16:31:36",
+    "isEstimatedDep": true,
+    "stops": {
+      "1": {
+        "seq": 1,
+        "stopName": "竹園邨總站",
+        "stopNameEn": "CHUK YUEN ESTATE BUS TERMINUS",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "2": {
+        "seq": 2,
+        "stopName": "竹園南邨榮園樓",
+        "stopNameEn": "WING YUEN HOUSE, CHUK YUEN SOUTH ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "3": {
+        "seq": 3,
+        "stopName": "馬仔坑遊樂場",
+        "stopNameEn": "MA CHAI HANG RECREATION GROUND",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "4": {
+        "seq": 4,
+        "stopName": "摩士公園",
+        "stopNameEn": "MORSE PARK",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "5": {
+        "seq": 5,
+        "stopName": "摩士公園體育館",
+        "stopNameEn": "MORSE PARK SPORTS CENTRE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "6": {
+        "seq": 6,
+        "stopName": "東頭邨偉東樓",
+        "stopNameEn": "WAI TUNG HOUSE, TUNG TAU ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "7": {
+        "seq": 7,
+        "stopName": "東頭邨盈東樓",
+        "stopNameEn": "YING TUNG HOUSE, TUNG TAU ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "8": {
+        "seq": 8,
+        "stopName": "九龍寨城公園",
+        "stopNameEn": "KOWLOON WALLED CITY PARK",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "9": {
+        "seq": 9,
+        "stopName": "賈炳達道",
+        "stopNameEn": "CARPENTER ROAD",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "10": {
+        "seq": 10,
+        "stopName": "太子道西",
+        "stopNameEn": "PRINCE EDWARD ROAD WEST",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "11": {
+        "seq": 11,
+        "stopName": "喇沙利道",
+        "stopNameEn": "LA SALLE ROAD",
+        "scheduledEtaTs": 1795769256000,
+        "actualArrivalTs": 1795769441354,
+        "cumulativeMins": 19,
+        "status": "已到站"
+      },
+      "12": {
+        "seq": 12,
+        "stopName": "伯爵街",
+        "stopNameEn": "EARL STREET",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": 1795769516759,
+        "cumulativeMins": 20,
+        "status": "已到站"
+      },
+      "13": {
+        "seq": 13,
+        "stopName": "勵德街",
+        "stopNameEn": "KNIGHT STREET",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "14": {
+        "seq": 14,
+        "stopName": "拔萃男書院,太子道西",
+        "stopNameEn": "DIOCESAN BOYS' SCHOOL, PRINCE EDWARD ROAD WEST",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "15": {
+        "seq": 15,
+        "stopName": "協和小學, MOKO",
+        "stopNameEn": "HEEP WOH PRIMARY SCHOOL, MOKO",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "16": {
+        "seq": 16,
+        "stopName": "太子站, 旺角花墟",
+        "stopNameEn": "PRINCE EDWARD STATION, FLOWER MARKET",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "17": {
+        "seq": 17,
+        "stopName": "旺角奶路臣街",
+        "stopNameEn": "NELSON STREET MONG KOK",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "18": {
+        "seq": 18,
+        "stopName": "旺角豉油街",
+        "stopNameEn": "SOY STREET MONG KOK",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "19": {
+        "seq": 19,
+        "stopName": "油麻地永星里",
+        "stopNameEn": "WING SING LANE YAU MA TEI",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "20": {
+        "seq": 20,
+        "stopName": "油麻地長樂街",
+        "stopNameEn": "CHEONG LOK STREET YAU MA TEI",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
       },
       "21": {
         "seq": 21,
