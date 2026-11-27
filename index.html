@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title id="pageTitle">專營巴士實時到站及監察系統</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -11,10 +11,10 @@
             --kmb-red: #e30613;
             --kmb-dark: #b8000b;
             --ctb-blue: #0284c7;
-            --bg-color: #f4f5f7;
+            --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --text-main: #222222;
-            --text-sub: #666666;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
             --night-bg: #1e293b;
             --night-accent: #fbbf24;
             --night-text: #f8fafc;
@@ -24,25 +24,30 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding-bottom: 50px;
+            padding-bottom: 60px;
+            line-height: 1.45;
         }
 
         header {
             background: linear-gradient(135deg, var(--kmb-red) 0%, #b91c1c 55%, #0369a1 100%);
             color: white;
-            padding: 16px 20px;
+            padding: 14px 16px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
             transition: background 0.3s;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 100;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
         header.night-theme {
@@ -50,18 +55,15 @@
         }
 
         header h1 {
-            font-size: 1.3rem;
-            letter-spacing: 0.5px;
-            text-align: center;
-            padding: 0 75px;
+            font-size: 1.15rem;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .lang-switch-btn {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.22);
             color: #ffffff;
             border: 1px solid rgba(255, 255, 255, 0.45);
             padding: 6px 12px;
@@ -72,44 +74,48 @@
             backdrop-filter: blur(4px);
             transition: all 0.2s;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .lang-switch-btn:hover {
-            background: rgba(255, 255, 255, 0.35);
+        .lang-switch-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.38);
         }
 
         .container {
             max-width: 780px;
-            margin: 20px auto;
-            padding: 0 15px;
+            margin: 14px auto;
+            padding: 0 12px;
         }
 
+        /* 桌面版 5 欄，手機版改為單排橫向可滑動膠囊列 */
         .mode-switcher {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             background: #e2e8f0;
             padding: 4px;
-            border-radius: 10px;
-            margin-bottom: 16px;
+            border-radius: 12px;
+            margin-bottom: 14px;
             gap: 4px;
         }
 
         .mode-btn {
-            padding: 10px 4px;
+            padding: 10px 6px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.84rem;
-            font-weight: bold;
+            border-radius: 9px;
+            font-size: 0.85rem;
+            font-weight: 700;
             cursor: pointer;
             background: transparent;
             color: #475569;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .mode-btn.active {
             background: #ffffff;
             color: var(--kmb-red);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
         }
 
         .mode-btn.ctb-mode.active {
@@ -129,10 +135,10 @@
 
         .search-box {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            margin-bottom: 20px;
+            padding: 16px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
         }
 
         .filter-row {
@@ -142,10 +148,10 @@
         }
 
         select {
-            padding: 12px 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px; /* 防止 iPhone Safari 自動放大 */
             background-color: #fff;
             color: var(--text-main);
             outline: none;
@@ -159,17 +165,17 @@
 
         .input-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
         }
 
         input[type="text"] {
             flex: 1;
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 11px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px; /* 防止 iPhone Safari 自動放大 */
             outline: none;
             transition: border-color 0.2s;
         }
@@ -178,9 +184,9 @@
             background-color: var(--kmb-red);
             color: white;
             border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 0 18px;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: bold;
             cursor: pointer;
             white-space: nowrap;
@@ -202,23 +208,24 @@
         .quick-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 7px;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             color: var(--text-sub);
         }
 
         .tag {
-            background: #eee;
-            color: #333;
-            padding: 4px 10px;
-            border-radius: 15px;
+            background: #f1f5f9;
+            color: #334155;
+            padding: 6px 11px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: background 0.2s;
+            font-weight: 500;
+            transition: background 0.15s;
         }
 
-        .tag:hover {
-            background: #ddd;
+        .tag:active {
+            transform: scale(0.96);
         }
 
         .tag.kmb-tag {
@@ -235,9 +242,9 @@
             background: #f8fafc;
             color: #475569;
             border: 1px solid #cbd5e1;
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
+            padding: 7px 12px;
+            border-radius: 9px;
+            font-size: 0.82rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.15s;
@@ -245,12 +252,6 @@
             align-items: center;
             gap: 4px;
             white-space: nowrap;
-        }
-
-        .bm-btn:hover {
-            background: #fef3c7;
-            border-color: #f59e0b;
-            color: #92400e;
         }
 
         .bm-btn.bookmarked {
@@ -261,39 +262,40 @@
 
         .stop-list {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 14px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            margin-bottom: 20px;
-            max-height: 300px;
+            margin-bottom: 16px;
+            max-height: 320px;
             overflow-y: auto;
             display: none;
         }
 
         .stop-list-header {
-            padding: 10px 18px;
-            background: #fafafa;
-            border-bottom: 1px solid #eee;
-            font-size: 0.85rem;
+            padding: 10px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.84rem;
             color: var(--text-sub);
             position: sticky;
             top: 0;
         }
 
         .stop-item {
-            padding: 12px 18px;
-            border-bottom: 1px solid #eee;
+            padding: 13px 16px;
+            border-bottom: 1px solid #f1f5f9;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
         }
 
         .stop-item:last-child {
             border-bottom: none;
         }
 
-        .stop-item:hover {
-            background-color: #f8fafc;
+        .stop-item:active {
+            background-color: #f1f5f9;
         }
 
         .district-pill {
@@ -302,22 +304,22 @@
             background: #f1f5f9;
             color: #475569;
             padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 6px;
+            border-radius: 5px;
+            margin-left: 4px;
             vertical-align: middle;
         }
 
         .stop-id-badge {
-            font-size: 0.75rem;
-            color: #888;
+            font-size: 0.72rem;
+            color: #94a3b8;
             font-family: monospace;
         }
 
         .route-list-card {
             background: var(--card-bg);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             border-left: 5px solid var(--kmb-red);
             overflow: hidden;
         }
@@ -331,23 +333,18 @@
         }
 
         .rl-header {
-            padding: 15px 18px;
+            padding: 13px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 10px;
-            transition: background 0.15s;
-        }
-
-        .rl-header:hover {
-            background: #f8fafc;
         }
 
         .rl-route-badge {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 800;
             color: var(--kmb-red);
-            margin-right: 8px;
+            margin-right: 4px;
         }
 
         .route-list-card.ctb-border .rl-route-badge {
@@ -362,7 +359,7 @@
             display: none;
             background: #f8fafc;
             border-top: 1px solid #e2e8f0;
-            padding: 14px 18px;
+            padding: 12px 14px;
         }
 
         .rl-stops-drawer.open {
@@ -381,68 +378,61 @@
         .rl-drawer-hint {
             font-size: 0.82rem;
             color: #475569;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .action-btn-group {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
+        }
+
+        .map-locate-btn, .timetable-btn {
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 9px;
+            font-size: 0.82rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .map-locate-btn {
             background: #10b981;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.82rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.25);
-        }
-
-        .map-locate-btn:hover {
-            background: #059669;
         }
 
         .timetable-btn {
             background: #d97706;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.82rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            box-shadow: 0 2px 4px rgba(217, 119, 6, 0.25);
-        }
-
-        .timetable-btn:hover {
-            background: #b45309;
         }
 
         .rl-stop-chips {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .rl-stop-chip {
             background: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
             cursor: pointer;
             color: #1e293b;
-            transition: all 0.15s;
+            transition: all 0.12s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rl-stop-chip::after {
+            content: '›';
+            font-size: 1.2rem;
+            color: #94a3b8;
+            font-weight: bold;
         }
 
         .rl-stop-chip.highlight-district {
@@ -451,22 +441,22 @@
             font-weight: 600;
         }
 
-        .rl-stop-chip:hover {
+        .rl-stop-chip:active {
             background: var(--kmb-red);
             color: #ffffff;
             border-color: var(--kmb-red);
         }
 
-        .ctb-border .rl-stop-chip:hover {
+        .ctb-border .rl-stop-chip:active {
             background: var(--ctb-blue);
             border-color: var(--ctb-blue);
         }
 
         .map-panel {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             overflow: hidden;
             border: 2px solid #10b981;
             display: none;
@@ -475,7 +465,7 @@
         .map-panel-header {
             background: #064e3b;
             color: white;
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -484,7 +474,7 @@
         }
 
         .map-panel-title {
-            font-size: 0.98rem;
+            font-size: 0.94rem;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -497,7 +487,6 @@
             border-radius: 50%;
             background-color: #34d399;
             display: inline-block;
-            box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
             animation: pulse-green 1.8s infinite;
         }
 
@@ -519,18 +508,14 @@
         }
 
         .map-ctrl-btn {
-            background: rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.2);
             color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 4px 10px;
-            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 6px 10px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 600;
-        }
-
-        .map-ctrl-btn:hover {
-            background: rgba(255,255,255,0.32);
         }
 
         .map-ctrl-btn.paused {
@@ -541,18 +526,18 @@
 
         #busMap {
             width: 100%;
-            height: 350px;
+            height: 320px;
             z-index: 1;
             background: #e5e7eb;
         }
 
         .map-summary-bar {
-            padding: 12px 16px;
+            padding: 10px 14px;
             background: #ecfdf5;
             border-top: 1px solid #a7f3d0;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             color: #065f46;
-            line-height: 1.6;
+            line-height: 1.55;
         }
 
         .bus-marker-icon {
@@ -560,12 +545,12 @@
             color: white;
             border: 2px solid white;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
 
@@ -576,17 +561,17 @@
         #etaSection {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 14px 16px 6px 16px;
-            margin-bottom: 16px;
+            border-radius: 14px;
+            padding: 14px 14px 6px 14px;
+            margin-bottom: 14px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
         }
 
         .timetable-panel {
             background: #ffffff;
             border: 2px solid #f59e0b;
-            border-radius: 12px;
-            margin-bottom: 18px;
+            border-radius: 14px;
+            margin-bottom: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             overflow: hidden;
             display: none;
@@ -595,7 +580,7 @@
         .tt-header {
             background: #78350f;
             color: #ffffff;
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -604,33 +589,34 @@
         }
 
         .tt-title {
-            font-size: 0.98rem;
+            font-size: 0.94rem;
             font-weight: bold;
         }
 
         .tt-filter-bar {
             background: #fffbeb;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-bottom: 1px solid #fde68a;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 8px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: #92400e;
         }
 
         .tt-table-wrap {
-            max-height: 440px;
+            max-height: 400px;
             overflow-y: auto;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .tt-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
         }
 
         .tt-table th {
@@ -638,7 +624,7 @@
             color: #334155;
             font-weight: 700;
             text-align: left;
-            padding: 10px 12px;
+            padding: 9px 10px;
             border-bottom: 2px solid #e2e8f0;
             position: sticky;
             top: 0;
@@ -647,24 +633,16 @@
         }
 
         .tt-table td {
-            padding: 9px 12px;
+            padding: 9px 10px;
             border-bottom: 1px solid #f1f5f9;
             vertical-align: middle;
-        }
-
-        .tt-table tr:hover {
-            background: #fefce8;
         }
 
         .tt-stop-cell {
             font-weight: 600;
             color: #1e293b;
             cursor: pointer;
-        }
-
-        .tt-stop-cell:hover {
-            color: var(--kmb-red);
-            text-decoration: underline;
+            min-width: 135px;
         }
 
         .tt-slot {
@@ -678,9 +656,9 @@
         }
 
         .tt-mins-sub {
-            font-size: 0.76rem;
+            font-size: 0.75rem;
             color: #64748b;
-            margin-left: 3px;
+            margin-left: 2px;
         }
 
         .eta-header {
@@ -693,17 +671,17 @@
         }
 
         .eta-title {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: bold;
         }
 
         .operator-tag {
-            font-size: 0.75rem;
-            padding: 3px 8px;
+            font-size: 0.74rem;
+            padding: 3px 7px;
             border-radius: 6px;
             color: white;
             font-weight: bold;
-            margin-right: 6px;
+            margin-right: 5px;
             vertical-align: middle;
         }
 
@@ -715,15 +693,10 @@
             color: var(--kmb-red);
             border: 1px solid var(--kmb-red);
             border-radius: 8px;
-            padding: 5px 12px;
-            font-size: 0.85rem;
+            padding: 6px 11px;
+            font-size: 0.82rem;
             font-weight: bold;
             cursor: pointer;
-        }
-
-        .refresh-btn:hover {
-            background: var(--kmb-red);
-            color: white;
         }
 
         .close-eta-btn {
@@ -731,33 +704,28 @@
             color: #475569;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
-            padding: 5px 10px;
-            font-size: 0.85rem;
+            padding: 6px 10px;
+            font-size: 0.82rem;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .close-eta-btn:hover {
-            background: #e2e8f0;
-        }
-
         .service-tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 6px;
+            margin-bottom: 12px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 9px 12px;
-            border: 1px solid #ddd;
+            padding: 8px 8px;
+            border: 1px solid #cbd5e1;
             background: var(--card-bg);
             color: var(--text-main);
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 9px;
+            font-size: 0.84rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .tab-btn.active {
@@ -774,14 +742,14 @@
 
         .route-card {
             background: #f8fafc;
-            border-radius: 10px;
-            padding: 14px 16px;
+            border-radius: 12px;
+            padding: 12px 14px;
             margin-bottom: 10px;
             border: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             border-left: 5px solid var(--kmb-red);
         }
 
@@ -795,18 +763,19 @@
 
         .route-info {
             flex: 1;
+            min-width: 0;
         }
 
         .route-number-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 4px;
             flex-wrap: wrap;
         }
 
         .route-number {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--kmb-red);
         }
@@ -822,8 +791,8 @@
         .badge-night {
             background: var(--night-bg);
             color: var(--night-accent);
-            font-size: 0.72rem;
-            padding: 2px 7px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
         }
@@ -831,8 +800,8 @@
         .badge-day {
             background: #fef3c7;
             color: #b45309;
-            font-size: 0.72rem;
-            padding: 2px 7px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
         }
@@ -840,8 +809,8 @@
         .badge-kmb {
             background: #fee2e2;
             color: #991b1b;
-            font-size: 0.72rem;
-            padding: 2px 7px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
         }
@@ -849,8 +818,8 @@
         .badge-ctb {
             background: #e0f2fe;
             color: #0369a1;
-            font-size: 0.72rem;
-            padding: 2px 7px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
         }
@@ -880,30 +849,31 @@
         }
 
         .route-dest {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: var(--text-main);
         }
 
         .route-dest span {
             color: var(--text-sub);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
         }
 
         .eta-times {
             text-align: right;
-            min-width: 145px;
+            flex-shrink: 0;
         }
 
         .eta-primary-row {
             display: flex;
             align-items: baseline;
             justify-content: flex-end;
-            gap: 6px;
+            gap: 5px;
+            flex-wrap: wrap;
         }
 
         .eta-primary {
-            font-size: 1.35rem;
-            font-weight: bold;
+            font-size: 1.38rem;
+            font-weight: 800;
             color: #0070f3;
         }
 
@@ -916,13 +886,13 @@
         }
 
         .eta-clock {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #64748b;
             font-variant-numeric: tabular-nums;
         }
 
         .eta-next-list {
-            margin-top: 6px;
+            margin-top: 5px;
             display: flex;
             flex-direction: column;
             gap: 3px;
@@ -930,41 +900,42 @@
         }
 
         .eta-next-item {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: var(--text-sub);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .eta-rmk {
-            font-size: 0.76rem;
+            font-size: 0.75rem;
             color: #b45309;
             margin-top: 4px;
             background: #fffbeb;
-            padding: 2px 7px;
+            padding: 2px 6px;
             border-radius: 4px;
             display: inline-block;
         }
 
         .status-msg {
             text-align: center;
-            padding: 20px;
+            padding: 18px 14px;
             color: var(--text-sub);
             background: var(--card-bg);
             border-radius: 12px;
-            line-height: 1.7;
-            margin-bottom: 16px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
         }
 
         .audit-banner {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #047857;
             background: #ecfdf5;
             border: 1px solid #a7f3d0;
-            padding: 8px 14px;
-            border-radius: 8px;
-            margin-bottom: 14px;
+            padding: 7px 12px;
+            border-radius: 9px;
+            margin-bottom: 12px;
             display: none;
         }
 
@@ -972,11 +943,12 @@
             background: #ecfdf5;
             border: 1px solid #6ee7b7;
             color: #065f46;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 10px;
             margin-bottom: 14px;
-            font-size: 0.86rem;
-            line-height: 1.6;
+            font-size: 0.84rem;
+            line-height: 1.55;
+            word-break: break-word;
         }
 
         .server-status-bar.offline {
@@ -985,31 +957,73 @@
             color: #991b1b;
         }
 
+        /* ==========================================
+           手機端專屬優化 (<= 650px)
+           ========================================== */
         @media (max-width: 650px) {
+            header {
+                padding: 11px 14px;
+            }
             header h1 {
-                font-size: 1.1rem;
-                padding: 0 70px 0 6px;
-                text-align: left;
+                font-size: 1.02rem;
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            /* 單排橫向可滑動膠囊列，不佔垂直高度 */
+            .mode-switcher {
+                display: flex;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                padding: 4px;
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+            .mode-switcher::-webkit-scrollbar {
+                display: none;
+            }
+            .mode-btn {
+                flex: 0 0 auto;
+                padding: 9px 13px;
+                font-size: 0.84rem;
+            }
+            .search-box {
+                padding: 13px;
+                margin-bottom: 12px;
             }
             .filter-row {
                 flex-direction: column;
+                gap: 8px;
+                margin-bottom: 10px;
             }
-            .mode-switcher {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .route-card {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .eta-times {
+            select {
                 width: 100%;
-                text-align: left;
-                border-top: 1px dashed #e2e8f0;
-                padding-top: 8px;
+                min-width: 0;
             }
-            .eta-primary-row, .eta-next-list {
-                justify-content: flex-start;
+            button.primary-btn {
+                padding: 0 15px;
+            }
+            /* 路線卡片保持左右並列，右側到站時間清晰突出 */
+            .route-card {
+                padding: 11px 12px;
                 align-items: flex-start;
+            }
+            .route-number {
+                font-size: 1.32rem;
+            }
+            .eta-primary {
+                font-size: 1.32rem;
+            }
+            #busMap {
+                height: 235px;
+            }
+            .tt-table-wrap {
+                max-height: 330px;
+            }
+            .eta-header {
+                gap: 6px;
             }
         }
     </style>
@@ -1048,8 +1062,8 @@
         <div class="eta-header">
             <div class="eta-title" id="currentStopTitle">站點名稱</div>
             <div style="display:flex; gap:6px; flex-wrap: wrap;">
-                <button class="timetable-btn" id="etaTimetableBtn" style="display:none;" onclick="openTimetableFromCurrentQuery()">🕒 整線班次表</button>
-                <button class="map-locate-btn" id="etaMapBtn" style="display:none;" onclick="openMapFromCurrentQuery()">🗺️ 地圖推算位置</button>
+                <button class="timetable-btn" id="etaTimetableBtn" style="display:none; padding:6px 10px;" onclick="openTimetableFromCurrentQuery()">🕒 整線班次表</button>
+                <button class="map-locate-btn" id="etaMapBtn" style="display:none; padding:6px 10px;" onclick="openMapFromCurrentQuery()">🗺️ 地圖推算位置</button>
                 <button class="refresh-btn" onclick="refreshCurrentEta()">↻ <span id="etaRefreshLabel">刷新</span> (<span id="countdown">30</span>s)</button>
                 <button class="close-eta-btn" id="etaCloseBtn" onclick="closeEtaSection()">✕ 收起</button>
             </div>
@@ -1099,8 +1113,8 @@
         正在載入全港巴士站點與路線資料庫，請稍候...
     </div>
 
-    <!-- 5. 主模式切換 -->
-    <div class="mode-switcher">
+    <!-- 5. 主模式切換（手機可橫向滑動） -->
+    <div class="mode-switcher" id="modeSwitcher">
         <button class="mode-btn active" id="modeBtn-KMB_ROUTE" onclick="switchMode('KMB_ROUTE')">🔴 九巴路線</button>
         <button class="mode-btn ctb-mode" id="modeBtn-CTB_ROUTE" onclick="switchMode('CTB_ROUTE')">🔵 城巴路線</button>
         <button class="mode-btn" id="modeBtn-KMB_STOP" onclick="switchMode('KMB_STOP')">📍 九巴車站</button>
@@ -1164,7 +1178,7 @@
             <select id="nightDistrictSelect" onchange="renderDistrictNightList()" style="flex: 1;"></select>
             <input type="text" id="nightRouteFilterInput" placeholder="過濾路線或地點 (如 N241 / N8P)..." oninput="renderDistrictNightList()" style="flex: 1;" />
         </div>
-        <div style="font-size: 0.85rem; color: var(--text-sub);" id="nightTipText">
+        <div style="font-size: 0.84rem; color: var(--text-sub);" id="nightTipText">
             💡 提示：點擊路線右側的 <b>☆ 監察</b> 按鈕，後台即會自動在 Excel 記錄該線由總站開出時間及各站累積時間。
         </div>
     </div>
@@ -1176,19 +1190,19 @@
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
-            <strong style="font-size:1.05rem;">⭐ <span id="bmHeaderTitle">已收藏監察的巴士路線</span> (<span id="bmListCount">0</span>)</strong>
-            <div style="display:flex; gap:8px;">
+            <strong style="font-size:1rem;">⭐ <span id="bmHeaderTitle">已收藏監察的巴士路線</span> (<span id="bmListCount">0</span>)</strong>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
                 <button class="map-locate-btn" id="bmRefreshBtn" onclick="refreshBookmarkRecords()">↻ 刷新監察記錄</button>
                 <button class="timetable-btn" id="bmDownloadBtn" onclick="downloadLocalExcel()">📥 下載 Excel (.xlsx)</button>
             </div>
         </div>
 
-        <div id="bookmarkedRoutesContainer" style="margin-bottom: 20px;"></div>
+        <div id="bookmarkedRoutesContainer" style="margin-bottom: 18px;"></div>
 
-        <div style="font-weight:bold; font-size:1rem; margin-bottom:8px; color:#1e293b;" id="bmRecordsTitle">
-            📊 班次行程及累積行車時間記錄（以「總站開出時間」分辨各班車，同步至 <code>bus_arrival_records_48h_rolling.xlsx</code>）
+        <div style="font-weight:bold; font-size:0.95rem; margin-bottom:8px; color:#1e293b;" id="bmRecordsTitle">
+            📊 班次行程及累積行車時間記錄（同步至 <code>bus_arrival_records_48h_rolling.xlsx</code>）
         </div>
-        <div class="tt-table-wrap" style="border:1px solid #e2e8f0; border-radius:8px;">
+        <div class="tt-table-wrap" style="border:1px solid #e2e8f0; border-radius:10px;">
             <table class="tt-table">
                 <thead>
                     <tr>
@@ -1247,7 +1261,7 @@
     const I18N = {
         zh: {
             pageTitle: '專營巴士實時到站及監察系統',
-            headerTitle: '🚌 專營巴士實時到站 & 監察系統',
+            headerTitle: '🚌 專營巴士實時到站 & 監察',
             langSwitchBtn: '🌐 EN',
             modeKmbRoute: '🔴 九巴路線',
             modeCtbRoute: '🔵 城巴路線',
@@ -1257,35 +1271,35 @@
             kmbOptAll: '🔴 全部九巴路線',
             kmbOptDay: '☀️ 九巴日間路線',
             kmbOptNight: '🌙 九巴通宵路線 (N線)',
-            kmbSearchPlaceholder: '輸入九巴路線或地點 (如: 1A, 968, 旺角, 沙田)...',
+            kmbSearchPlaceholder: '輸入九巴路線或地點 (如: 1A, 968, 旺角)...',
             ctbOptAll: '🔵 全部城巴路線',
             ctbOptDay: '☀️ 城巴日間路線',
             ctbOptNight: '🌙 城巴通宵路線 (N線)',
-            ctbSearchPlaceholder: '輸入城巴路線或地點 (如: 969, A21, 中環, 機場)...',
-            stopSearchPlaceholder: '輸入九巴站名 (如: 紅磡站) 或 16位 Stop ID...',
+            ctbSearchPlaceholder: '輸入城巴路線或地點 (如: 969, A21, 機場)...',
+            stopSearchPlaceholder: '輸入九巴站名 (如: 紅磡站) 或 Stop ID...',
             nightSearchPlaceholder: '過濾路線或地點 (如 N241 / N8P)...',
             filterBtn: '篩選',
             searchBtn: '搜尋',
-            kmbPopular: '九巴熱門：',
-            ctbPopular: '城巴熱門：',
+            kmbPopular: '熱門：',
+            ctbPopular: '熱門：',
             stopPopular: '熱門車站：',
-            nightTip: '💡 提示：點擊路線右側的 <b>☆ 監察</b> 按鈕，後台即會自動在 Excel 記錄該線由總站開出時間及各站累積時間。',
-            bmHeaderTitle: '已收藏監察的巴士路線',
-            bmRefreshBtn: '↻ 刷新監察記錄',
-            bmDownloadBtn: '📥 下載 Excel (.xlsx)',
-            bmRecordsTitle: '📊 班次行程及累積行車時間記錄（以「總站開出時間」分辨各班車，同步至 <code>bus_arrival_records_48h_rolling.xlsx</code>）',
-            thTripId: '班次識別(總站開出)',
-            thStopSeq: '站序與車站名稱',
-            thSchedTime: '表列/預計時間',
-            thActualTime: '實際到達時間',
-            thCumTime: '由總站起累積時間',
+            nightTip: '💡 點擊路線右側 <b>☆ 監察</b>，後台即會自動在 Excel 記錄該線開出及累積時間。',
+            bmHeaderTitle: '已監察路線',
+            bmRefreshBtn: '↻ 刷新記錄',
+            bmDownloadBtn: '📥 下載 Excel',
+            bmRecordsTitle: '📊 班次行程及累積行車時間記錄',
+            thTripId: '班次(總站開出)',
+            thStopSeq: '站序與車站',
+            thSchedTime: '預計時間',
+            thActualTime: '實際到達',
+            thCumTime: '累積時間',
             noRecords: '尚無監察記錄',
-            noBookmarksMsg: '尚未收藏任何監察路線。請在「九巴路線」、「城巴路線」或「通宵巴士」列表點擊 <b>☆ 監察</b>。',
-            waitingTripsMsg: '背景監察器正在等待巴士由總站開出並記錄各站累積時間（每 15~25 秒掃描一次）...',
+            noBookmarksMsg: '尚未收藏任何監察路線。請在路線列表點擊 <b>☆ 監察</b>。',
+            waitingTripsMsg: '背景監察器正在等待巴士由總站開出（每 15~25 秒掃描一次）...',
             loadingInit: '正在載入全港巴士站點與路線資料庫，請稍候...',
-            stopModeHint: '請選擇香港地區或輸入九巴站名 / 16位 Stop ID 搜尋。',
-            kmbBadge: '九巴 KMB',
-            ctbBadge: '城巴 CTB',
+            stopModeHint: '請選擇地區或輸入九巴站名搜尋。',
+            kmbBadge: '九巴',
+            ctbBadge: '城巴',
             kmbShort: '九巴',
             ctbShort: '城巴',
             nightBadge: '🌙 通宵',
@@ -1297,39 +1311,39 @@
             inbound: '回程',
             watchAdd: '☆ 監察',
             watchActive: '★ 已監察',
-            watchRemove: '★ 取消監察',
+            watchRemove: '★ 取消',
             stopsBtn: '站點 ▾',
             timetableBtn: '🕒 路線班次表',
             timetableShort: '🕒 班次表',
-            fullTimetableBtn: '🕒 整線班次表',
-            mapTrackBtn: '🗺️ 地圖追蹤位置',
+            fullTimetableBtn: '🕒 整線班次',
+            mapTrackBtn: '🗺️ 地圖追蹤',
             mapShort: '🗺️ 地圖',
-            mapCalcBtn: '🗺️ 地圖推算位置',
+            mapCalcBtn: '🗺️ 巴士位置',
             loadingStops: '⏳ 正在載入沿途車站...',
-            stopsLoadedHint: (n, op, r) => `✅ 共 ${n} 個站點，點擊車站查詢${op} ${r}：`,
+            stopsLoadedHint: (n, op, r) => `✅ 共 ${n} 個站，點擊查詢 ${op} ${r}：`,
             stopsLoadFail: '❌ 載入站點失敗，請重試。',
-            mapPanelTitle: (op, r) => `🗺️ ${op} ${r} 實時巴士位置推算`,
-            mapAutoLabel: '自動更新',
-            mapPausedLabel: '⏸️ 已暫停 (點擊恢復)',
-            mapNowBtn: '↻ 立即更新',
+            mapPanelTitle: (op, r) => `🗺️ ${op} ${r} 實時位置`,
+            mapAutoLabel: '自動',
+            mapPausedLabel: '⏸️ 已暫停',
+            mapNowBtn: '↻ 更新',
             closeBtn: '✕ 關閉',
             collapseBtn: '✕ 收起',
             etaRefreshLabel: '刷新',
-            tabAll: '全部路線',
+            tabAll: '全部',
             tabDay: '日間',
             tabNight: '通宵',
             noBusData: '暫無班次',
             arrivingNow: '即將抵達',
             minsUnit: '分鐘',
-            scheduledTag: '📅 表列班次',
+            scheduledTag: '📅 表列',
             liveTag: '📡 實時',
             scheduledShort: '表列',
             liveShort: '實時',
             bus2: '第2班',
             bus3: '第3班',
-            ttTitle: (op, r) => `🕒 ${op} ${r} 沿途完整班次表（按同一班車對齊）`,
-            ttRefreshBtn: '↻ 更新班次',
-            ttOnlySched: '僅顯示表列班次',
+            ttTitle: (op, r) => `🕒 ${op} ${r} 沿途班次表`,
+            ttRefreshBtn: '↻ 更新',
+            ttOnlySched: '僅顯示表列',
             thStopSeqName: '站序 / 車站名稱',
             thBus1: '第 1 班',
             thBus2: '第 2 班',
@@ -1338,14 +1352,14 @@
             inTransit: '行駛中...',
             tripLabel: '班次',
             estDepTag: '(途中估算)',
-            tripHeaderBanner: (dep, r, op, dest) => `🚌 班次識別【總站開出時間：${dep}】｜ ${r} (${op} 往 ${dest})`,
+            tripHeaderBanner: (dep, r, op, dest) => `🚌 總站開出：${dep} ｜ ${r} (${op} 往 ${dest})`,
             adminPrompt: '請輸入管理密碼以更改監察的巴士路線：',
             adminWrongPwd: '❌ 密碼錯誤，無法更改監察設定。',
             adminExpiredPwd: '❌ 密碼已失效或錯誤，請重新輸入。'
         },
         en: {
             pageTitle: 'HK Franchised Bus Real-Time ETA & Monitor',
-            headerTitle: '🚌 HK Bus Real-Time ETA & Monitor',
+            headerTitle: '🚌 HK Bus ETA & Monitor',
             langSwitchBtn: '🌐 中文',
             modeKmbRoute: '🔴 KMB Routes',
             modeCtbRoute: '🔵 CTB Routes',
@@ -1355,40 +1369,40 @@
             kmbOptAll: '🔴 All KMB Routes',
             kmbOptDay: '☀️ KMB Day Routes',
             kmbOptNight: '🌙 KMB Overnight (N-Routes)',
-            kmbSearchPlaceholder: 'Enter KMB route or place (e.g. 1A, 968, Mong Kok, Sha Tin)...',
+            kmbSearchPlaceholder: 'KMB route or place (e.g. 1A, 968, Mong Kok)...',
             ctbOptAll: '🔵 All CTB Routes',
             ctbOptDay: '☀️ CTB Day Routes',
             ctbOptNight: '🌙 CTB Overnight (N-Routes)',
-            ctbSearchPlaceholder: 'Enter CTB route or place (e.g. 969, A21, Central, Airport)...',
-            stopSearchPlaceholder: 'Enter KMB stop name (e.g. Hung Hom) or 16-char Stop ID...',
+            ctbSearchPlaceholder: 'CTB route or place (e.g. 969, A21, Airport)...',
+            stopSearchPlaceholder: 'KMB stop name (e.g. Hung Hom) or Stop ID...',
             nightSearchPlaceholder: 'Filter route or place (e.g. N241 / N8P)...',
             filterBtn: 'Filter',
             searchBtn: 'Search',
-            kmbPopular: 'Popular KMB:',
-            ctbPopular: 'Popular CTB:',
-            stopPopular: 'Popular Stops:',
-            nightTip: '💡 Tip: Click <b>☆ Watch</b> on any route to automatically log departures & cumulative travel times in Excel.',
-            bmHeaderTitle: 'Watched Bus Routes',
-            bmRefreshBtn: '↻ Refresh Logs',
-            bmDownloadBtn: '📥 Download Excel (.xlsx)',
-            bmRecordsTitle: '📊 Trip Logs & Cumulative Travel Time (Grouped by Terminus Departure, synced to <code>bus_arrival_records_48h_rolling.xlsx</code>)',
-            thTripId: 'Trip (Terminus Dep.)',
-            thStopSeq: 'Seq & Bus Stop',
-            thSchedTime: 'Sched. / Initial ETA',
-            thActualTime: 'Actual Arrival',
-            thCumTime: 'Cumulative Time',
+            kmbPopular: 'Top:',
+            ctbPopular: 'Top:',
+            stopPopular: 'Top Stops:',
+            nightTip: '💡 Tap <b>☆ Watch</b> on any route to log departures & cumulative travel times in Excel.',
+            bmHeaderTitle: 'Watched Routes',
+            bmRefreshBtn: '↻ Refresh',
+            bmDownloadBtn: '📥 Excel (.xlsx)',
+            bmRecordsTitle: '📊 Trip Logs & Cumulative Travel Time',
+            thTripId: 'Trip (Dep.)',
+            thStopSeq: 'Seq & Stop',
+            thSchedTime: 'Sched. ETA',
+            thActualTime: 'Actual',
+            thCumTime: 'Cum. Time',
             noRecords: 'No monitoring records yet',
-            noBookmarksMsg: 'No watched routes yet. Click <b>☆ Watch</b> in KMB, CTB, or Overnight tabs.',
-            waitingTripsMsg: 'Background monitor is waiting for buses to depart from terminus (polling every 15–25s)...',
-            loadingInit: 'Loading Hong Kong bus stops & routes database, please wait...',
-            stopModeHint: 'Select a district or enter a KMB stop name / 16-char Stop ID to search.',
+            noBookmarksMsg: 'No watched routes yet. Tap <b>☆ Watch</b> on any route.',
+            waitingTripsMsg: 'Background monitor is waiting for buses to depart from terminus...',
+            loadingInit: 'Loading Hong Kong bus stops & routes database...',
+            stopModeHint: 'Select a district or enter a KMB stop name to search.',
             kmbBadge: 'KMB',
             ctbBadge: 'CTB',
             kmbShort: 'KMB',
             ctbShort: 'CTB',
             nightBadge: '🌙 Night',
             dayBadge: '☀️ Day',
-            specialTrip: 'Special Trip',
+            specialTrip: 'Special',
             from: 'From',
             to: 'To',
             outbound: 'Outbound',
@@ -1397,18 +1411,18 @@
             watchActive: '★ Watching',
             watchRemove: '★ Unwatch',
             stopsBtn: 'Stops ▾',
-            timetableBtn: '🕒 Route Timetable',
-            timetableShort: '🕒 Timetable',
-            fullTimetableBtn: '🕒 Full Timetable',
+            timetableBtn: '🕒 Timetable',
+            timetableShort: '🕒 Table',
+            fullTimetableBtn: '🕒 Timetable',
             mapTrackBtn: '🗺️ Live Map',
             mapShort: '🗺️ Map',
-            mapCalcBtn: '🗺️ Live Bus Map',
+            mapCalcBtn: '🗺️ Live Map',
             loadingStops: '⏳ Loading route stops...',
-            stopsLoadedHint: (n, op, r) => `✅ ${n} stops total. Tap a stop for ${op} ${r} ETA:`,
+            stopsLoadedHint: (n, op, r) => `✅ ${n} stops. Tap a stop for ${op} ${r}:`,
             stopsLoadFail: '❌ Failed to load stops. Please retry.',
-            mapPanelTitle: (op, r) => `🗺️ ${op} ${r} Live Bus Position Estimation`,
+            mapPanelTitle: (op, r) => `🗺️ ${op} ${r} Live Bus Map`,
             mapAutoLabel: 'Auto',
-            mapPausedLabel: '⏸️ Paused (Tap to resume)',
+            mapPausedLabel: '⏸️ Paused',
             mapNowBtn: '↻ Refresh',
             closeBtn: '✕ Close',
             collapseBtn: '✕ Hide',
@@ -1419,13 +1433,13 @@
             noBusData: 'No ETA',
             arrivingNow: 'Arriving',
             minsUnit: 'min',
-            scheduledTag: '📅 Scheduled',
+            scheduledTag: '📅 Sched.',
             liveTag: '📡 Live',
             scheduledShort: 'Sched.',
             liveShort: 'Live',
             bus2: '2nd',
             bus3: '3rd',
-            ttTitle: (op, r) => `🕒 ${op} ${r} Full Route Timetable (Trip-Aligned)`,
+            ttTitle: (op, r) => `🕒 ${op} ${r} Full Timetable`,
             ttRefreshBtn: '↻ Refresh',
             ttOnlySched: 'Scheduled Only',
             thStopSeqName: 'Seq / Bus Stop',
@@ -1435,8 +1449,8 @@
             passedStop: 'Passed',
             inTransit: 'In transit...',
             tripLabel: 'Trip',
-            estDepTag: '(Est. Mid-route)',
-            tripHeaderBanner: (dep, r, op, dest) => `🚌 Trip [Terminus Dep: ${dep}] ｜ ${r} (${op} to ${dest})`,
+            estDepTag: '(Est.)',
+            tripHeaderBanner: (dep, r, op, dest) => `🚌 Dep: ${dep} ｜ ${r} (${op} to ${dest})`,
             adminPrompt: 'Enter admin password to modify watched routes:',
             adminWrongPwd: '❌ Incorrect password. Cannot modify watched routes.',
             adminExpiredPwd: '❌ Password invalid or expired. Please try again.'
@@ -1675,14 +1689,12 @@
 
         populateDistrictSelects();
 
-        // 熱門快速標籤
         document.getElementById('kmbQuickTags').innerHTML = `
             <span>${t('kmbPopular')}</span>
             <span class="tag kmb-tag" onclick="filterKmbRouteQuick('1A')">1A ${isEn ? 'Tsim Sha Tsui' : '尖沙咀'}</span>
             <span class="tag kmb-tag" onclick="filterKmbRouteQuick('968')">968 ${isEn ? 'Yuen Long' : '元朗'}</span>
             <span class="tag kmb-tag" onclick="filterKmbRouteQuick('290A')">290A ${isEn ? 'Tseung Kwan O' : '將軍澳'}</span>
-            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('N241')">N241 ${isEn ? 'Night' : '通宵'}</span>
-            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('N73')">N73 ${isEn ? 'Night North' : '通宵北區'}</span>
+            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('N260')">N260 ${isEn ? 'Tuen Mun - Mei Foo (N)' : '通宵屯門-美孚'}</span>
         `;
 
         document.getElementById('ctbQuickTags').innerHTML = `
@@ -1691,18 +1703,11 @@
             <span class="tag ctb-tag" onclick="filterCtbQuick('969')">969 ${isEn ? 'Tin Shui Wai' : '天水圍'}</span>
             <span class="tag ctb-tag" onclick="filterCtbQuick('5X')">5X ${isEn ? 'Causeway Bay' : '銅鑼灣'}</span>
             <span class="tag ctb-tag" onclick="filterCtbQuick('N8X')">N8X ${isEn ? 'Night' : '通宵'}</span>
-            <span class="tag ctb-tag" onclick="filterCtbQuick('N11')">N11 ${isEn ? 'Night Airport' : '通宵機場'}</span>
+            <span class="tag ctb-tag" onclick="filterCtbQuick('N962')">N962 ${isEn ? 'Tuen Mun - Hong Kong Island (N)' : '通宵屯門-港島'}</span>
         `;
 
-        document.getElementById('kmbStopQuickTags').innerHTML = `
-            <span>${t('stopPopular')}</span>
-            <span class="tag" onclick="quickSelectKmb('BFA3460955AC820C', '${isEn ? 'Hung Hom Station (Cross Harbour Tunnel)' : '紅磡站 (海底隧道)'}')">${isEn ? 'Hung Hom Station' : '紅磡站'}</span>
-            <span class="tag" onclick="quickSelectKmb('A60303B18A76E284', '${isEn ? 'Nelson Street Mong Kok' : '旺角奶路臣街'}')">${isEn ? 'Nelson St Mong Kok' : '旺角奶路臣街'}</span>
-            <span class="tag" onclick="quickSelectKmb('2843A6857690F452', '${isEn ? 'Sha Tin Central Bus Terminus' : '沙田市中心總站'}')">${isEn ? 'Sha Tin Central' : '沙田市中心'}</span>
-            <span class="tag" onclick="quickSelectKmb('643568D9895252D6', '${isEn ? 'Tuen Mun Road Bus-Bus Interchange' : '屯門公路轉車站'}')">${isEn ? 'Tuen Mun Rd BBI' : '屯公轉車站'}</span>
-        `;
+     
 
-        // 地圖、ETA 與班次表按鈕文字
         document.getElementById('mapNowBtn').textContent = t('mapNowBtn');
         document.getElementById('mapCloseBtn').textContent = t('closeBtn');
         const mapAutoBtn = document.getElementById('mapAutoToggleBtn');
@@ -1728,7 +1733,6 @@
         document.getElementById('thBus2').textContent = t('thBus2');
         document.getElementById('thBus3').textContent = t('thBus3');
 
-        // 監察中心標題與表格表頭
         document.getElementById('bmHeaderTitle').textContent = t('bmHeaderTitle');
         document.getElementById('bmRefreshBtn').textContent = t('bmRefreshBtn');
         document.getElementById('bmDownloadBtn').textContent = t('bmDownloadBtn');
@@ -1739,12 +1743,11 @@
         document.getElementById('thActualTime').textContent = t('thActualTime');
         document.getElementById('thCumTime').textContent = t('thCumTime');
 
-        // 重新渲染目前開啟的清單與面板
         if (kmbAllStops.length > 0) {
             const auditBanner = document.getElementById('auditBanner');
             auditBanner.innerHTML = isEn
-                ? `✅ Database loaded (${kmbAllStops.length} KMB stops) ｜ ${isLocalServerOnline ? '🟢 Excel Background Monitor Online' : '⚪ Backend Offline'}`
-                : `✅ 站點資料庫已載入（共 ${kmbAllStops.length} 個九巴站點）｜ ${isLocalServerOnline ? '🟢 Excel 自動監察背景服務已連線' : '⚪ 尚未啟動本地 server.js'}`;
+                ? `✅ ${kmbAllStops.length} KMB stops loaded ｜ ${isLocalServerOnline ? '🟢 Excel Monitor Online' : '⚪ Backend Offline'}`
+                : `✅ 已載入 ${kmbAllStops.length} 個九巴站點 ｜ ${isLocalServerOnline ? '🟢 Excel 監察服務連線中' : '⚪ 尚未啟動後台'}`;
         }
 
         if (document.getElementById('kmbRouteSection').style.display !== 'none') renderKmbRouteList();
@@ -1824,8 +1827,8 @@
             if (statusEl) {
                 statusEl.classList.remove('offline');
                 statusEl.innerHTML = isEn
-                    ? `✅ <b>Background Excel Monitor Active</b> (Last poll: ${data.lastPollTime} ｜ Tracked <b>${data.tripCount}</b> trips in 48h window)<br>📂 Excel Path: <code>${data.excelPath}</code>`
-                    : `✅ <b>後台 Excel 監察服務運行中</b>（最後掃描：${data.lastPollTime} ｜ 48小時內已識別 <b>${data.tripCount}</b> 個獨立發車班次）<br>📂 伺服器 Excel 路徑：<code>${data.excelPath}</code>`;
+                    ? `✅ <b>Background Excel Monitor Active</b> (Last poll: ${data.lastPollTime} ｜ <b>${data.tripCount}</b> trips in 48h window)`
+                    : `✅ <b>後台 Excel 監察服務運行中</b>（最後掃描：${data.lastPollTime} ｜ 48小時內已識別 <b>${data.tripCount}</b> 個班次）`;
             }
         } catch (e) {
             isLocalServerOnline = false;
@@ -1833,8 +1836,8 @@
             if (statusEl) {
                 statusEl.classList.add('offline');
                 statusEl.innerHTML = isEn
-                    ? `⚠️ <b>Backend server not detected</b>. Run <code>npm install && npm start</code> and open via server URL.`
-                    : `⚠️ <b>尚未偵測到後台伺服器</b>。請執行 <code>npm install && npm start</code> 啟動服務。`;
+                    ? `⚠️ <b>Backend server not detected</b>.`
+                    : `⚠️ <b>尚未偵測到後台伺服器</b>。`;
             }
         }
     }
@@ -1861,7 +1864,7 @@
                 const json = await res.json();
                 bookmarkedRoutes = json.bookmarks || [];
             } catch (e) {
-                alert(currentLang === 'en' ? 'Failed to sync with server.' : '同步至後台伺服器失敗，請確認 server.js 正在運行。');
+                alert(currentLang === 'en' ? 'Failed to sync with server.' : '同步至後台伺服器失敗。');
                 return;
             }
         } else {
@@ -1887,7 +1890,7 @@
 
     function downloadLocalExcel() {
         if (!isLocalServerOnline) {
-            alert(currentLang === 'en' ? 'Backend server is offline.' : '請先啟動後台伺服器，即可直接下載生成的 .xlsx 檔案。');
+            alert(currentLang === 'en' ? 'Backend server is offline.' : '後台伺服器未啟動，無法下載。');
             return;
         }
         window.location.href = `${LOCAL_SERVER}/api/download-excel`;
@@ -1908,7 +1911,7 @@
             container.innerHTML = `<div class="status-msg" style="margin-bottom:0;">${t('noBookmarksMsg')}</div>`;
         } else {
             container.innerHTML = bookmarkedRoutes.map(b => `
-                <div class="route-card ${b.operator === 'CTB' ? 'is-ctb' : ''}" style="padding:10px 14px;">
+                <div class="route-card ${b.operator === 'CTB' ? 'is-ctb' : ''}" style="padding:10px 12px; flex-wrap:wrap;">
                     <div class="route-info">
                         <div class="route-number-row">
                             <span class="route-number" style="font-size:1.25rem;">${b.route}</span>
@@ -1918,9 +1921,9 @@
                         <div class="route-dest">${getRouteOrig(b)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(b)}</strong></div>
                     </div>
                     <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                        <button class="timetable-btn" onclick="openRouteTimetable('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">${t('timetableShort')}</button>
-                        <button class="map-locate-btn" onclick="openBusPositionMap('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}', true)">${t('mapShort')}</button>
-                        <button class="bm-btn bookmarked" onclick="toggleRouteBookmark(event, '${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">${t('watchRemove')}</button>
+                        <button class="timetable-btn" style="padding:6px 9px;" onclick="openRouteTimetable('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">${t('timetableShort')}</button>
+                        <button class="map-locate-btn" style="padding:6px 9px;" onclick="openBusPositionMap('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}', true)">${t('mapShort')}</button>
+                        <button class="bm-btn bookmarked" style="padding:6px 9px;" onclick="toggleRouteBookmark(event, '${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">${t('watchRemove')}</button>
                     </div>
                 </div>
             `).join('');
@@ -1968,11 +1971,11 @@
 
                     html += `
                         <tr>
-                            <td style="color:#64748b; font-size:0.8rem;">${trip.departureTimeStr} ${t('tripLabel')}</td>
-                            <td>${st.seq}. ${stopLabel}</td>
+                            <td style="color:#64748b; font-size:0.78rem; white-space:nowrap;">${trip.departureTimeStr}</td>
+                            <td style="min-width:120px;">${st.seq}. ${stopLabel}</td>
                             <td class="tt-slot">${schedStr}</td>
                             <td class="tt-slot">${actualStr}</td>
-                            <td>${cumStr}</td>
+                            <td style="white-space:nowrap;">${cumStr}</td>
                         </tr>
                     `;
                 });
@@ -2068,8 +2071,8 @@
 
             auditBanner.style.display = 'block';
             auditBanner.innerHTML = currentLang === 'en'
-                ? `✅ Database loaded (${kmbAllStops.length} KMB stops) ｜ ${isLocalServerOnline ? '🟢 Excel Background Monitor Online' : '⚪ Backend Offline'}`
-                : `✅ 站點資料庫已載入（共 ${kmbAllStops.length} 個九巴站點）｜ ${isLocalServerOnline ? '🟢 Excel 自動監察背景服務已連線' : '⚪ 尚未啟動本地 server.js'}`;
+                ? `✅ ${kmbAllStops.length} KMB stops loaded ｜ ${isLocalServerOnline ? '🟢 Excel Monitor Online' : '⚪ Backend Offline'}`
+                : `✅ 已載入 ${kmbAllStops.length} 個九巴站點 ｜ ${isLocalServerOnline ? '🟢 Excel 監察服務連線中' : '⚪ 尚未啟動後台'}`;
 
             await loadKmbRoutes();
         } catch (error) {
@@ -2092,6 +2095,12 @@
         document.getElementById('modeBtn-KMB_STOP').classList.toggle('active', isKmbStop);
         document.getElementById('modeBtn-DISTRICT_NIGHT').classList.toggle('active', isNight);
         document.getElementById('modeBtn-BOOKMARKS').classList.toggle('active', isBookmarks);
+
+        // 自動把被點擊的分頁滑動到手機導航列可見範圍
+        const activeBtn = document.getElementById(`modeBtn-${mode}`);
+        if (activeBtn && activeBtn.scrollIntoView) {
+            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
 
         document.getElementById('panel-KMB_ROUTE').style.display = isKmbRoute ? 'block' : 'none';
         document.getElementById('panel-CTB_ROUTE').style.display = isCtb ? 'block' : 'none';
@@ -2126,16 +2135,7 @@
     }
 
     function scrollToTopDisplay() {
-        const mapPanel = document.getElementById('mapPanel');
-        const etaSection = document.getElementById('etaSection');
-        const ttPanel = document.getElementById('timetablePanel');
-        if (mapPanel.style.display !== 'none') {
-            mapPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (etaSection.style.display !== 'none') {
-            etaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (ttPanel.style.display !== 'none') {
-            ttPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // ==========================================
@@ -2208,10 +2208,10 @@
                     <div class="route-number-row">
                         <span class="route-number">${route}</span>
                         <span class="${isCtb ? 'badge-ctb' : 'badge-kmb'}">${isCtb ? t('ctbBadge') : t('kmbBadge')}</span>
-                        ${isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : `<span class="badge-day">${t('dayBadge')}</span>`}
+                        ${isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : ''}
                         ${extraBtnsHtml}
                     </div>
-                    <div class="route-dest"><span>${t('to')}</span> ${destDisplay || ''}</div>
+                    <div class="route-dest"><span>${t('to')}</span> <strong>${destDisplay || ''}</strong></div>
                     ${firstInfo.remark ? `<div class="eta-rmk">※ ${firstInfo.remark}</div>` : ''}
                 </div>
                 <div class="eta-times">
@@ -2220,8 +2220,8 @@
                         <span class="eta-primary ${firstInfo.isArriving ? 'arriving' : ''} ${firstInfo.isScheduled ? 'scheduled-text' : ''}">
                             ${firstInfo.minsText}
                         </span>
-                        ${firstInfo.clockText ? `<span class="eta-clock">(${firstInfo.clockText})</span>` : ''}
                     </div>
+                    ${firstInfo.clockText ? `<div class="eta-clock">${firstInfo.clockText}</div>` : ''}
                     ${nextBusesHtml ? `<div class="eta-next-list">${nextBusesHtml}</div>` : ''}
                 </div>
             </div>
@@ -2263,7 +2263,7 @@
         panel.style.display = 'block';
         titleEl.textContent = t('ttTitle')(operator === 'KMB' ? t('kmbShort') : t('ctbShort'), route);
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#64748b;">⏳ ${isEn ? `Loading & aligning trips for ${route}...` : `正在讀取並串聯 ${route} 線各班車沿途時間軸...`}</td></tr>`;
-        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToTopDisplay();
 
         try {
             const cacheKey = operator === 'KMB' ? `KMB_${route}_${dirParam}_${serviceType}` : `CTB_${route}_${dirParam}`;
@@ -2355,8 +2355,8 @@
 
             const timeNow = new Date().toLocaleTimeString('en-GB', { hour12: false });
             metaInfo.textContent = isEn
-                ? `Updated: ${timeNow} ｜ ${stopsList.length} stops (Aligned by individual bus trip)`
-                : `更新時間：${timeNow} ｜ 共 ${stopsList.length} 站（已按同一班車時間軸對齊）`;
+                ? `Updated: ${timeNow} ｜ ${stopsList.length} stops`
+                : `更新：${timeNow} ｜ 共 ${stopsList.length} 站`;
             renderTimetableRows();
         } catch (err) {
             tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#dc2626;">❌ ${err.message}</td></tr>`;
@@ -2375,7 +2375,7 @@
 
             const cellsHtml = row.slots.map(slot => {
                 if (!slot) return `<td class="tt-slot" style="color:#94a3b8;">—</td>`;
-                if (slot.passed) return `<td class="tt-slot" style="color:#94a3b8; font-size:0.78rem;">${t('passedStop')}</td>`;
+                if (slot.passed) return `<td class="tt-slot" style="color:#94a3b8; font-size:0.76rem;">${t('passedStop')}</td>`;
                 if (!slot.clockText && slot.minsText === t('noBusData')) return `<td class="tt-slot" style="color:#94a3b8;">—</td>`;
                 if (onlyScheduled && !slot.isScheduled) return `<td class="tt-slot" style="color:#94a3b8;">(${t('liveShort')})</td>`;
 
@@ -2468,8 +2468,8 @@
 
         const limit = 60;
         titleEl.textContent = isEn
-            ? `🔴 KMB Routes (${filtered.length} directions${filtered.length > limit ? `, showing first ${limit}` : ''})`
-            : `🔴 九巴路線 (${filtered.length} 個方向/班次${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
+            ? `🔴 KMB Routes (${filtered.length}${filtered.length > limit ? `, top ${limit}` : ''})`
+            : `🔴 九巴路線 (${filtered.length}${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
 
         if (filtered.length === 0) {
             resultsEl.innerHTML = `<div class="status-msg">${isEn ? 'No matching KMB routes found.' : '找不到符合條件的九巴路線。'}</div>`;
@@ -2484,23 +2484,23 @@
             return `
                 <div class="route-list-card ${r.isNight ? 'night-border' : ''}">
                     <div class="rl-header" onclick="toggleAndLoadKmbStops('${cacheKey}', '${r.route}', '${r.dirParam}', '${r.service_type}', '${drawerId}')">
-                        <div style="flex:1; cursor:pointer;">
-                            <div style="display:flex; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
+                        <div style="flex:1; min-width:0; cursor:pointer;">
+                            <div style="display:flex; align-items:center; margin-bottom:3px; gap:5px; flex-wrap:wrap;">
                                 <span class="rl-route-badge">${r.route}</span>
                                 <span class="badge-kmb">${t('kmbBadge')}</span>
-                                ${r.isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : `<span class="badge-day">${t('dayBadge')}</span>`}
-                                ${r.service_type !== '1' ? `<span class="district-pill">${t('specialTrip')} (${r.service_type})</span>` : ''}
+                                ${r.isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : ''}
+                                ${r.service_type !== '1' ? `<span class="district-pill">${t('specialTrip')}</span>` : ''}
                             </div>
                             <div class="route-dest">
                                 <span>${t('from')}</span> ${getRouteOrig(r)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(r)}</strong>
                             </div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
                             <button class="bm-btn ${bmActive ? 'bookmarked' : ''}"
                                     onclick="toggleRouteBookmark(event, 'KMB', '${r.route}', '${r.dirParam}', '${r.service_type}', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}', '${r.orig_en.replace(/'/g, "\\'")}', '${r.dest_en.replace(/'/g, "\\'")}')">
                                 ${bmActive ? t('watchActive') : t('watchAdd')}
                             </button>
-                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.85rem; cursor:pointer;">${t('stopsBtn')}</span>
+                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.84rem; cursor:pointer;">${t('stopsBtn')}</span>
                         </div>
                     </div>
                     <div class="rl-stops-drawer" id="${drawerId}">
@@ -2551,7 +2551,7 @@
                 <div class="rl-stop-chips">
                     ${stopsList.map(s => {
                         const isTarget = highlightDistrict !== 'ALL' && s.district === highlightDistrict;
-                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchKmbSingleRouteEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${serviceType}', '${(s.name_en || '').replace(/'/g, "\\'")}')">${s.seq}. ${getStopDisplayName(s)}</span>`;
+                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchKmbSingleRouteEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${serviceType}', '${(s.name_en || '').replace(/'/g, "\\'")}')"><span>${s.seq}. ${getStopDisplayName(s)}</span></span>`;
                     }).join('')}
                 </div>
             `;
@@ -2669,8 +2669,8 @@
 
         const limit = 60;
         titleEl.textContent = isEn
-            ? `🔵 CTB Routes (${filtered.length} directions${filtered.length > limit ? `, showing first ${limit}` : ''})`
-            : `🔵 城巴路線 (${filtered.length} 個方向${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
+            ? `🔵 CTB Routes (${filtered.length}${filtered.length > limit ? `, top ${limit}` : ''})`
+            : `🔵 城巴路線 (${filtered.length}${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
 
         if (filtered.length === 0) {
             resultsEl.innerHTML = `<div class="status-msg">${isEn ? 'No matching CTB routes found.' : '找不到符合條件的城巴路線。'}</div>`;
@@ -2684,22 +2684,22 @@
             return `
                 <div class="route-list-card ctb-border ${r.isNight ? 'night-border' : ''}">
                     <div class="rl-header" onclick="toggleAndLoadCtbStops('${cacheKey}', '${r.route}', '${r.dirParam}', 'ctb-drawer-${idx}')">
-                        <div style="flex:1; cursor:pointer;">
-                            <div style="display:flex; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
+                        <div style="flex:1; min-width:0; cursor:pointer;">
+                            <div style="display:flex; align-items:center; margin-bottom:3px; gap:5px; flex-wrap:wrap;">
                                 <span class="rl-route-badge">${r.route}</span>
                                 <span class="badge-ctb">${t('ctbBadge')}</span>
-                                ${r.isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : `<span class="badge-day">${t('dayBadge')}</span>`}
+                                ${r.isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : ''}
                             </div>
                             <div class="route-dest">
                                 <span>${t('from')}</span> ${getRouteOrig(r)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(r)}</strong>
                             </div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
                             <button class="bm-btn ${bmActive ? 'bookmarked' : ''}"
                                     onclick="toggleRouteBookmark(event, 'CTB', '${r.route}', '${r.dirParam}', '1', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}', '${r.orig_en.replace(/'/g, "\\'")}', '${r.dest_en.replace(/'/g, "\\'")}')">
                                 ${bmActive ? t('watchActive') : t('watchAdd')}
                             </button>
-                            <span style="color:var(--ctb-blue); font-weight:bold; font-size:0.85rem; cursor:pointer;">${t('stopsBtn')}</span>
+                            <span style="color:var(--ctb-blue); font-weight:bold; font-size:0.84rem; cursor:pointer;">${t('stopsBtn')}</span>
                         </div>
                     </div>
                     <div class="rl-stops-drawer" id="ctb-drawer-${idx}">
@@ -2750,7 +2750,7 @@
                 <div class="rl-stop-chips">
                     ${stopsList.map(s => {
                         const isTarget = highlightDistrict !== 'ALL' && s.district === highlightDistrict;
-                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchCtbEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${(s.name_en || '').replace(/'/g, "\\'")}')">${s.seq}. ${getStopDisplayName(s)}</span>`;
+                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchCtbEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${(s.name_en || '').replace(/'/g, "\\'")}')"><span>${s.seq}. ${getStopDisplayName(s)}</span></span>`;
                     }).join('')}
                 </div>
             `;
@@ -2877,7 +2877,7 @@
             summaryBar.innerHTML = isEn
                 ? '⏳ Loading LandsD map & estimating live bus positions...'
                 : '⏳ 正在載入地政總署地圖並計算沿途站點 ETA 差值...';
-            mapPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            scrollToTopDisplay();
         }
 
         if (!leafletMap) {
@@ -2937,7 +2937,6 @@
             const lineColor = operator === 'KMB' ? '#e30613' : '#0284c7';
             let routeLayer = null;
 
-            // 嘗試載入官方道路 GeoJSON 軌跡，若無則退回站點連線
             try {
                 const shapeRes = await fetch(`${LOCAL_SERVER}/api/route-shape?operator=${operator}&route=${route}&dirParam=${dirParam}`);
                 if (shapeRes.ok) {
@@ -2977,7 +2976,7 @@
                     estimatedBuses.push({
                         lat: validStops[0].lat, lng: validStops[0].long,
                         desc: isEn
-                            ? `Near terminus "${s0}" (departing in ~${mVal} min)`
+                            ? `Near terminus "${s0}" (~${mVal} min)`
                             : `正位於起點站「${s0}」附近（約 ${mVal} 分鐘後開出）`
                     });
                 }
@@ -2995,7 +2994,7 @@
                         lat: validStops[i - 1].lat + (validStops[i].lat - validStops[i - 1].lat) * progress,
                         lng: validStops[i - 1].long + (validStops[i].long - validStops[i - 1].long) * progress,
                         desc: isEn
-                            ? `Between "${sPrev}" and "${sCurr}" (~${Math.round(minsToCurr)} min to Stop #${validStops[i].seq})`
+                            ? `Between "${sPrev}" and "${sCurr}" (~${Math.round(minsToCurr)} min to #${validStops[i].seq})`
                             : `介乎「${sPrev}」與「${sCurr}」之間（約 ${Math.round(minsToCurr)} 分鐘後抵達第 ${validStops[i].seq} 站）`
                     });
                 }
@@ -3004,7 +3003,7 @@
             const busIcon = L.divIcon({
                 className: '',
                 html: `<div class="bus-marker-icon ${operator === 'CTB' ? 'ctb' : ''}">🚌</div>`,
-                iconSize: [32, 32], iconAnchor: [16, 16]
+                iconSize: [30, 30], iconAnchor: [15, 15]
             });
 
             estimatedBuses.forEach((bus, bIdx) => {
@@ -3013,18 +3012,18 @@
             });
 
             if (lastFittedRouteKey !== routeKey && routeLayer.getBounds().isValid()) {
-                leafletMap.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
+                leafletMap.fitBounds(routeLayer.getBounds(), { padding: [25, 25] });
                 lastFittedRouteKey = routeKey;
             }
 
             const timeNowStr = new Date().toLocaleTimeString('en-GB', { hour12: false });
             summaryBar.innerHTML = estimatedBuses.length > 0
                 ? (isEn
-                    ? `✅ <b>[Updated ${timeNowStr}]</b> Estimated <b>${estimatedBuses.length}</b> active bus(es) en route:<br>${estimatedBuses.map((b, i) => `• <b>Bus ${i + 1}</b>: ${b.desc}`).join('<br>')}`
-                    : `✅ <b>[${timeNowStr} 更新]</b> 推算目前共有 <b>${estimatedBuses.length} 輛</b>巴士在線行駛：<br>${estimatedBuses.map((b, i) => `• <b>班次 ${i + 1}</b>：${b.desc}`).join('<br>')}`)
+                    ? `✅ <b>[${timeNowStr}]</b> Estimated <b>${estimatedBuses.length}</b> active bus(es):<br>${estimatedBuses.map((b, i) => `• <b>Bus ${i + 1}</b>: ${b.desc}`).join('<br>')}`
+                    : `✅ <b>[${timeNowStr} 更新]</b> 推算共有 <b>${estimatedBuses.length} 輛</b>巴士在線：<br>${estimatedBuses.map((b, i) => `• <b>班次 ${i + 1}</b>：${b.desc}`).join('<br>')}`)
                 : (isEn
-                    ? `ℹ️ <b>[Updated ${timeNowStr}]</b> No buses currently between intermediate stops (likely awaiting scheduled departure at terminus).`
-                    : `ℹ️ <b>[${timeNowStr} 更新]</b> 尚未有巴士進入兩站中途區間（可能正於總站準備按表列時間開出）。`);
+                    ? `ℹ️ <b>[${timeNowStr}]</b> No buses currently between stops (likely at terminus).`
+                    : `ℹ️ <b>[${timeNowStr} 更新]</b> 尚未有巴士進入中途區間（可能正於總站準備開出）。`);
 
             startMapAutoRefreshTimer();
         } catch (err) {
@@ -3115,8 +3114,8 @@
         });
 
         titleEl.textContent = isEn
-            ? `🌙 ${getDistrictName(selectedDistrict)} Overnight Buses (${filtered.length} routes)`
-            : `🌙 ${getDistrictName(selectedDistrict)}通宵巴士 (${filtered.length} 條路線/方向)`;
+            ? `🌙 ${getDistrictName(selectedDistrict)} Overnight (${filtered.length})`
+            : `🌙 ${getDistrictName(selectedDistrict)}通宵巴士 (${filtered.length})`;
 
         if (filtered.length === 0) {
             resultsEl.innerHTML = `<div class="status-msg">${isEn ? 'No matching overnight bus routes.' : '找不到符合條件的通宵巴士路線。'}</div>`;
@@ -3136,20 +3135,20 @@
             return `
                 <div class="route-list-card night-border">
                     <div class="rl-header" onclick="${clickHandler}">
-                        <div style="flex:1; cursor:pointer;">
-                            <div style="display:flex; align-items:center; margin-bottom:4px; gap:6px;">
+                        <div style="flex:1; min-width:0; cursor:pointer;">
+                            <div style="display:flex; align-items:center; margin-bottom:3px; gap:5px;">
                                 <span class="rl-route-badge">${r.route}</span>
                                 <span class="operator-tag ${isCtb ? 'op-ctb' : 'op-kmb'}">${isCtb ? t('ctbShort') : t('kmbShort')}</span>
                                 <span class="badge-night">${isEn ? 'Night' : '通宵'}</span>
                             </div>
                             <div class="route-dest"><span>${t('from')}</span> ${getRouteOrig(r)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(r)}</strong></div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
                             <button class="bm-btn ${bmActive ? 'bookmarked' : ''}"
                                     onclick="toggleRouteBookmark(event, '${r.operator}', '${r.route}', '${r.dirParam}', '${r.service_type}', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}', '${r.orig_en.replace(/'/g, "\\'")}', '${r.dest_en.replace(/'/g, "\\'")}')">
                                 ${bmActive ? t('watchActive') : t('watchAdd')}
                             </button>
-                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.85rem; cursor:pointer;">${t('stopsBtn')}</span>
+                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.84rem; cursor:pointer;">${t('stopsBtn')}</span>
                         </div>
                     </div>
                     <div class="rl-stops-drawer" id="${drawerId}">
@@ -3206,12 +3205,12 @@
             <div class="stop-list-header">${isEn ? `Found ${matches.length} KMB stops` : `找到 ${matches.length} 個九巴站點`}</div>
             ${matches.slice(0, limit).map(stop => `
                 <div class="stop-item" onclick="selectKmbStop('${stop.stop}', '${stop.name_tc.replace(/'/g, "\\'")}', '${stop.name_en.replace(/'/g, "\\'")}')">
-                    <div>
+                    <div style="min-width:0;">
                         <strong>${isEn ? stop.name_en : stop.name_tc}</strong>
                         <span class="district-pill">${getDistrictName(stop.district)}</span><br>
-                        <small style="color:#666">${isEn ? stop.name_tc : stop.name_en}</small>
+                        <small style="color:#64748b">${isEn ? stop.name_tc : stop.name_en}</small>
                     </div>
-                    <span class="stop-id-badge">${stop.stop}</span>
+                    <span class="stop-id-badge" style="flex-shrink:0;">›</span>
                 </div>
             `).join('')}
         `;
@@ -3309,8 +3308,8 @@
 
         etaResults.innerHTML = displayList.map(group => {
             const extraBtnsHtml = `
-                <button class="timetable-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="openRouteTimetable('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}')">${t('timetableShort')}</button>
-                <button class="map-locate-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="openBusPositionMap('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}', true)">${t('mapShort')}</button>
+                <button class="timetable-btn" style="padding:3px 7px; font-size:0.74rem;" onclick="openRouteTimetable('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}')">${t('timetableShort')}</button>
+                <button class="map-locate-btn" style="padding:3px 7px; font-size:0.74rem;" onclick="openBusPositionMap('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}', true)">${t('mapShort')}</button>
             `;
             const destDisplay = currentLang === 'en' ? group.dest_en : group.dest_tc;
             return renderEtaCardHtml('KMB', group.route, destDisplay, group.etas, extraBtnsHtml);
