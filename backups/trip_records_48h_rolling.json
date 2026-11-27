@@ -1994,9 +1994,9 @@
         "stopName": "屯門公路轉車站",
         "stopNameEn": "TUEN MUN ROAD BBI",
         "scheduledEtaTs": 1795797593000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797550379,
+        "cumulativeMins": 39,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -2501,9 +2501,9 @@
         "stopName": "裕東苑",
         "stopNameEn": "YU TUNG COURT",
         "scheduledEtaTs": 1795797567000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797593585,
+        "cumulativeMins": 20,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
@@ -2716,7 +2716,7 @@
         "seq": 34,
         "stopName": "元朗站",
         "stopNameEn": "YUEN LONG STATION",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795801167000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -2795,9 +2795,9 @@
         "stopName": "鳴琴站",
         "stopNameEn": "MING KUM STATION",
         "scheduledEtaTs": 1795797450000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797593585,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
@@ -3125,18 +3125,18 @@
         "stopName": "葵涌耀榮里",
         "stopNameEn": "YIU WING LANE KWAI CHUNG",
         "scheduledEtaTs": 1795797590000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797637077,
+        "cumulativeMins": 9,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "葵涌健全街",
         "stopNameEn": "KIN CHUEN STREET KWAI CHUNG",
         "scheduledEtaTs": 1795797624000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795797675083,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
@@ -3697,7 +3697,7 @@
         "seq": 30,
         "stopName": "富泰邨總站",
         "stopNameEn": "FU TAI ESTATE BUS TERMINUS",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795801201000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
