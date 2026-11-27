@@ -26954,18 +26954,18 @@
         "stopName": "石排站",
         "stopNameEn": "SHEK PAI STATION",
         "scheduledEtaTs": 1795820326000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795820604181,
+        "cumulativeMins": 61,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
         "stopName": "鳴琴站",
         "stopNameEn": "MING KUM STATION",
         "scheduledEtaTs": 1795820434000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795820657391,
+        "cumulativeMins": 61,
+        "status": "已到站"
       },
       "30": {
         "seq": 30,
