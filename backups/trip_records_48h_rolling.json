@@ -1727,18 +1727,18 @@
         "stopName": "軍器廠街, 軒尼詩道",
         "stopNameEn": "Arsenal Street, Hennessy Road",
         "scheduledEtaTs": 1795798316000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798519276,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
         "stopName": "菲林明道, 軒尼詩道",
         "stopNameEn": "Fleming Road, Hennessy Road",
         "scheduledEtaTs": 1795798396000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798588989,
+        "cumulativeMins": 56,
+        "status": "已到站"
       },
       "33": {
         "seq": 33,
@@ -2039,18 +2039,18 @@
         "stopName": "大窩口轉車站 -大窩口站",
         "stopNameEn": "TAI WO HAU BBI -TAI WO HAU STATION",
         "scheduledEtaTs": 1795798608000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798562778,
+        "cumulativeMins": 56,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
         "stopName": "昌榮路迴旋處",
         "stopNameEn": "CHEUNG WING ROAD GYRATORY",
         "scheduledEtaTs": 1795798727000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798665678,
+        "cumulativeMins": 58,
+        "status": "已到站"
       },
       "30": {
         "seq": 30,
@@ -2234,9 +2234,9 @@
         "stopName": "屯門公園",
         "stopNameEn": "TUEN MUN PARK",
         "scheduledEtaTs": 1795798342000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798519276,
+        "cumulativeMins": 38,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
@@ -2519,18 +2519,18 @@
         "stopName": "豐景園",
         "stopNameEn": "GOODVIEW GARDEN",
         "scheduledEtaTs": 1795798574000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798665678,
+        "cumulativeMins": 38,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
         "stopName": "翠寧花園",
         "stopNameEn": "TSUI NING GARDEN",
         "scheduledEtaTs": 1795798613000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798665678,
+        "cumulativeMins": 38,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
@@ -2876,18 +2876,18 @@
         "stopName": "虎地",
         "stopNameEn": "FU TEI",
         "scheduledEtaTs": 1795798382000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798562778,
+        "cumulativeMins": 24,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
         "stopName": "紅橋",
         "stopNameEn": "HUNG KIU",
         "scheduledEtaTs": 1795798461000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798614989,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
@@ -3473,9 +3473,9 @@
         "stopName": "蝴蝶灣",
         "stopNameEn": "BUTTERFLY BEACH",
         "scheduledEtaTs": 1795798572000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798638688,
+        "cumulativeMins": 24,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -3794,18 +3794,18 @@
         "stopName": "屯門中央廣場, 海榮路",
         "stopNameEn": "Tuen Mun Central Square, Hoi Wing Road",
         "scheduledEtaTs": 1795798466000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798588989,
+        "cumulativeMins": 11,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "老鼠洲兒童遊樂場, 海榮路",
         "stopNameEn": "Mouse Island Children's Playground, Hoi Wing Road",
         "scheduledEtaTs": 1795798545000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798638688,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
@@ -4115,18 +4115,18 @@
         "stopName": "金鐘 - 太古廣場, 金鐘道",
         "stopNameEn": "Admiralty - Pacific Place, Queensway",
         "scheduledEtaTs": 1795798531000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798519276,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
         "stopName": "滙豐總行大廈, 皇后大道中",
         "stopNameEn": "HSBC Main Building, Queen's Road Central",
         "scheduledEtaTs": 1795798642000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798638688,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
@@ -4409,9 +4409,9 @@
         "stopName": "港珠澳大橋香港口岸",
         "stopNameEn": "HZMB Hong Kong Port",
         "scheduledEtaTs": 1795798568000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798665678,
+        "cumulativeMins": 11,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
@@ -4972,7 +4972,7 @@
         "seq": 30,
         "stopName": "富泰邨總站",
         "stopNameEn": "FU TAI ESTATE BUS TERMINUS",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795802087000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -5015,18 +5015,18 @@
         "stopName": "堅拿道東, 軒尼詩道",
         "stopNameEn": "Canal Road East, Hennessy Road",
         "scheduledEtaTs": 1795798445000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798519276,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "廣生行大廈, 軒尼詩道",
         "stopNameEn": "Kwong Sang Hong Building, Hennessy Road",
         "scheduledEtaTs": 1795798582000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795798642000,
+        "cumulativeMins": 7,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
@@ -5392,7 +5392,7 @@
         "seq": 45,
         "stopName": "屯門兆麟政府綜合大樓, 青山公路",
         "stopNameEn": "Tuen Mun Siu Lun Government Complex, Castle Peak Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795802139000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -5410,7 +5410,7 @@
         "seq": 47,
         "stopName": "置樂花園, 青山公路",
         "stopNameEn": "Chi Lok Fa Yuen, Castle Peak Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795802181000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
