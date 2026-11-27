@@ -26072,9 +26072,9 @@
         "stopName": "新屯門中心, 龍門路",
         "stopNameEn": "Sun Tuen Mun Centre, Lung Mun Road",
         "scheduledEtaTs": 1795819787000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795820185578,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -26918,9 +26918,9 @@
         "stopName": "寶怡花園",
         "stopNameEn": "BLOSSOM GARDEN",
         "scheduledEtaTs": 1795819887000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795820276080,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
