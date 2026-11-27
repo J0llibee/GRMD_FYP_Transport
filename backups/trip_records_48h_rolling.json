@@ -2369,9 +2369,9 @@
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
         "scheduledEtaTs": 1795799995000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800268982,
+        "cumulativeMins": 67,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
@@ -2636,9 +2636,9 @@
         "stopName": "天逸邨逸洋樓",
         "stopNameEn": "YAT YEUNG HOUSE TIN YAT ESTATE",
         "scheduledEtaTs": 1795800112000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800222687,
+        "cumulativeMins": 64,
+        "status": "已到站"
       },
       "26": {
         "seq": 26,
@@ -2948,18 +2948,18 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795800021000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800268982,
+        "cumulativeMins": 53,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
         "stopName": "愉景新城",
         "stopNameEn": "DISCOVERY PARK",
         "scheduledEtaTs": 1795800126000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800315179,
+        "cumulativeMins": 54,
+        "status": "已到站"
       },
       "26": {
         "seq": 26,
@@ -3305,18 +3305,18 @@
         "stopName": "田景邨田樂樓",
         "stopNameEn": "TIN LOK HOUSE TIN KING ESTATE",
         "scheduledEtaTs": 1795800111000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800268982,
+        "cumulativeMins": 53,
+        "status": "已到站"
       },
       "27": {
         "seq": 27,
         "stopName": "田景邨田裕樓",
         "stopNameEn": "TIN YUE HOUSE TIN KING ESTATE",
         "scheduledEtaTs": 1795800183000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800315179,
+        "cumulativeMins": 54,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
@@ -3599,18 +3599,18 @@
         "stopName": "建生邨樂生樓",
         "stopNameEn": "LOK SANG HOUSE, KIN SANG ESTATE",
         "scheduledEtaTs": 1795800126000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800222687,
+        "cumulativeMins": 50,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
         "scheduledEtaTs": 1795800206000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800315179,
+        "cumulativeMins": 52,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
@@ -4820,9 +4820,9 @@
         "stopName": "屯門站總站",
         "stopNameEn": "TUEN MUN STATION BUS TERMINUS",
         "scheduledEtaTs": 1795800337000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800268982,
+        "cumulativeMins": 37,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
@@ -5543,18 +5543,18 @@
         "stopName": "麒麟圍",
         "stopNameEn": "KEI LUN WAI",
         "scheduledEtaTs": 1795799996000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800268982,
+        "cumulativeMins": 24,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
         "stopName": "欣田邨",
         "stopNameEn": "YAN TIN ESTATE",
         "scheduledEtaTs": 1795800085000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800315179,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
@@ -6239,18 +6239,18 @@
         "stopName": "麗城花園第三期",
         "stopNameEn": "BELVEDERE GARDEN PHASE 3",
         "scheduledEtaTs": 1795800284000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800361180,
+        "cumulativeMins": 21,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
         "stopName": "灣景花園",
         "stopNameEn": "BAYVIEW GARDEN",
         "scheduledEtaTs": 1795800348000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800361180,
+        "cumulativeMins": 21,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
@@ -6686,9 +6686,9 @@
         "stopName": "港珠澳大橋香港口岸",
         "stopNameEn": "HZMB HONG KONG PORT",
         "scheduledEtaTs": 1795799971000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800222687,
+        "cumulativeMins": 17,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
@@ -6901,7 +6901,7 @@
         "seq": 27,
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803096000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -7025,27 +7025,27 @@
         "stopName": "砵典乍街, 干諾道中",
         "stopNameEn": "Pottinger Street, Connaught Road Central",
         "scheduledEtaTs": 1795800231000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800243884,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "租庇利街, 干諾道中",
         "stopNameEn": "Jubilee Street, Connaught Road Central",
         "scheduledEtaTs": 1795800276000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800289885,
+        "cumulativeMins": 15,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "永安中心, 干諾道中",
         "stopNameEn": "Wing On Centre, Connaught Road Central",
         "scheduledEtaTs": 1795800321000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800337179,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -7427,9 +7427,9 @@
         "stopName": "機場空運中心",
         "stopNameEn": "AIRPORT FREIGHT FORWARDING CTR.",
         "scheduledEtaTs": 1795800127000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800268982,
+        "cumulativeMins": 13,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -7633,7 +7633,7 @@
         "seq": 28,
         "stopName": "天慈邨",
         "stopNameEn": "TIN TSZ ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803896000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -7748,18 +7748,18 @@
         "stopName": "菲林明道, 軒尼詩道",
         "stopNameEn": "Fleming Road, Hennessy Road",
         "scheduledEtaTs": 1795800154000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800289885,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
         "stopName": "盧押道, 軒尼詩道",
         "stopNameEn": "Luard Road, Hennessy Road",
         "scheduledEtaTs": 1795800214000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800384078,
+        "cumulativeMins": 11,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
@@ -8105,18 +8105,18 @@
         "stopName": "栢麗購物大道, 彌敦道",
         "stopNameEn": "Park Lane Shopper's Boulevard, Nathan Road",
         "scheduledEtaTs": 1795800221000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800222687,
+        "cumulativeMins": 9,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
         "stopName": "柯士甸道, 彌敦道",
         "stopNameEn": "Austin Road, Nathan Road",
         "scheduledEtaTs": 1795800279000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800268982,
+        "cumulativeMins": 9,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
