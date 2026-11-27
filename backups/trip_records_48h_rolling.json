@@ -24617,18 +24617,18 @@
         "stopName": "軍器廠街, 軒尼詩道",
         "stopNameEn": "Arsenal Street, Hennessy Road",
         "scheduledEtaTs": 1795818009000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818782178,
+        "cumulativeMins": 68,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
         "stopName": "菲林明道, 軒尼詩道",
         "stopNameEn": "Fleming Road, Hennessy Road",
         "scheduledEtaTs": 1795818081000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818837983,
+        "cumulativeMins": 69,
+        "status": "已到站"
       },
       "33": {
         "seq": 33,
@@ -24929,18 +24929,18 @@
         "stopName": "大窩口轉車站 -大窩口站",
         "stopNameEn": "TAI WO HAU BBI -TAI WO HAU STATION",
         "scheduledEtaTs": 1795818458000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818782178,
+        "cumulativeMins": 60,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
         "stopName": "昌榮路迴旋處",
         "stopNameEn": "CHEUNG WING ROAD GYRATORY",
         "scheduledEtaTs": 1795818565000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818873580,
+        "cumulativeMins": 61,
+        "status": "已到站"
       },
       "30": {
         "seq": 30,
@@ -25250,18 +25250,18 @@
         "stopName": "田景邨田樂樓",
         "stopNameEn": "TIN LOK HOUSE TIN KING ESTATE",
         "scheduledEtaTs": 1795818218000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818782178,
+        "cumulativeMins": 60,
+        "status": "已到站"
       },
       "27": {
         "seq": 27,
         "stopName": "田景邨田裕樓",
         "stopNameEn": "TIN YUE HOUSE TIN KING ESTATE",
         "scheduledEtaTs": 1795818298000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818873580,
+        "cumulativeMins": 61,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
@@ -25670,18 +25670,18 @@
         "stopName": "海港政府大樓, 統一碼頭道",
         "stopNameEn": "Harbour Building, Pier Road",
         "scheduledEtaTs": 1795818611000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818808584,
+        "cumulativeMins": 53,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
         "stopName": "怡和大廈, 干諾道中",
         "stopNameEn": "Jardine House, Connaught Road Central",
         "scheduledEtaTs": 1795818707000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818873580,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -25937,27 +25937,27 @@
         "stopName": "小欖新村, 青山公路",
         "stopNameEn": "Siu Lam San Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795818663000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818782178,
+        "cumulativeMins": 48,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "愛琴灣, 青山公路",
         "stopNameEn": "The Aegean, Castle Peak Road",
         "scheduledEtaTs": 1795818694000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818837983,
+        "cumulativeMins": 49,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "小秀村, 青山公路",
         "stopNameEn": "Siu Sau Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795818737000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818902682,
+        "cumulativeMins": 50,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
