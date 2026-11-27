@@ -89,9 +89,9 @@
         "stopName": "賈炳達道",
         "stopNameEn": "CARPENTER ROAD",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769990253,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -472,10 +472,10 @@
         "seq": 25,
         "stopName": "尖沙咀碼頭,海港城",
         "stopNameEn": "STAR FERRY, HARBOUR CITY",
-        "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "scheduledEtaTs": 1795770070000,
+        "actualArrivalTs": 1795769948352,
+        "cumulativeMins": 33,
+        "status": "已到站"
       }
     }
   },
@@ -694,19 +694,19 @@
         "seq": 23,
         "stopName": "尖沙咀轉車站 - 中間道",
         "stopNameEn": "TSIM SHA TSUI BBI - MIDDLE ROAD",
-        "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "scheduledEtaTs": 1795769858000,
+        "actualArrivalTs": 1795769829753,
+        "cumulativeMins": 40,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
         "stopName": "香港文化中心",
         "stopNameEn": "HONG KONG CULTURAL CENTRE",
-        "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "scheduledEtaTs": 1795770031000,
+        "actualArrivalTs": 1795769948352,
+        "cumulativeMins": 42,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
@@ -863,27 +863,27 @@
         "stopName": "協和小學, MOKO",
         "stopNameEn": "HEEP WOH PRIMARY SCHOOL, MOKO",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769871960,
+        "cumulativeMins": 26,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
         "stopName": "太子站, 旺角花墟",
         "stopNameEn": "PRINCE EDWARD STATION, FLOWER MARKET",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769990253,
+        "cumulativeMins": 28,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
         "stopName": "旺角奶路臣街",
         "stopNameEn": "NELSON STREET MONG KOK",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795769990253,
+        "cumulativeMins": 28,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
@@ -995,27 +995,27 @@
         "stopName": "馬仔坑遊樂場",
         "stopNameEn": "MA CHAI HANG RECREATION GROUND",
         "scheduledEtaTs": 1795770484000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795769829753,
+        "cumulativeMins": 3,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "摩士公園",
         "stopNameEn": "MORSE PARK",
         "scheduledEtaTs": 1795770643000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795769914857,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
         "stopName": "摩士公園體育館",
         "stopNameEn": "MORSE PARK SPORTS CENTRE",
         "scheduledEtaTs": 1795770687000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795769990253,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -1174,7 +1174,7 @@
         "seq": 23,
         "stopName": "尖沙咀轉車站 - 中間道",
         "stopNameEn": "TSIM SHA TSUI BBI - MIDDLE ROAD",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795771899000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -1183,7 +1183,7 @@
         "seq": 24,
         "stopName": "香港文化中心",
         "stopNameEn": "HONG KONG CULTURAL CENTRE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795772079000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -1192,7 +1192,7 @@
         "seq": 25,
         "stopName": "尖沙咀碼頭,海港城",
         "stopNameEn": "STAR FERRY, HARBOUR CITY",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795772121000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
