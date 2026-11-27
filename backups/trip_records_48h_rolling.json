@@ -27035,9 +27035,9 @@
         "stopName": "屯門碼頭(兆禧苑)",
         "stopNameEn": "TUEN MUN PIER HEAD(SIU HEI COURT)",
         "scheduledEtaTs": 1795821010000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795821310990,
+        "cumulativeMins": 72,
+        "status": "已到站"
       },
       "38": {
         "seq": 38,
