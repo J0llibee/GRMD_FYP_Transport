@@ -21959,9 +21959,9 @@
         "stopName": "龍門居",
         "stopNameEn": "Lung Mun Oasis",
         "scheduledEtaTs": 1795816299000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816803684,
+        "cumulativeMins": 75,
+        "status": "已到站"
       }
     }
   },
@@ -22547,27 +22547,27 @@
         "stopName": "金鐘 - 統一中心, 金鐘道",
         "stopNameEn": "Admiralty - United Centre, Queensway",
         "scheduledEtaTs": 1795816523000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816803684,
+        "cumulativeMins": 60,
+        "status": "已到站"
       },
       "31": {
         "seq": 31,
         "stopName": "軍器廠街, 軒尼詩道",
         "stopNameEn": "Arsenal Street, Hennessy Road",
         "scheduledEtaTs": 1795816566000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816859677,
+        "cumulativeMins": 61,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
         "stopName": "菲林明道, 軒尼詩道",
         "stopNameEn": "Fleming Road, Hennessy Road",
         "scheduledEtaTs": 1795816648000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816912782,
+        "cumulativeMins": 62,
+        "status": "已到站"
       },
       "33": {
         "seq": 33,
@@ -23555,18 +23555,18 @@
         "stopName": "金巴利道, 彌敦道",
         "stopNameEn": "Kimberley Road, Nathan Road",
         "scheduledEtaTs": 1795816686000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816775482,
+        "cumulativeMins": 57,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
         "stopName": "中間道, 彌敦道",
         "stopNameEn": "Middle Road, Nathan Road",
         "scheduledEtaTs": 1795816800000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816940586,
+        "cumulativeMins": 59,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
@@ -23948,18 +23948,18 @@
         "stopName": "軍器廠街, 軒尼詩道",
         "stopNameEn": "Arsenal Street, Hennessy Road",
         "scheduledEtaTs": 1795817097000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816775482,
+        "cumulativeMins": 50,
+        "status": "已到站"
       },
       "38": {
         "seq": 38,
         "stopName": "菲林明道, 軒尼詩道",
         "stopNameEn": "Fleming Road, Hennessy Road",
         "scheduledEtaTs": 1795817182000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816884880,
+        "cumulativeMins": 51,
+        "status": "已到站"
       },
       "39": {
         "seq": 39,
@@ -24179,36 +24179,36 @@
         "stopName": "小欖新村, 青山公路",
         "stopNameEn": "Siu Lam San Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795816817000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816803684,
+        "cumulativeMins": 45,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "愛琴灣, 青山公路",
         "stopNameEn": "The Aegean, Castle Peak Road",
         "scheduledEtaTs": 1795816849000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816859677,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "小秀村, 青山公路",
         "stopNameEn": "Siu Sau Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795816900000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816859677,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
         "stopName": "龍珠島, 青山公路",
         "stopNameEn": "Pearl Island, Castle Peak Road",
         "scheduledEtaTs": 1795816944000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816912782,
+        "cumulativeMins": 47,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
@@ -24848,9 +24848,9 @@
         "stopName": "屯門市中心總站",
         "stopNameEn": "TUEN MUN CENTRAL BUS TERMINUS",
         "scheduledEtaTs": 1795816649000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816803684,
+        "cumulativeMins": 27,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
@@ -25562,27 +25562,27 @@
         "stopName": "大欖涌, 青山公路",
         "stopNameEn": "Tai Lam Chung, Castle Peak Road",
         "scheduledEtaTs": 1795816702000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816775482,
+        "cumulativeMins": 20,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
         "stopName": "嘉龍村, 青山公路",
         "stopNameEn": "Ka Loon Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795816820000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816884880,
+        "cumulativeMins": 21,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
         "stopName": "御海峰, 青山公路",
         "stopNameEn": "Vista Cove, Castle Peak Road",
         "scheduledEtaTs": 1795816849000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816940586,
+        "cumulativeMins": 22,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -25865,18 +25865,18 @@
         "stopName": "永安中心, 干諾道中",
         "stopNameEn": "Wing On Centre, Connaught Road Central",
         "scheduledEtaTs": 1795816796000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816859677,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "皇后街, 干諾道西",
         "stopNameEn": "Queen Street, Connaught Road West",
         "scheduledEtaTs": 1795816911000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816912782,
+        "cumulativeMins": 17,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
