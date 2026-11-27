@@ -168,6 +168,7 @@ let isPolling = false;
 let drainMode = false;
 let lastPollTimeStr = '尚未執行';
 let lastGithubBackupTs = 0;
+let lastGithubBackupError = '';
 let isBackingUpGithub = false;
 
 function saveBookmarks() {
@@ -188,17 +189,30 @@ async function fetchFileFromGithub(repoFilePath) {
                 'User-Agent': 'bus-monitor-app'
             }
         });
-        if (!res.ok) return null;
+        if (!res.ok) {
+            const errText = await res.text();
+            console.warn(`⚠️ GitHub 讀取 [${repoFilePath}] HTTP ${res.status}: ${errText}`);
+            return null;
+        }
         const data = await res.json();
         if (!data.content) return null;
         return Buffer.from(data.content, 'base64').toString('utf8');
     } catch (err) {
+        console.warn(`⚠️ GitHub 讀取連線異常 [${repoFilePath}]:`, err.message);
         return null;
     }
 }
 
 async function uploadFileToGithub(localFilePath, repoFilePath) {
-    if (!GITHUB_TOKEN || !GITHUB_REPO || !fs.existsSync(localFilePath)) return false;
+    if (!GITHUB_TOKEN || !GITHUB_REPO) {
+        lastGithubBackupError = '未設定 GITHUB_TOKEN 或 GITHUB_REPO';
+        return false;
+    }
+    if (!fs.existsSync(localFilePath)) {
+        lastGithubBackupError = `找不到本地檔案：${localFilePath}`;
+        console.warn(`⚠️ ${lastGithubBackupError}`);
+        return false;
+    }
 
     const contentBase64 = fs.readFileSync(localFilePath).toString('base64');
     const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoFilePath}`;
@@ -227,14 +241,26 @@ async function uploadFileToGithub(localFilePath, repoFilePath) {
                 ...(sha ? { sha } : {})
             })
         });
-        return putRes.ok;
+
+        if (!putRes.ok) {
+            const errText = await putRes.text();
+            lastGithubBackupError = `HTTP ${putRes.status} (${repoFilePath}): ${errText}`;
+            console.error(`❌ GitHub 備份失敗 [${repoFilePath}] HTTP ${putRes.status}: ${errText}`);
+            return false;
+        }
+
+        lastGithubBackupError = '';
+        return true;
     } catch (err) {
+        lastGithubBackupError = `連線異常 (${repoFilePath}): ${err.message}`;
+        console.error(`❌ GitHub 備份連線異常 [${repoFilePath}]:`, err.message);
         return false;
     }
 }
 
 async function restoreFromGithub() {
     if (!GITHUB_TOKEN || !GITHUB_REPO) return;
+    console.log(`☁️ 正在嘗試從 GitHub (${GITHUB_REPO} @ ${GITHUB_BRANCH}) 還原歷史備份...`);
     const bmRaw = await fetchFileFromGithub('backups/bookmarks.json');
     if (bmRaw) {
         try {
@@ -242,6 +268,7 @@ async function restoreFromGithub() {
             if (Array.isArray(parsedBm) && parsedBm.length > 0) {
                 bookmarks = parsedBm;
                 saveBookmarks();
+                console.log(`✅ 已從 GitHub 還原 ${bookmarks.length} 條監察路線`);
             }
         } catch (e) { /* ignore */ }
     }
@@ -253,6 +280,7 @@ async function restoreFromGithub() {
             if (parsedTrips && typeof parsedTrips === 'object') {
                 trips = { ...parsedTrips, ...trips };
                 pruneOldTrips(Date.now());
+                console.log(`✅ 已從 GitHub 還原 ${Object.keys(trips).length} 筆 48 小時內班次記錄`);
             }
         } catch (e) { /* ignore */ }
     }
@@ -268,9 +296,9 @@ async function triggerGithubBackup(force = false) {
         const ok1 = await uploadFileToGithub(BOOKMARKS_FILE, 'backups/bookmarks.json');
         const ok2 = await uploadFileToGithub(ROLLING_48H_TRIPS_FILE, 'backups/trip_records_48h_rolling.json');
         const ok3 = await uploadFileToGithub(ROLLING_48H_EXCEL_FILE, `backups/${ROLLING_48H_EXCEL_FILENAME}`);
-        if (ok1 || ok2 || ok3) {
+        if (ok1 && ok2 && ok3) {
             lastGithubBackupTs = now;
-            console.log(`☁️ [${formatTime(now)}] 已自動備份記錄至 GitHub (${GITHUB_REPO})`);
+            console.log(`☁️ [${formatTime(now)}] 已自動備份記錄至 GitHub (${GITHUB_REPO} @ ${GITHUB_BRANCH})`);
         }
     } finally {
         isBackingUpGithub = false;
@@ -1114,6 +1142,28 @@ app.get('/health', (req, res) => {
     res.status(200).json({ ok: true, time: formatTime(Date.now()), drainMode });
 });
 
+app.get('/api/backup-now', async (req, res) => {
+    if (!GITHUB_TOKEN || !GITHUB_REPO) {
+        return res.status(400).json({
+            ok: false,
+            error: '尚未設定 GITHUB_TOKEN 或 GITHUB_REPO 環境變數',
+            hasToken: Boolean(GITHUB_TOKEN),
+            repo: GITHUB_REPO || '(未設定)',
+            branch: GITHUB_BRANCH
+        });
+    }
+    saveBookmarks();
+    saveToExcel();
+    await triggerGithubBackup(true);
+    res.json({
+        ok: !lastGithubBackupError,
+        repo: GITHUB_REPO,
+        branch: GITHUB_BRANCH,
+        lastGithubBackupTime: lastGithubBackupTs ? formatTime(lastGithubBackupTs) : '尚未成功',
+        error: lastGithubBackupError || null
+    });
+});
+
 app.get('/api/status', (req, res) => {
     res.json({
         running: true,
@@ -1125,6 +1175,13 @@ app.get('/api/status', (req, res) => {
         lastPollTime: lastPollTimeStr,
         bookmarkCount: bookmarks.length,
         tripCount: Object.keys(trips).length,
+        githubBackup: {
+            configured: Boolean(GITHUB_TOKEN && GITHUB_REPO),
+            repo: GITHUB_REPO || null,
+            branch: GITHUB_BRANCH,
+            lastBackupTime: lastGithubBackupTs ? formatTime(lastGithubBackupTs) : null,
+            lastError: lastGithubBackupError || null
+        },
         bookmarks
     });
 });
