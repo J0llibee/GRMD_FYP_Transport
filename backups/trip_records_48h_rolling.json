@@ -22253,9 +22253,9 @@
         "stopName": "二號客運大樓 (落客站)",
         "stopNameEn": "TERMINAL 2  (ALIGHTING STOP)",
         "scheduledEtaTs": 1795816072000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816344080,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
@@ -23153,18 +23153,18 @@
         "stopName": "兆康苑兆賢閣",
         "stopNameEn": "SIU YIN HOUSE SIU HONG COURT",
         "scheduledEtaTs": 1795815992000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816372984,
+        "cumulativeMins": 50,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
         "stopName": "屯門醫院",
         "stopNameEn": "TUEN MUN HOSPITAL",
         "scheduledEtaTs": 1795816020000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816372984,
+        "cumulativeMins": 50,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -23492,18 +23492,18 @@
         "stopName": "黃竹街, 長沙灣道",
         "stopNameEn": "Wong Chuk Street, Cheung Sha Wan Road",
         "scheduledEtaTs": 1795816054000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816237186,
+        "cumulativeMins": 48,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "旺角警署, 彌敦道",
         "stopNameEn": "Mong Kok Police Station, Nathan Road",
         "scheduledEtaTs": 1795816160000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816290878,
+        "cumulativeMins": 49,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
@@ -24509,36 +24509,36 @@
         "stopName": "愛琴灣, 青山公路",
         "stopNameEn": "The Aegean, Castle Peak Road",
         "scheduledEtaTs": 1795815790000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816318882,
+        "cumulativeMins": 27,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "小欖新村, 青山公路",
         "stopNameEn": "Siu Lam San Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795815820000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816318882,
+        "cumulativeMins": 27,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "小欖村, 青山公路",
         "stopNameEn": "Siu Lam Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795815853000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816318882,
+        "cumulativeMins": 27,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
         "stopName": "澄麗路, 青山公路",
         "stopNameEn": "Ching Lai Road, Castle Peak Road",
         "scheduledEtaTs": 1795815871000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816372984,
+        "cumulativeMins": 28,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
@@ -24794,9 +24794,9 @@
         "stopName": "麒麟圍",
         "stopNameEn": "KEI LUN WAI",
         "scheduledEtaTs": 1795816181000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816265480,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
@@ -25115,9 +25115,9 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795815975000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816372984,
+        "cumulativeMins": 20,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -25463,27 +25463,27 @@
         "stopName": "NAPA, 掃管笏路",
         "stopNameEn": "NAPA, So Kwun Wat Road",
         "scheduledEtaTs": 1795816152000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816290878,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "星堤, 掃管笏路",
         "stopNameEn": "Avignon, So Kwun Wat Road",
         "scheduledEtaTs": 1795816191000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816344080,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "管翠路, 掃管笏路",
         "stopNameEn": "Kwun Chui Road, So Kwun Wat Road",
         "scheduledEtaTs": 1795816211000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816344080,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
@@ -25802,27 +25802,27 @@
         "stopName": "廣生行大廈, 軒尼詩道",
         "stopNameEn": "Kwong Sang Hong Building, Hennessy Road",
         "scheduledEtaTs": 1795816239000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816265480,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
         "stopName": "菲林明道, 軒尼詩道",
         "stopNameEn": "Fleming Road, Hennessy Road",
         "scheduledEtaTs": 1795816343000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816372984,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
         "stopName": "盧押道, 軒尼詩道",
         "stopNameEn": "Luard Road, Hennessy Road",
         "scheduledEtaTs": 1795816394000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795816372984,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
@@ -26071,7 +26071,7 @@
         "seq": 34,
         "stopName": "新屯門中心, 龍門路",
         "stopNameEn": "Sun Tuen Mun Centre, Lung Mun Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795819787000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -26369,6 +26369,309 @@
         "actualArrivalTs": 1795815951175,
         "cumulativeMins": 50,
         "status": "已到站"
+      },
+      "31": {
+        "seq": 31,
+        "stopName": "二號客運大樓 (落客站)",
+        "stopNameEn": "TERMINAL 2  (ALIGHTING STOP)",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "32": {
+        "seq": 32,
+        "stopName": "國泰城",
+        "stopNameEn": "CATHAY CITY",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      }
+    }
+  },
+  "KMB_NA33_inbound_1_EST_3741280": {
+    "tripId": "KMB_NA33_inbound_1_EST_3741280",
+    "routeKeyPrefix": "KMB_NA33_inbound_1",
+    "date": "2026-11-28",
+    "operator": "KMB",
+    "route": "NA33",
+    "dirParam": "inbound",
+    "destTc": "國泰城",
+    "destEn": "Cathay City",
+    "departureTs": 1795814213000,
+    "departureTimeStr": "05:16:53",
+    "isEstimatedDep": true,
+    "stops": {
+      "1": {
+        "seq": 1,
+        "stopName": "富泰邨總站",
+        "stopNameEn": "FU TAI ESTATE BUS TERMINUS",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "2": {
+        "seq": 2,
+        "stopName": "聚康山莊",
+        "stopNameEn": "BENEVILLE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "3": {
+        "seq": 3,
+        "stopName": "富泰邨",
+        "stopNameEn": "FU TAI ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "4": {
+        "seq": 4,
+        "stopName": "五柳路",
+        "stopNameEn": "NG LAU ROAD",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "5": {
+        "seq": 5,
+        "stopName": "兆康路",
+        "stopNameEn": "SIU HONG ROAD",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "6": {
+        "seq": 6,
+        "stopName": "菁田邨",
+        "stopNameEn": "Ching Tin Estate",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "7": {
+        "seq": 7,
+        "stopName": "NOVO LAND",
+        "stopNameEn": "NOVO LAND",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "8": {
+        "seq": 8,
+        "stopName": "和田邨",
+        "stopNameEn": "WO TIN ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "9": {
+        "seq": 9,
+        "stopName": "寶田轉車站 - 盈豐園",
+        "stopNameEn": "PO TIN BBI - GOODRICH GARDEN",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "10": {
+        "seq": 10,
+        "stopName": "田景邨田樂樓",
+        "stopNameEn": "TIN LOK HOUSE TIN KING ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "11": {
+        "seq": 11,
+        "stopName": "田景邨田裕樓",
+        "stopNameEn": "TIN YUE HOUSE TIN KING ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "12": {
+        "seq": 12,
+        "stopName": "建生邨樂生樓",
+        "stopNameEn": "LOK SANG HOUSE KIN SANG ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "13": {
+        "seq": 13,
+        "stopName": "大興體育館",
+        "stopNameEn": "TAI HING SPORTS CENTRE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "14": {
+        "seq": 14,
+        "stopName": "翠林花園",
+        "stopNameEn": "GREEN LAND GARDEN",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "15": {
+        "seq": 15,
+        "stopName": "大興街",
+        "stopNameEn": "TAI HING STREET",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "16": {
+        "seq": 16,
+        "stopName": "鳴琴站",
+        "stopNameEn": "MING KUM STATION",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "17": {
+        "seq": 17,
+        "stopName": "屯門消防局",
+        "stopNameEn": "TUEN MUN FIRE STATION",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "18": {
+        "seq": 18,
+        "stopName": "屯門站總站",
+        "stopNameEn": "TUEN MUN STATION BUS TERMINUS",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "19": {
+        "seq": 19,
+        "stopName": "屯門市中心",
+        "stopNameEn": "TUEN MUN CENTRAL",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "20": {
+        "seq": 20,
+        "stopName": "安定邨",
+        "stopNameEn": "ON TING ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "21": {
+        "seq": 21,
+        "stopName": "兆麟苑",
+        "stopNameEn": "SIU LUN COURT",
+        "scheduledEtaTs": 1795816133000,
+        "actualArrivalTs": 1795816344080,
+        "cumulativeMins": 36,
+        "status": "已到站"
+      },
+      "22": {
+        "seq": 22,
+        "stopName": "豐景園",
+        "stopNameEn": "GOODVIEW GARDEN",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "23": {
+        "seq": 23,
+        "stopName": "龍逸邨",
+        "stopNameEn": "LUNG YAT ESTATE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "24": {
+        "seq": 24,
+        "stopName": "富健花園",
+        "stopNameEn": "GLORIOUS GARDEN",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "25": {
+        "seq": 25,
+        "stopName": "新屯門中心",
+        "stopNameEn": "SUN TUEN MUN CENTRE",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "26": {
+        "seq": 26,
+        "stopName": "兆山苑柳景閣",
+        "stopNameEn": "LAU KING HOUSE, SIU SHAN COURT",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "27": {
+        "seq": 27,
+        "stopName": "蝴蝶灣",
+        "stopNameEn": "BUTTERFLY BEACH",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "28": {
+        "seq": 28,
+        "stopName": "屯門赤鱲角隧道轉車站",
+        "stopNameEn": "TUEN MUN CHEK LAP KOK TUNNEL BBI",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "29": {
+        "seq": 29,
+        "stopName": "港珠澳大橋旅檢大樓 (落客站)",
+        "stopNameEn": "HZMB PASSENGER CLEARANCE BUILDING (ALIGHTING STOP)",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
+      },
+      "30": {
+        "seq": 30,
+        "stopName": "一號客運大樓 (落客站)",
+        "stopNameEn": "TERMINAL 1 (ALIGHTING STOP)",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "途中切入追蹤"
       },
       "31": {
         "seq": 31,
