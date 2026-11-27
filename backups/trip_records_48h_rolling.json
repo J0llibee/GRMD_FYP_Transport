@@ -13076,18 +13076,18 @@
         "stopName": "新屯門中心, 龍門路",
         "stopNameEn": "Sun Tuen Mun Centre, Lung Mun Road",
         "scheduledEtaTs": 1795808327000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808076783,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
         "stopName": "龍門居",
         "stopNameEn": "Lung Mun Oasis",
         "scheduledEtaTs": 1795808446000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808209000,
+        "cumulativeMins": 67,
+        "status": "已到站"
       }
     }
   },
@@ -13397,9 +13397,9 @@
         "stopName": "葵涌道荔景邨",
         "stopNameEn": "LAI KING ESTATE KWAI CHUNG ROAD",
         "scheduledEtaTs": 1795808010000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808151977,
+        "cumulativeMins": 66,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
@@ -13709,18 +13709,18 @@
         "stopName": "青雲站",
         "stopNameEn": "TSING WUN STATION",
         "scheduledEtaTs": 1795807732000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808099584,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "31": {
         "seq": 31,
         "stopName": "聖彼得堂",
         "stopNameEn": "ST. PETER CHURCH",
         "scheduledEtaTs": 1795807765000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808099584,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
@@ -14591,18 +14591,18 @@
         "stopName": "豐景園",
         "stopNameEn": "GOODVIEW GARDEN",
         "scheduledEtaTs": 1795808025000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808183185,
+        "cumulativeMins": 36,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
         "stopName": "翠寧花園",
         "stopNameEn": "TSUI NING GARDEN",
         "scheduledEtaTs": 1795808064000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808183185,
+        "cumulativeMins": 36,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
@@ -14948,9 +14948,9 @@
         "stopName": "西區海底隧道巴士轉乘站",
         "stopNameEn": "Western Harbour Crossing Bus-Bus Interchange",
         "scheduledEtaTs": 1795808177000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808099584,
+        "cumulativeMins": 20,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
@@ -15439,7 +15439,7 @@
         "seq": 31,
         "stopName": "香港空運貨站",
         "stopNameEn": "HACTL",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811609000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -15448,7 +15448,7 @@
         "seq": 32,
         "stopName": "空郵中心",
         "stopNameEn": "AIR MAIL CENTRE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811668000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -15536,36 +15536,36 @@
         "stopName": "蝴蝶邨蝶心樓, 湖翠路",
         "stopNameEn": "Tip Sum House Butterfly Estate, Wu Chui Road",
         "scheduledEtaTs": 1795808027000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808050978,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
         "stopName": "湖景邨湖碧樓, 湖翠路",
         "stopNameEn": "Wu Pik House Wu King Estate, Wu Chui Road",
         "scheduledEtaTs": 1795808062000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808151977,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "湖景邨湖畔樓, 湖景路",
         "stopNameEn": "Wu Boon House Wu King Estate, Wu King Road",
         "scheduledEtaTs": 1795808131000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808206788,
+        "cumulativeMins": 7,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
         "stopName": "湖景邨湖翠樓, 湖景路",
         "stopNameEn": "Wu Tsui House Wu King Estate, Wu King Road",
         "scheduledEtaTs": 1795808168000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808206788,
+        "cumulativeMins": 7,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
@@ -15848,18 +15848,18 @@
         "stopName": "美樂花園",
         "stopNameEn": "MELODY GARDEN",
         "scheduledEtaTs": 1795807953000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808099584,
+        "cumulativeMins": 3,
+        "status": "已到站"
       },
       "3": {
         "seq": 3,
         "stopName": "蝴蝶站",
         "stopNameEn": "BUTTERFLY STATION",
         "scheduledEtaTs": 1795808022000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808151977,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
@@ -16126,7 +16126,7 @@
         "seq": 33,
         "stopName": "葵涌道荔景邨",
         "stopNameEn": "LAI KING ESTATE KWAI CHUNG ROAD",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811696000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -16196,18 +16196,18 @@
         "stopName": "葵涌交滙處",
         "stopNameEn": "KWAI CHUNG INTERCHANGE",
         "scheduledEtaTs": 1795807942000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808099584,
+        "cumulativeMins": 3,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "葵涌道荔景邨",
         "stopNameEn": "LAI KING ESTATE KWAI CHUNG ROAD",
         "scheduledEtaTs": 1795808065000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808183185,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
@@ -16474,7 +16474,7 @@
         "seq": 34,
         "stopName": "兆山苑柳景閣",
         "stopNameEn": "LAU KING HOUSE SIU SHAN COURT",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811649000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -16483,7 +16483,7 @@
         "seq": 35,
         "stopName": "蝴蝶邨蝶心樓",
         "stopNameEn": "TIP SUM HOUSE BUTTERFLY ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811756000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
