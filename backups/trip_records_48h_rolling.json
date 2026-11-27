@@ -2333,9 +2333,9 @@
         "stopName": "和田邨",
         "stopNameEn": "WO TIN ESTATE",
         "scheduledEtaTs": 1795799676000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 62,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -2600,18 +2600,18 @@
         "stopName": "天水圍公園",
         "stopNameEn": "TIN SHUI WAI PARK",
         "scheduledEtaTs": 1795799685000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799862386,
+        "cumulativeMins": 58,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
         "stopName": "天瑞邨",
         "stopNameEn": "TIN SHUI ESTATE",
         "scheduledEtaTs": 1795799747000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 59,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
@@ -3278,9 +3278,9 @@
         "stopName": "屯門醫院",
         "stopNameEn": "TUEN MUN HOSPITAL",
         "scheduledEtaTs": 1795799784000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799862386,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -3572,9 +3572,9 @@
         "stopName": "中電",
         "stopNameEn": "CHINA LIGHT BUILDING",
         "scheduledEtaTs": 1795799847000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 45,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
@@ -4481,18 +4481,18 @@
         "stopName": "湖景邨湖畔樓",
         "stopNameEn": "WU BOON HOUSE WU KING ESTATE",
         "scheduledEtaTs": 1795799717000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799886480,
+        "cumulativeMins": 31,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "湖景邨湖翠樓",
         "stopNameEn": "WU TSUI HOUSE WU KING ESTATE",
         "scheduledEtaTs": 1795799748000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 32,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
@@ -4784,27 +4784,27 @@
         "stopName": "豐景園",
         "stopNameEn": "GOODVIEW GARDEN",
         "scheduledEtaTs": 1795799929000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799840682,
+        "cumulativeMins": 30,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "翠寧花園",
         "stopNameEn": "TSUI NING GARDEN",
         "scheduledEtaTs": 1795799970000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799886480,
+        "cumulativeMins": 31,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "友愛邨",
         "stopNameEn": "YAU OI ESTATE",
         "scheduledEtaTs": 1795800109000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799984981,
+        "cumulativeMins": 33,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -5516,18 +5516,18 @@
         "stopName": "兆邦苑",
         "stopNameEn": "SIU PONG COURT",
         "scheduledEtaTs": 1795799634000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799862386,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "寶田轉車站 - 寶田",
         "stopNameEn": "PO TIN BBI - PO TIN",
         "scheduledEtaTs": 1795799735000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 19,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -5864,9 +5864,9 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795799789000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 19,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -6194,18 +6194,18 @@
         "stopName": "大窩口轉車站-大窩口站",
         "stopNameEn": "TAI WO HAU BBI-TAI WO HAU STATION",
         "scheduledEtaTs": 1795799793000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799862386,
+        "cumulativeMins": 13,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
         "stopName": "荃灣眾安街",
         "stopNameEn": "CHUNG ON STREET TSUEN WAN",
         "scheduledEtaTs": 1795799877000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -6865,7 +6865,7 @@
         "seq": 23,
         "stopName": "和田邨",
         "stopNameEn": "WO TIN ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795802826000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -6998,18 +6998,18 @@
         "stopName": "盧押道, 軒尼詩道",
         "stopNameEn": "Luard Road, Hennessy Road",
         "scheduledEtaTs": 1795799894000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799862386,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "金鐘 - 太古廣場, 金鐘道",
         "stopNameEn": "Admiralty - Pacific Place, Queensway",
         "scheduledEtaTs": 1795799976000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799961092,
+        "cumulativeMins": 9,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
@@ -7357,7 +7357,7 @@
         "seq": 46,
         "stopName": "青善遊樂場, 青山公路",
         "stopNameEn": "Tsing Sin Playground, Castle Peak Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803200000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -7400,9 +7400,9 @@
         "stopName": "國泰城",
         "stopNameEn": "CATHAY CITY",
         "scheduledEtaTs": 1795799791000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799862386,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "3": {
         "seq": 3,
@@ -7606,7 +7606,7 @@
         "seq": 25,
         "stopName": "天逸邨逸洋樓",
         "stopNameEn": "YAT YEUNG HOUSE TIN YAT ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803413000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -7615,7 +7615,7 @@
         "seq": 26,
         "stopName": "香港青年協會李兆基書院",
         "stopNameEn": "HKFYG LEE SHAU KEE COLLEGE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803550000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -7730,9 +7730,9 @@
         "stopName": "堅拿道東, 軒尼詩道",
         "stopNameEn": "Canal Road East, Hennessy Road",
         "scheduledEtaTs": 1795799928000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795800007085,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
@@ -7990,7 +7990,7 @@
         "seq": 32,
         "stopName": "美樂花園, 湖翠路",
         "stopNameEn": "Melody Garden, Wu Chui Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803542000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -7999,7 +7999,7 @@
         "seq": 33,
         "stopName": "兆山苑, 龍門路",
         "stopNameEn": "Siu Shan Court, Lung Mun Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803610000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -8060,27 +8060,27 @@
         "stopName": "戲曲中心, 廣東道",
         "stopNameEn": "Xiqu Centre, Canton Road",
         "scheduledEtaTs": 1795799932000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "中港城, 九龍公園徑",
         "stopNameEn": "China Hong Kong City, Kowloon Park Drive",
         "scheduledEtaTs": 1795799950000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799931981,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
         "stopName": "北京道, 九龍公園徑",
         "stopNameEn": "Peking Road, Kowloon Park Drive",
         "scheduledEtaTs": 1795799990000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795799984981,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -8356,7 +8356,7 @@
         "seq": 36,
         "stopName": "NOVO LAND, 欣寶路",
         "stopNameEn": "NOVO LAND, Yan Po Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803389000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -8365,7 +8365,7 @@
         "seq": 37,
         "stopName": "菁田邨",
         "stopNameEn": "Ching Tin Estate",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795803426000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
