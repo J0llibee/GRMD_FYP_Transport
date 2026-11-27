@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>專營巴士實時到站及監察系統</title>
+    <title id="pageTitle">專營巴士實時到站及監察系統</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
@@ -36,10 +36,13 @@
         header {
             background: linear-gradient(135deg, var(--kmb-red) 0%, #b91c1c 55%, #0369a1 100%);
             color: white;
-            padding: 18px 20px;
-            text-align: center;
+            padding: 16px 20px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
             transition: background 0.3s;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         header.night-theme {
@@ -47,8 +50,32 @@
         }
 
         header h1 {
-            font-size: 1.35rem;
-            letter-spacing: 1px;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            text-align: center;
+            padding: 0 75px;
+        }
+
+        .lang-switch-btn {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .lang-switch-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .container {
@@ -123,7 +150,7 @@
             color: var(--text-main);
             outline: none;
             cursor: pointer;
-            min-width: 150px;
+            min-width: 160px;
         }
 
         select:focus, input[type="text"]:focus {
@@ -204,7 +231,6 @@
             color: #0369a1;
         }
 
-        /* Bookmark 收藏按鈕樣式 */
         .bm-btn {
             background: #f8fafc;
             color: #475569;
@@ -218,6 +244,7 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            white-space: nowrap;
         }
 
         .bm-btn:hover {
@@ -232,7 +259,6 @@
             color: #b45309;
         }
 
-        /* 站點選擇列表 */
         .stop-list {
             background: var(--card-bg);
             border-radius: 12px;
@@ -287,7 +313,6 @@
             font-family: monospace;
         }
 
-        /* 路線列表卡片 */
         .route-list-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -437,7 +462,6 @@
             border-color: var(--ctb-blue);
         }
 
-        /* 巴士實時位置推算地圖區塊 */
         .map-panel {
             background: var(--card-bg);
             border-radius: 12px;
@@ -549,7 +573,6 @@
             background: #0284c7;
         }
 
-        /* 到站時間結果區 (緊貼地圖下方) */
         #etaSection {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -559,7 +582,6 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
         }
 
-        /* 路線完整班次表區塊 */
         .timetable-panel {
             background: #ffffff;
             border: 2px solid #f59e0b;
@@ -963,18 +985,12 @@
             color: #991b1b;
         }
 
-        .retry-btn {
-            margin-top: 10px;
-            padding: 8px 18px;
-            background: var(--night-bg);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
         @media (max-width: 650px) {
+            header h1 {
+                font-size: 1.1rem;
+                padding: 0 70px 0 6px;
+                text-align: left;
+            }
             .filter-row {
                 flex-direction: column;
             }
@@ -1001,7 +1017,8 @@
 <body>
 
 <header id="mainHeader">
-    <h1>🚌 專營巴士實時到站&監察系統 </h1>
+    <h1 id="headerTitle">🚌 專營巴士實時到站 & 監察系統</h1>
+    <button class="lang-switch-btn" id="langSwitchBtn" onclick="toggleLanguage()">🌐 EN</button>
 </header>
 
 <div class="container">
@@ -1016,32 +1033,32 @@
             </div>
             <div class="map-controls">
                 <button class="map-ctrl-btn" id="mapAutoToggleBtn" onclick="toggleMapAutoRefresh()">
-                    ⏱️ 自動更新 (<span id="mapCountdown">15</span>s)
+                    ⏱️ <span id="mapAutoLabel">自動更新</span> (<span id="mapCountdown">15</span>s)
                 </button>
-                <button class="map-ctrl-btn" onclick="manualMapRefresh()">↻ 立即更新</button>
-                <button class="map-ctrl-btn" onclick="closeMapPanel()">✕ 關閉</button>
+                <button class="map-ctrl-btn" id="mapNowBtn" onclick="manualMapRefresh()">↻ 立即更新</button>
+                <button class="map-ctrl-btn" id="mapCloseBtn" onclick="closeMapPanel()">✕ 關閉</button>
             </div>
         </div>
         <div id="busMap"></div>
         <div class="map-summary-bar" id="mapSummaryBar">正在計算沿途站點 ETA 差值以推算巴士位置...</div>
     </div>
 
-    <!-- 2. 單站/單線到站時間顯示區 (緊貼地圖下方) -->
+    <!-- 2. 單站/單線到站時間顯示區 -->
     <div id="etaSection" style="display: none;">
         <div class="eta-header">
             <div class="eta-title" id="currentStopTitle">站點名稱</div>
             <div style="display:flex; gap:6px; flex-wrap: wrap;">
                 <button class="timetable-btn" id="etaTimetableBtn" style="display:none;" onclick="openTimetableFromCurrentQuery()">🕒 整線班次表</button>
                 <button class="map-locate-btn" id="etaMapBtn" style="display:none;" onclick="openMapFromCurrentQuery()">🗺️ 地圖推算位置</button>
-                <button class="refresh-btn" onclick="refreshCurrentEta()">↻ 刷新 (<span id="countdown">30</span>s)</button>
-                <button class="close-eta-btn" onclick="closeEtaSection()">✕ 收起</button>
+                <button class="refresh-btn" onclick="refreshCurrentEta()">↻ <span id="etaRefreshLabel">刷新</span> (<span id="countdown">30</span>s)</button>
+                <button class="close-eta-btn" id="etaCloseBtn" onclick="closeEtaSection()">✕ 收起</button>
             </div>
         </div>
 
         <div class="service-tabs" id="kmbServiceTabs">
-            <button class="tab-btn active" id="tab-ALL" onclick="setServiceFilter('ALL')">全部路線 (<span id="count-ALL">0</span>)</button>
-            <button class="tab-btn" id="tab-DAY" onclick="setServiceFilter('DAY')">☀️ 日間 (<span id="count-DAY">0</span>)</button>
-            <button class="tab-btn night-tab" id="tab-NIGHT" onclick="setServiceFilter('NIGHT')">🌙 通宵 (<span id="count-NIGHT">0</span>)</button>
+            <button class="tab-btn active" id="tab-ALL" onclick="setServiceFilter('ALL')"><span id="tabLabelAll">全部路線</span> (<span id="count-ALL">0</span>)</button>
+            <button class="tab-btn" id="tab-DAY" onclick="setServiceFilter('DAY')">☀️ <span id="tabLabelDay">日間</span> (<span id="count-DAY">0</span>)</button>
+            <button class="tab-btn night-tab" id="tab-NIGHT" onclick="setServiceFilter('NIGHT')">🌙 <span id="tabLabelNight">通宵</span> (<span id="count-NIGHT">0</span>)</button>
         </div>
 
         <div id="etaResults"></div>
@@ -1052,24 +1069,24 @@
         <div class="tt-header">
             <div class="tt-title" id="ttPanelTitle">🕒 路線完整班次表</div>
             <div class="map-controls">
-                <button class="map-ctrl-btn" onclick="refreshTimetable()">↻ 更新班次</button>
-                <button class="map-ctrl-btn" onclick="closeTimetablePanel()">✕ 收起</button>
+                <button class="map-ctrl-btn" id="ttRefreshBtn" onclick="refreshTimetable()">↻ 更新班次</button>
+                <button class="map-ctrl-btn" id="ttCloseBtn" onclick="closeTimetablePanel()">✕ 收起</button>
             </div>
         </div>
         <div class="tt-filter-bar">
             <span id="ttMetaInfo">顯示沿途各站接下來 3 班車（含表列及實時班次）</span>
             <label style="cursor:pointer; font-weight:bold;">
-                <input type="checkbox" id="ttOnlyScheduledChk" onchange="renderTimetableRows()" /> 僅顯示表列班次
+                <input type="checkbox" id="ttOnlyScheduledChk" onchange="renderTimetableRows()" /> <span id="ttOnlySchedLabel">僅顯示表列班次</span>
             </label>
         </div>
         <div class="tt-table-wrap">
             <table class="tt-table">
                 <thead>
                     <tr>
-                        <th>站序 / 車站名稱</th>
-                        <th>第 1 班</th>
-                        <th>第 2 班</th>
-                        <th>第 3 班</th>
+                        <th id="thStopSeqName">站序 / 車站名稱</th>
+                        <th id="thBus1">第 1 班</th>
+                        <th id="thBus2">第 2 班</th>
+                        <th id="thBus3">第 3 班</th>
                     </tr>
                 </thead>
                 <tbody id="ttTableBody"></tbody>
@@ -1082,13 +1099,13 @@
         正在載入全港巴士站點與路線資料庫，請稍候...
     </div>
 
-    <!-- 5. 主模式切換 (含「⭐ Excel 監察」分頁) -->
+    <!-- 5. 主模式切換 -->
     <div class="mode-switcher">
         <button class="mode-btn active" id="modeBtn-KMB_ROUTE" onclick="switchMode('KMB_ROUTE')">🔴 九巴路線</button>
         <button class="mode-btn ctb-mode" id="modeBtn-CTB_ROUTE" onclick="switchMode('CTB_ROUTE')">🔵 城巴路線</button>
         <button class="mode-btn" id="modeBtn-KMB_STOP" onclick="switchMode('KMB_STOP')">📍 九巴車站</button>
         <button class="mode-btn night-mode" id="modeBtn-DISTRICT_NIGHT" onclick="switchMode('DISTRICT_NIGHT')">🌙 通宵巴士</button>
-        <button class="mode-btn monitor-mode" id="modeBtn-BOOKMARKS" onclick="switchMode('BOOKMARKS')">⭐ Excel 監察 (<span id="bmBadgeCount">0</span>)</button>
+        <button class="mode-btn monitor-mode" id="modeBtn-BOOKMARKS" onclick="switchMode('BOOKMARKS')">⭐ <span id="modeLabelBookmarks">Excel 監察</span> (<span id="bmBadgeCount">0</span>)</button>
     </div>
 
     <!-- 模式 1：九巴路線 & 站點查詢 -->
@@ -1102,18 +1119,11 @@
 
             <div class="input-group">
                 <input type="text" id="kmbRouteSearchInput" placeholder="輸入九巴路線或地點 (如: 1A, 968, 旺角, 沙田)..." oninput="renderKmbRouteList()" />
-                <button class="primary-btn" onclick="renderKmbRouteList()">篩選</button>
+                <button class="primary-btn" id="kmbFilterBtn" onclick="renderKmbRouteList()">篩選</button>
             </div>
         </div>
 
-        <div class="quick-tags">
-            <span>九巴熱門：</span>
-            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('1A')">1A 尖沙咀</span>
-            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('968')">968 元朗</span>
-            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('290A')">290A 將軍澳</span>
-            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('N241')">N241 通宵</span>
-            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('N73')">N73 通宵北區</span>
-        </div>
+        <div class="quick-tags" id="kmbQuickTags"></div>
     </div>
 
     <!-- 模式 2：城巴路線 & 站點查詢 -->
@@ -1127,123 +1137,66 @@
 
             <div class="input-group">
                 <input type="text" id="ctbSearchInput" placeholder="輸入城巴路線或地點 (如: 969, A21, 中環, 機場)..." oninput="renderCtbRouteList()" />
-                <button class="primary-btn ctb-btn" onclick="renderCtbRouteList()">篩選</button>
+                <button class="primary-btn ctb-btn" id="ctbFilterBtn" onclick="renderCtbRouteList()">篩選</button>
             </div>
         </div>
 
-        <div class="quick-tags">
-            <span>城巴熱門：</span>
-            <span class="tag ctb-tag" onclick="filterCtbQuick('A21')">A21 機場</span>
-            <span class="tag ctb-tag" onclick="filterCtbQuick('969')">969 天水圍</span>
-            <span class="tag ctb-tag" onclick="filterCtbQuick('5X')">5X 銅鑼灣</span>
-            <span class="tag ctb-tag" onclick="filterCtbQuick('N8X')">N8X 通宵</span>
-            <span class="tag ctb-tag" onclick="filterCtbQuick('N11')">N11 通宵機場</span>
-        </div>
+        <div class="quick-tags" id="ctbQuickTags"></div>
     </div>
 
     <!-- 模式 3：九巴依車站搜尋 -->
     <div id="panel-KMB_STOP" class="search-box" style="display: none;">
         <div class="filter-row">
-            <select id="districtSelect" onchange="handleKmbSearch()">
-                <option value="ALL">📍 全港所有地區</option>
-                <optgroup label="九龍">
-                    <option value="YTM">油尖旺區</option>
-                    <option value="SSP">深水埗區</option>
-                    <option value="KLC">九龍城區</option>
-                    <option value="WTS">黃大仙區</option>
-                    <option value="KT">觀塘區</option>
-                </optgroup>
-                <optgroup label="新界">
-                    <option value="ST">沙田區</option>
-                    <option value="TP">大埔區</option>
-                    <option value="NORTH">北區</option>
-                    <option value="TM">屯門區</option>
-                    <option value="YL">元朗區</option>
-                    <option value="TW_KC">荃灣 / 葵青區</option>
-                    <option value="SK">西貢 / 將軍澳</option>
-                </optgroup>
-                <optgroup label="港島及離島">
-                    <option value="HKI">港島區 (過海線)</option>
-                    <option value="LANTAU">大嶼山 / 機場</option>
-                </optgroup>
-            </select>
+            <select id="districtSelect" onchange="handleKmbSearch()"></select>
 
             <div class="input-group">
                 <input type="text" id="searchInput" placeholder="輸入九巴站名 (如: 紅磡站) 或 16位 Stop ID..." />
-                <button class="primary-btn" onclick="handleKmbSearch()">搜尋</button>
+                <button class="primary-btn" id="kmbStopSearchBtn" onclick="handleKmbSearch()">搜尋</button>
             </div>
         </div>
 
-        <div class="quick-tags">
-            <span>熱門車站：</span>
-            <span class="tag" onclick="quickSelectKmb('BFA3460955AC820C', '紅磡站 (海底隧道)')">紅磡站</span>
-            <span class="tag" onclick="quickSelectKmb('A60303B18A76E284', '旺角奶路臣街')">旺角奶路臣街</span>
-            <span class="tag" onclick="quickSelectKmb('2843A6857690F452', '沙田市中心總站')">沙田市中心</span>
-            <span class="tag" onclick="quickSelectKmb('643568D9895252D6', '屯門公路轉車站')">屯公轉車站</span>
-        </div>
+        <div class="quick-tags" id="kmbStopQuickTags"></div>
     </div>
 
     <!-- 模式 4：各區通宵巴士總覽 -->
     <div id="panel-DISTRICT_NIGHT" class="search-box" style="display: none; border-top: 4px solid var(--night-bg);">
         <div class="filter-row" style="margin-bottom: 10px;">
-            <select id="nightDistrictSelect" onchange="renderDistrictNightList()" style="flex: 1;">
-                <option value="ALL">🌙 全港所有通宵巴士 (九巴 + 城巴)</option>
-                <optgroup label="港島及離島">
-                    <option value="HKI">港島區 (中環 / 灣仔 / 銅鑼灣 / 柴灣)</option>
-                    <option value="LANTAU">大嶼山 / 機場 / 港珠澳大橋</option>
-                </optgroup>
-                <optgroup label="九龍">
-                    <option value="YTM">油尖旺區 (旺角 / 尖沙咀 / 佐敦)</option>
-                    <option value="SSP">深水埗區 (美孚 / 長沙灣 / 深水埗)</option>
-                    <option value="KLC">九龍城區 (紅磡 / 土瓜灣 / 九龍塘)</option>
-                    <option value="WTS">黃大仙區 (黃大仙 / 鑽石山 / 彩虹)</option>
-                    <option value="KT">觀塘區 (九龍灣 / 觀塘 / 藍田)</option>
-                </optgroup>
-                <optgroup label="新界">
-                    <option value="ST">沙田區 (沙田 / 大圍 / 馬鞍山)</option>
-                    <option value="TP">大埔區</option>
-                    <option value="NORTH">北區 (上水 / 粉嶺)</option>
-                    <option value="TM">屯門區</option>
-                    <option value="YL">元朗區 (元朗 / 天水圍)</option>
-                    <option value="TW_KC">荃灣 / 葵青區</option>
-                    <option value="SK">西貢 / 將軍澳</option>
-                </optgroup>
-            </select>
+            <select id="nightDistrictSelect" onchange="renderDistrictNightList()" style="flex: 1;"></select>
             <input type="text" id="nightRouteFilterInput" placeholder="過濾路線或地點 (如 N241 / N8P)..." oninput="renderDistrictNightList()" style="flex: 1;" />
         </div>
-        <div style="font-size: 0.85rem; color: var(--text-sub);">
+        <div style="font-size: 0.85rem; color: var(--text-sub);" id="nightTipText">
             💡 提示：點擊路線右側的 <b>☆ 監察</b> 按鈕，後台即會自動在 Excel 記錄該線由總站開出時間及各站累積時間。
         </div>
     </div>
 
-    <!-- 模式 5：本地 Excel 監察中心 (Bookmark 清單與班次累積時間表) -->
+    <!-- 模式 5：Excel 監察中心 -->
     <div id="panel-BOOKMARKS" class="search-box" style="display: none; border-top: 4px solid #065f46;">
         <div id="localServerStatusBar" class="server-status-bar">
-            ⏳ 正在檢查本地 Node.js 背景 Excel 監察服務連線狀態...
+            ⏳ 正在檢查後台 Excel 監察服務連線狀態...
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
-            <strong style="font-size:1.05rem;">⭐ 已收藏監察的巴士路線 (<span id="bmListCount">0</span>)</strong>
+            <strong style="font-size:1.05rem;">⭐ <span id="bmHeaderTitle">已收藏監察的巴士路線</span> (<span id="bmListCount">0</span>)</strong>
             <div style="display:flex; gap:8px;">
-                <button class="map-locate-btn" onclick="refreshBookmarkRecords()">↻ 刷新監察記錄</button>
-                <button class="timetable-btn" onclick="downloadLocalExcel()">📥 下載 Excel (.xlsx)</button>
+                <button class="map-locate-btn" id="bmRefreshBtn" onclick="refreshBookmarkRecords()">↻ 刷新監察記錄</button>
+                <button class="timetable-btn" id="bmDownloadBtn" onclick="downloadLocalExcel()">📥 下載 Excel (.xlsx)</button>
             </div>
         </div>
 
         <div id="bookmarkedRoutesContainer" style="margin-bottom: 20px;"></div>
 
-        <div style="font-weight:bold; font-size:1rem; margin-bottom:8px; color:#1e293b;">
-            📊 班次行程及累積行車時間記錄（以「總站開出時間」分辨各班車，同步至 <code>bus_arrival_records.xlsx</code>）
+        <div style="font-weight:bold; font-size:1rem; margin-bottom:8px; color:#1e293b;" id="bmRecordsTitle">
+            📊 班次行程及累積行車時間記錄（以「總站開出時間」分辨各班車，同步至 <code>bus_arrival_records_48h_rolling.xlsx</code>）
         </div>
         <div class="tt-table-wrap" style="border:1px solid #e2e8f0; border-radius:8px;">
             <table class="tt-table">
                 <thead>
                     <tr>
-                        <th>班次識別(總站開出)</th>
-                        <th>站序與車站名稱</th>
-                        <th>表列/預計時間</th>
-                        <th>實際到達時間</th>
-                        <th>由總站起累積時間</th>
+                        <th id="thTripId">班次識別(總站開出)</th>
+                        <th id="thStopSeq">站序與車站名稱</th>
+                        <th id="thSchedTime">表列/預計時間</th>
+                        <th id="thActualTime">實際到達時間</th>
+                        <th id="thCumTime">由總站起累積時間</th>
                     </tr>
                 </thead>
                 <tbody id="bmRecordsTableBody">
@@ -1284,9 +1237,233 @@
 <script>
     const KMB_API = 'https://data.etabus.gov.hk/v1/transport/kmb';
     const CTB_API = 'https://rt.data.gov.hk/v1/transport/citybus-nwfb';
-    const LOCAL_SERVER = window.location.origin.includes('localhost')
-    ? 'http://localhost:3000'
-    : '';
+    const LOCAL_SERVER = window.location.origin.includes('localhost') ? 'http://localhost:3000' : '';
+
+    // ==========================================
+    // 多語言字典與狀態 (zh / en)
+    // ==========================================
+    let currentLang = localStorage.getItem('hk_bus_lang') || 'zh';
+
+    const I18N = {
+        zh: {
+            pageTitle: '專營巴士實時到站及監察系統',
+            headerTitle: '🚌 專營巴士實時到站 & 監察系統',
+            langSwitchBtn: '🌐 EN',
+            modeKmbRoute: '🔴 九巴路線',
+            modeCtbRoute: '🔵 城巴路線',
+            modeKmbStop: '📍 九巴車站',
+            modeNight: '🌙 通宵巴士',
+            modeBookmarks: 'Excel 監察',
+            kmbOptAll: '🔴 全部九巴路線',
+            kmbOptDay: '☀️ 九巴日間路線',
+            kmbOptNight: '🌙 九巴通宵路線 (N線)',
+            kmbSearchPlaceholder: '輸入九巴路線或地點 (如: 1A, 968, 旺角, 沙田)...',
+            ctbOptAll: '🔵 全部城巴路線',
+            ctbOptDay: '☀️ 城巴日間路線',
+            ctbOptNight: '🌙 城巴通宵路線 (N線)',
+            ctbSearchPlaceholder: '輸入城巴路線或地點 (如: 969, A21, 中環, 機場)...',
+            stopSearchPlaceholder: '輸入九巴站名 (如: 紅磡站) 或 16位 Stop ID...',
+            nightSearchPlaceholder: '過濾路線或地點 (如 N241 / N8P)...',
+            filterBtn: '篩選',
+            searchBtn: '搜尋',
+            kmbPopular: '九巴熱門：',
+            ctbPopular: '城巴熱門：',
+            stopPopular: '熱門車站：',
+            nightTip: '💡 提示：點擊路線右側的 <b>☆ 監察</b> 按鈕，後台即會自動在 Excel 記錄該線由總站開出時間及各站累積時間。',
+            bmHeaderTitle: '已收藏監察的巴士路線',
+            bmRefreshBtn: '↻ 刷新監察記錄',
+            bmDownloadBtn: '📥 下載 Excel (.xlsx)',
+            bmRecordsTitle: '📊 班次行程及累積行車時間記錄（以「總站開出時間」分辨各班車，同步至 <code>bus_arrival_records_48h_rolling.xlsx</code>）',
+            thTripId: '班次識別(總站開出)',
+            thStopSeq: '站序與車站名稱',
+            thSchedTime: '表列/預計時間',
+            thActualTime: '實際到達時間',
+            thCumTime: '由總站起累積時間',
+            noRecords: '尚無監察記錄',
+            noBookmarksMsg: '尚未收藏任何監察路線。請在「九巴路線」、「城巴路線」或「通宵巴士」列表點擊 <b>☆ 監察</b>。',
+            waitingTripsMsg: '背景監察器正在等待巴士由總站開出並記錄各站累積時間（每 15~25 秒掃描一次）...',
+            loadingInit: '正在載入全港巴士站點與路線資料庫，請稍候...',
+            stopModeHint: '請選擇香港地區或輸入九巴站名 / 16位 Stop ID 搜尋。',
+            kmbBadge: '九巴 KMB',
+            ctbBadge: '城巴 CTB',
+            kmbShort: '九巴',
+            ctbShort: '城巴',
+            nightBadge: '🌙 通宵',
+            dayBadge: '☀️ 日間',
+            specialTrip: '特別班次',
+            from: '由',
+            to: '往',
+            outbound: '去程',
+            inbound: '回程',
+            watchAdd: '☆ 監察',
+            watchActive: '★ 已監察',
+            watchRemove: '★ 取消監察',
+            stopsBtn: '站點 ▾',
+            timetableBtn: '🕒 路線班次表',
+            timetableShort: '🕒 班次表',
+            fullTimetableBtn: '🕒 整線班次表',
+            mapTrackBtn: '🗺️ 地圖追蹤位置',
+            mapShort: '🗺️ 地圖',
+            mapCalcBtn: '🗺️ 地圖推算位置',
+            loadingStops: '⏳ 正在載入沿途車站...',
+            stopsLoadedHint: (n, op, r) => `✅ 共 ${n} 個站點，點擊車站查詢${op} ${r}：`,
+            stopsLoadFail: '❌ 載入站點失敗，請重試。',
+            mapPanelTitle: (op, r) => `🗺️ ${op} ${r} 實時巴士位置推算`,
+            mapAutoLabel: '自動更新',
+            mapPausedLabel: '⏸️ 已暫停 (點擊恢復)',
+            mapNowBtn: '↻ 立即更新',
+            closeBtn: '✕ 關閉',
+            collapseBtn: '✕ 收起',
+            etaRefreshLabel: '刷新',
+            tabAll: '全部路線',
+            tabDay: '日間',
+            tabNight: '通宵',
+            noBusData: '暫無班次',
+            arrivingNow: '即將抵達',
+            minsUnit: '分鐘',
+            scheduledTag: '📅 表列班次',
+            liveTag: '📡 實時',
+            scheduledShort: '表列',
+            liveShort: '實時',
+            bus2: '第2班',
+            bus3: '第3班',
+            ttTitle: (op, r) => `🕒 ${op} ${r} 沿途完整班次表（按同一班車對齊）`,
+            ttRefreshBtn: '↻ 更新班次',
+            ttOnlySched: '僅顯示表列班次',
+            thStopSeqName: '站序 / 車站名稱',
+            thBus1: '第 1 班',
+            thBus2: '第 2 班',
+            thBus3: '第 3 班',
+            passedStop: '已過站',
+            inTransit: '行駛中...',
+            tripLabel: '班次',
+            estDepTag: '(途中估算)',
+            tripHeaderBanner: (dep, r, op, dest) => `🚌 班次識別【總站開出時間：${dep}】｜ ${r} (${op} 往 ${dest})`,
+            adminPrompt: '請輸入管理密碼以更改監察的巴士路線：',
+            adminWrongPwd: '❌ 密碼錯誤，無法更改監察設定。',
+            adminExpiredPwd: '❌ 密碼已失效或錯誤，請重新輸入。'
+        },
+        en: {
+            pageTitle: 'HK Franchised Bus Real-Time ETA & Monitor',
+            headerTitle: '🚌 HK Bus Real-Time ETA & Monitor',
+            langSwitchBtn: '🌐 中文',
+            modeKmbRoute: '🔴 KMB Routes',
+            modeCtbRoute: '🔵 CTB Routes',
+            modeKmbStop: '📍 KMB Stops',
+            modeNight: '🌙 Overnight',
+            modeBookmarks: 'Excel Monitor',
+            kmbOptAll: '🔴 All KMB Routes',
+            kmbOptDay: '☀️ KMB Day Routes',
+            kmbOptNight: '🌙 KMB Overnight (N-Routes)',
+            kmbSearchPlaceholder: 'Enter KMB route or place (e.g. 1A, 968, Mong Kok, Sha Tin)...',
+            ctbOptAll: '🔵 All CTB Routes',
+            ctbOptDay: '☀️ CTB Day Routes',
+            ctbOptNight: '🌙 CTB Overnight (N-Routes)',
+            ctbSearchPlaceholder: 'Enter CTB route or place (e.g. 969, A21, Central, Airport)...',
+            stopSearchPlaceholder: 'Enter KMB stop name (e.g. Hung Hom) or 16-char Stop ID...',
+            nightSearchPlaceholder: 'Filter route or place (e.g. N241 / N8P)...',
+            filterBtn: 'Filter',
+            searchBtn: 'Search',
+            kmbPopular: 'Popular KMB:',
+            ctbPopular: 'Popular CTB:',
+            stopPopular: 'Popular Stops:',
+            nightTip: '💡 Tip: Click <b>☆ Watch</b> on any route to automatically log departures & cumulative travel times in Excel.',
+            bmHeaderTitle: 'Watched Bus Routes',
+            bmRefreshBtn: '↻ Refresh Logs',
+            bmDownloadBtn: '📥 Download Excel (.xlsx)',
+            bmRecordsTitle: '📊 Trip Logs & Cumulative Travel Time (Grouped by Terminus Departure, synced to <code>bus_arrival_records_48h_rolling.xlsx</code>)',
+            thTripId: 'Trip (Terminus Dep.)',
+            thStopSeq: 'Seq & Bus Stop',
+            thSchedTime: 'Sched. / Initial ETA',
+            thActualTime: 'Actual Arrival',
+            thCumTime: 'Cumulative Time',
+            noRecords: 'No monitoring records yet',
+            noBookmarksMsg: 'No watched routes yet. Click <b>☆ Watch</b> in KMB, CTB, or Overnight tabs.',
+            waitingTripsMsg: 'Background monitor is waiting for buses to depart from terminus (polling every 15–25s)...',
+            loadingInit: 'Loading Hong Kong bus stops & routes database, please wait...',
+            stopModeHint: 'Select a district or enter a KMB stop name / 16-char Stop ID to search.',
+            kmbBadge: 'KMB',
+            ctbBadge: 'CTB',
+            kmbShort: 'KMB',
+            ctbShort: 'CTB',
+            nightBadge: '🌙 Night',
+            dayBadge: '☀️ Day',
+            specialTrip: 'Special Trip',
+            from: 'From',
+            to: 'To',
+            outbound: 'Outbound',
+            inbound: 'Inbound',
+            watchAdd: '☆ Watch',
+            watchActive: '★ Watching',
+            watchRemove: '★ Unwatch',
+            stopsBtn: 'Stops ▾',
+            timetableBtn: '🕒 Route Timetable',
+            timetableShort: '🕒 Timetable',
+            fullTimetableBtn: '🕒 Full Timetable',
+            mapTrackBtn: '🗺️ Live Map',
+            mapShort: '🗺️ Map',
+            mapCalcBtn: '🗺️ Live Bus Map',
+            loadingStops: '⏳ Loading route stops...',
+            stopsLoadedHint: (n, op, r) => `✅ ${n} stops total. Tap a stop for ${op} ${r} ETA:`,
+            stopsLoadFail: '❌ Failed to load stops. Please retry.',
+            mapPanelTitle: (op, r) => `🗺️ ${op} ${r} Live Bus Position Estimation`,
+            mapAutoLabel: 'Auto',
+            mapPausedLabel: '⏸️ Paused (Tap to resume)',
+            mapNowBtn: '↻ Refresh',
+            closeBtn: '✕ Close',
+            collapseBtn: '✕ Hide',
+            etaRefreshLabel: 'Refresh',
+            tabAll: 'All',
+            tabDay: 'Day',
+            tabNight: 'Night',
+            noBusData: 'No ETA',
+            arrivingNow: 'Arriving',
+            minsUnit: 'min',
+            scheduledTag: '📅 Scheduled',
+            liveTag: '📡 Live',
+            scheduledShort: 'Sched.',
+            liveShort: 'Live',
+            bus2: '2nd',
+            bus3: '3rd',
+            ttTitle: (op, r) => `🕒 ${op} ${r} Full Route Timetable (Trip-Aligned)`,
+            ttRefreshBtn: '↻ Refresh',
+            ttOnlySched: 'Scheduled Only',
+            thStopSeqName: 'Seq / Bus Stop',
+            thBus1: 'Bus 1',
+            thBus2: 'Bus 2',
+            thBus3: 'Bus 3',
+            passedStop: 'Passed',
+            inTransit: 'In transit...',
+            tripLabel: 'Trip',
+            estDepTag: '(Est. Mid-route)',
+            tripHeaderBanner: (dep, r, op, dest) => `🚌 Trip [Terminus Dep: ${dep}] ｜ ${r} (${op} to ${dest})`,
+            adminPrompt: 'Enter admin password to modify watched routes:',
+            adminWrongPwd: '❌ Incorrect password. Cannot modify watched routes.',
+            adminExpiredPwd: '❌ Password invalid or expired. Please try again.'
+        }
+    };
+
+    function t(key) {
+        return I18N[currentLang][key] ?? I18N.zh[key] ?? key;
+    }
+
+    function getStopDisplayName(stopObj) {
+        if (!stopObj) return '';
+        if (currentLang === 'en') {
+            return (stopObj.name_en || stopObj.stopNameEn || stopObj.name_tc || stopObj.stopName || '').trim();
+        }
+        return (stopObj.name_tc || stopObj.stopName || stopObj.name_en || '').trim();
+    }
+
+    function getRouteOrig(r) {
+        if (currentLang === 'en') return (r.orig_en || r.origEn || r.orig_tc || r.origTc || '').trim();
+        return (r.orig_tc || r.origTc || r.orig_en || '').trim();
+    }
+
+    function getRouteDest(r) {
+        if (currentLang === 'en') return (r.dest_en || r.destEn || r.dest_tc || r.destTc || '').trim();
+        return (r.dest_tc || r.destTc || r.dest_en || '').trim();
+    }
 
     let kmbAllStops = [];
     let kmbStopsMap = {};
@@ -1305,12 +1482,11 @@
 
     let activeTimetableTarget = null;
     let currentTimetableData = [];
+    let currentAlignedTrips = [];
 
-    // Bookmark 狀態
     let bookmarkedRoutes = JSON.parse(localStorage.getItem('hk_bus_bookmarks') || '[]');
     let isLocalServerOnline = false;
 
-    // Leaflet 地圖變數
     let leafletMap = null;
     let mapLayerGroup = null;
     let activeMapTarget = null;
@@ -1319,12 +1495,24 @@
     let mapRefreshTimer = null;
     let mapCountdownValue = 15;
 
-    const DISTRICT_NAMES = {
-        ALL: '全港',
-        YTM: '油尖旺區', SSP: '深水埗區', KLC: '九龍城區', WTS: '黃大仙區', KT: '觀塘區',
-        ST: '沙田區', TP: '大埔區', NORTH: '北區', TM: '屯門區', YL: '元朗區',
-        TW_KC: '荃灣/葵青區', SK: '西貢/將軍澳', HKI: '港島區', LANTAU: '大嶼山/機場', OTHER: '其他'
+    const DISTRICT_LABELS = {
+        zh: {
+            ALL: '全港',
+            YTM: '油尖旺區', SSP: '深水埗區', KLC: '九龍城區', WTS: '黃大仙區', KT: '觀塘區',
+            ST: '沙田區', TP: '大埔區', NORTH: '北區', TM: '屯門區', YL: '元朗區',
+            TW_KC: '荃灣/葵青區', SK: '西貢/將軍澳', HKI: '港島區', LANTAU: '大嶼山/機場', OTHER: '其他'
+        },
+        en: {
+            ALL: 'All Hong Kong',
+            YTM: 'Yau Tsim Mong', SSP: 'Sham Shui Po', KLC: 'Kowloon City', WTS: 'Wong Tai Sin', KT: 'Kwun Tong',
+            ST: 'Sha Tin', TP: 'Tai Po', NORTH: 'North District', TM: 'Tuen Mun', YL: 'Yuen Long',
+            TW_KC: 'Tsuen Wan / Kwai Tsing', SK: 'Sai Kung / TKO', HKI: 'Hong Kong Island', LANTAU: 'Lantau / Airport', OTHER: 'Others'
+        }
     };
+
+    function getDistrictName(code) {
+        return DISTRICT_LABELS[currentLang][code] || DISTRICT_LABELS.zh[code] || '';
+    }
 
     const DISTRICT_KEYWORDS = {
         YTM: ['旺角', '尖沙咀', '佐敦', '油麻地', '大角咀', '太子', '紅磡', '柏景灣', '九龍站', '維港灣', '海泓道'],
@@ -1372,18 +1560,214 @@
     }
 
     function sanitizeStopName(stopObj, fallbackId) {
-        if (!stopObj) return `未命名站點 (${fallbackId})`;
+        if (!stopObj) return `Unknown Stop (${fallbackId})`;
         const tc = (stopObj.name_tc || '').trim();
         const en = (stopObj.name_en || '').trim();
         const sc = (stopObj.name_sc || '').trim();
         if (tc) return tc;
-        if (en) return `${en} (僅英文站名)`;
+        if (en) return en;
         if (sc) return sc;
-        return `未命名站點 (${fallbackId})`;
+        return `Stop (${fallbackId})`;
     }
 
     // ==========================================
-    // Bookmark 收藏與本地 Node.js 後台同步
+    // 語言切換與靜態/動態 UI 翻譯更新
+    // ==========================================
+    function toggleLanguage() {
+        currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        localStorage.setItem('hk_bus_lang', currentLang);
+        document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-HK';
+        applyLanguageUI();
+    }
+
+    function populateDistrictSelects() {
+        const isEn = currentLang === 'en';
+        const stopSel = document.getElementById('districtSelect');
+        const nightSel = document.getElementById('nightDistrictSelect');
+        const prevStopVal = stopSel ? stopSel.value || 'ALL' : 'ALL';
+        const prevNightVal = nightSel ? nightSel.value || 'ALL' : 'ALL';
+
+        if (stopSel) {
+            stopSel.innerHTML = `
+                <option value="ALL">📍 ${isEn ? 'All Hong Kong Districts' : '全港所有地區'}</option>
+                <optgroup label="${isEn ? 'Kowloon' : '九龍'}">
+                    <option value="YTM">${getDistrictName('YTM')}</option>
+                    <option value="SSP">${getDistrictName('SSP')}</option>
+                    <option value="KLC">${getDistrictName('KLC')}</option>
+                    <option value="WTS">${getDistrictName('WTS')}</option>
+                    <option value="KT">${getDistrictName('KT')}</option>
+                </optgroup>
+                <optgroup label="${isEn ? 'New Territories' : '新界'}">
+                    <option value="ST">${getDistrictName('ST')}</option>
+                    <option value="TP">${getDistrictName('TP')}</option>
+                    <option value="NORTH">${getDistrictName('NORTH')}</option>
+                    <option value="TM">${getDistrictName('TM')}</option>
+                    <option value="YL">${getDistrictName('YL')}</option>
+                    <option value="TW_KC">${getDistrictName('TW_KC')}</option>
+                    <option value="SK">${getDistrictName('SK')}</option>
+                </optgroup>
+                <optgroup label="${isEn ? 'HK Island & Lantau' : '港島及離島'}">
+                    <option value="HKI">${getDistrictName('HKI')}</option>
+                    <option value="LANTAU">${getDistrictName('LANTAU')}</option>
+                </optgroup>
+            `;
+            stopSel.value = prevStopVal;
+        }
+
+        if (nightSel) {
+            nightSel.innerHTML = `
+                <option value="ALL">🌙 ${isEn ? 'All Overnight Routes (KMB + CTB)' : '全港所有通宵巴士 (九巴 + 城巴)'}</option>
+                <optgroup label="${isEn ? 'HK Island & Lantau' : '港島及離島'}">
+                    <option value="HKI">${getDistrictName('HKI')}</option>
+                    <option value="LANTAU">${getDistrictName('LANTAU')}</option>
+                </optgroup>
+                <optgroup label="${isEn ? 'Kowloon' : '九龍'}">
+                    <option value="YTM">${getDistrictName('YTM')}</option>
+                    <option value="SSP">${getDistrictName('SSP')}</option>
+                    <option value="KLC">${getDistrictName('KLC')}</option>
+                    <option value="WTS">${getDistrictName('WTS')}</option>
+                    <option value="KT">${getDistrictName('KT')}</option>
+                </optgroup>
+                <optgroup label="${isEn ? 'New Territories' : '新界'}">
+                    <option value="ST">${getDistrictName('ST')}</option>
+                    <option value="TP">${getDistrictName('TP')}</option>
+                    <option value="NORTH">${getDistrictName('NORTH')}</option>
+                    <option value="TM">${getDistrictName('TM')}</option>
+                    <option value="YL">${getDistrictName('YL')}</option>
+                    <option value="TW_KC">${getDistrictName('TW_KC')}</option>
+                    <option value="SK">${getDistrictName('SK')}</option>
+                </optgroup>
+            `;
+            nightSel.value = prevNightVal;
+        }
+    }
+
+    function applyLanguageUI() {
+        const isEn = currentLang === 'en';
+        document.getElementById('pageTitle').textContent = t('pageTitle');
+        document.getElementById('headerTitle').textContent = t('headerTitle');
+        document.getElementById('langSwitchBtn').textContent = t('langSwitchBtn');
+
+        document.getElementById('modeBtn-KMB_ROUTE').textContent = t('modeKmbRoute');
+        document.getElementById('modeBtn-CTB_ROUTE').textContent = t('modeCtbRoute');
+        document.getElementById('modeBtn-KMB_STOP').textContent = t('modeKmbStop');
+        document.getElementById('modeBtn-DISTRICT_NIGHT').textContent = t('modeNight');
+        document.getElementById('modeLabelBookmarks').textContent = t('modeBookmarks');
+
+        const kmbSel = document.getElementById('kmbRouteServiceFilter');
+        kmbSel.options[0].text = t('kmbOptAll');
+        kmbSel.options[1].text = t('kmbOptDay');
+        kmbSel.options[2].text = t('kmbOptNight');
+        document.getElementById('kmbRouteSearchInput').placeholder = t('kmbSearchPlaceholder');
+        document.getElementById('kmbFilterBtn').textContent = t('filterBtn');
+
+        const ctbSel = document.getElementById('ctbServiceFilter');
+        ctbSel.options[0].text = t('ctbOptAll');
+        ctbSel.options[1].text = t('ctbOptDay');
+        ctbSel.options[2].text = t('ctbOptNight');
+        document.getElementById('ctbSearchInput').placeholder = t('ctbSearchPlaceholder');
+        document.getElementById('ctbFilterBtn').textContent = t('filterBtn');
+
+        document.getElementById('searchInput').placeholder = t('stopSearchPlaceholder');
+        document.getElementById('kmbStopSearchBtn').textContent = t('searchBtn');
+        document.getElementById('nightRouteFilterInput').placeholder = t('nightSearchPlaceholder');
+        document.getElementById('nightTipText').innerHTML = t('nightTip');
+
+        populateDistrictSelects();
+
+        // 熱門快速標籤
+        document.getElementById('kmbQuickTags').innerHTML = `
+            <span>${t('kmbPopular')}</span>
+            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('1A')">1A ${isEn ? 'Tsim Sha Tsui' : '尖沙咀'}</span>
+            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('968')">968 ${isEn ? 'Yuen Long' : '元朗'}</span>
+            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('290A')">290A ${isEn ? 'Tseung Kwan O' : '將軍澳'}</span>
+            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('N241')">N241 ${isEn ? 'Night' : '通宵'}</span>
+            <span class="tag kmb-tag" onclick="filterKmbRouteQuick('N73')">N73 ${isEn ? 'Night North' : '通宵北區'}</span>
+        `;
+
+        document.getElementById('ctbQuickTags').innerHTML = `
+            <span>${t('ctbPopular')}</span>
+            <span class="tag ctb-tag" onclick="filterCtbQuick('A21')">A21 ${isEn ? 'Airport' : '機場'}</span>
+            <span class="tag ctb-tag" onclick="filterCtbQuick('969')">969 ${isEn ? 'Tin Shui Wai' : '天水圍'}</span>
+            <span class="tag ctb-tag" onclick="filterCtbQuick('5X')">5X ${isEn ? 'Causeway Bay' : '銅鑼灣'}</span>
+            <span class="tag ctb-tag" onclick="filterCtbQuick('N8X')">N8X ${isEn ? 'Night' : '通宵'}</span>
+            <span class="tag ctb-tag" onclick="filterCtbQuick('N11')">N11 ${isEn ? 'Night Airport' : '通宵機場'}</span>
+        `;
+
+        document.getElementById('kmbStopQuickTags').innerHTML = `
+            <span>${t('stopPopular')}</span>
+            <span class="tag" onclick="quickSelectKmb('BFA3460955AC820C', '${isEn ? 'Hung Hom Station (Cross Harbour Tunnel)' : '紅磡站 (海底隧道)'}')">${isEn ? 'Hung Hom Station' : '紅磡站'}</span>
+            <span class="tag" onclick="quickSelectKmb('A60303B18A76E284', '${isEn ? 'Nelson Street Mong Kok' : '旺角奶路臣街'}')">${isEn ? 'Nelson St Mong Kok' : '旺角奶路臣街'}</span>
+            <span class="tag" onclick="quickSelectKmb('2843A6857690F452', '${isEn ? 'Sha Tin Central Bus Terminus' : '沙田市中心總站'}')">${isEn ? 'Sha Tin Central' : '沙田市中心'}</span>
+            <span class="tag" onclick="quickSelectKmb('643568D9895252D6', '${isEn ? 'Tuen Mun Road Bus-Bus Interchange' : '屯門公路轉車站'}')">${isEn ? 'Tuen Mun Rd BBI' : '屯公轉車站'}</span>
+        `;
+
+        // 地圖、ETA 與班次表按鈕文字
+        document.getElementById('mapNowBtn').textContent = t('mapNowBtn');
+        document.getElementById('mapCloseBtn').textContent = t('closeBtn');
+        const mapAutoBtn = document.getElementById('mapAutoToggleBtn');
+        if (mapAutoRefreshEnabled) {
+            mapAutoBtn.innerHTML = `⏱️ <span id="mapAutoLabel">${t('mapAutoLabel')}</span> (<span id="mapCountdown">${mapCountdownValue}</span>s)`;
+        } else {
+            mapAutoBtn.textContent = t('mapPausedLabel');
+        }
+
+        document.getElementById('etaTimetableBtn').textContent = t('fullTimetableBtn');
+        document.getElementById('etaMapBtn').textContent = t('mapCalcBtn');
+        document.getElementById('etaRefreshLabel').textContent = t('etaRefreshLabel');
+        document.getElementById('etaCloseBtn').textContent = t('collapseBtn');
+        document.getElementById('tabLabelAll').textContent = t('tabAll');
+        document.getElementById('tabLabelDay').textContent = t('tabDay');
+        document.getElementById('tabLabelNight').textContent = t('tabNight');
+
+        document.getElementById('ttRefreshBtn').textContent = t('ttRefreshBtn');
+        document.getElementById('ttCloseBtn').textContent = t('collapseBtn');
+        document.getElementById('ttOnlySchedLabel').textContent = t('ttOnlySched');
+        document.getElementById('thStopSeqName').textContent = t('thStopSeqName');
+        document.getElementById('thBus1').textContent = t('thBus1');
+        document.getElementById('thBus2').textContent = t('thBus2');
+        document.getElementById('thBus3').textContent = t('thBus3');
+
+        // 監察中心標題與表格表頭
+        document.getElementById('bmHeaderTitle').textContent = t('bmHeaderTitle');
+        document.getElementById('bmRefreshBtn').textContent = t('bmRefreshBtn');
+        document.getElementById('bmDownloadBtn').textContent = t('bmDownloadBtn');
+        document.getElementById('bmRecordsTitle').innerHTML = t('bmRecordsTitle');
+        document.getElementById('thTripId').textContent = t('thTripId');
+        document.getElementById('thStopSeq').textContent = t('thStopSeq');
+        document.getElementById('thSchedTime').textContent = t('thSchedTime');
+        document.getElementById('thActualTime').textContent = t('thActualTime');
+        document.getElementById('thCumTime').textContent = t('thCumTime');
+
+        // 重新渲染目前開啟的清單與面板
+        if (kmbAllStops.length > 0) {
+            const auditBanner = document.getElementById('auditBanner');
+            auditBanner.innerHTML = isEn
+                ? `✅ Database loaded (${kmbAllStops.length} KMB stops) ｜ ${isLocalServerOnline ? '🟢 Excel Background Monitor Online' : '⚪ Backend Offline'}`
+                : `✅ 站點資料庫已載入（共 ${kmbAllStops.length} 個九巴站點）｜ ${isLocalServerOnline ? '🟢 Excel 自動監察背景服務已連線' : '⚪ 尚未啟動本地 server.js'}`;
+        }
+
+        if (document.getElementById('kmbRouteSection').style.display !== 'none') renderKmbRouteList();
+        if (document.getElementById('ctbRouteSection').style.display !== 'none') renderCtbRouteList();
+        if (document.getElementById('districtNightSection').style.display !== 'none') renderDistrictNightList();
+        if (document.getElementById('panel-BOOKMARKS').style.display !== 'none') renderBookmarkDashboard();
+        if (document.getElementById('timetablePanel').style.display !== 'none' && activeTimetableTarget) {
+            document.getElementById('ttPanelTitle').textContent = t('ttTitle')(
+                activeTimetableTarget.operator === 'KMB' ? t('kmbShort') : t('ctbShort'),
+                activeTimetableTarget.route
+            );
+            renderTimetableRows();
+        }
+        if (document.getElementById('etaSection').style.display !== 'none' && activeQuery) {
+            refreshCurrentEta();
+        }
+        if (document.getElementById('mapPanel').style.display !== 'none' && activeMapTarget) {
+            manualMapRefresh();
+        }
+    }
+
+    // ==========================================
+    // Bookmark 收藏與後台同步（含管理密碼驗證）
     // ==========================================
     function getBookmarkId(operator, route, dirParam, serviceType = '1') {
         return `${operator}_${route}_${dirParam}_${serviceType}`;
@@ -1400,8 +1784,34 @@
         if (listCountEl) listCountEl.textContent = bookmarkedRoutes.length;
     }
 
+    async function ensureAdminPassword(forcePrompt = false) {
+        let savedPwd = !forcePrompt ? sessionStorage.getItem('bus_admin_pwd') : null;
+        if (savedPwd) return savedPwd;
+
+        const input = window.prompt(t('adminPrompt'));
+        if (input === null) return null;
+
+        try {
+            const verifyRes = await fetch(`${LOCAL_SERVER}/api/auth/verify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: input })
+            });
+            if (!verifyRes.ok) {
+                alert(t('adminWrongPwd'));
+                sessionStorage.removeItem('bus_admin_pwd');
+                return null;
+            }
+            sessionStorage.setItem('bus_admin_pwd', input);
+            return input;
+        } catch (e) {
+            return input;
+        }
+    }
+
     async function syncBookmarksWithLocalServer() {
         const statusEl = document.getElementById('localServerStatusBar');
+        const isEn = currentLang === 'en';
         try {
             const res = await fetch(`${LOCAL_SERVER}/api/status`);
             if (!res.ok) throw new Error('offline');
@@ -1413,39 +1823,46 @@
 
             if (statusEl) {
                 statusEl.classList.remove('offline');
-                statusEl.innerHTML = `
-                    ✅ <b>本地後台 Excel 監察服務運行中</b>（最後掃描：${data.lastPollTime} ｜ 已識別 <b>${data.tripCount}</b> 個獨立發車班次）<br>
-                    📂 本機 Excel 儲存路徑：<code>${data.excelPath}</code>
-                `;
+                statusEl.innerHTML = isEn
+                    ? `✅ <b>Background Excel Monitor Active</b> (Last poll: ${data.lastPollTime} ｜ Tracked <b>${data.tripCount}</b> trips in 48h window)<br>📂 Excel Path: <code>${data.excelPath}</code>`
+                    : `✅ <b>後台 Excel 監察服務運行中</b>（最後掃描：${data.lastPollTime} ｜ 48小時內已識別 <b>${data.tripCount}</b> 個獨立發車班次）<br>📂 伺服器 Excel 路徑：<code>${data.excelPath}</code>`;
             }
         } catch (e) {
             isLocalServerOnline = false;
             updateBookmarkBadges();
             if (statusEl) {
                 statusEl.classList.add('offline');
-                statusEl.innerHTML = `
-                    ⚠️ <b>尚未偵測到本地後台伺服器 (localhost:3000)</b><br>
-                    請在專案資料夾終端機執行 <code>npm install && npm start</code>，並透過 <code>http://localhost:3000</code> 開啟此網頁。
-                `;
+                statusEl.innerHTML = isEn
+                    ? `⚠️ <b>Backend server not detected</b>. Run <code>npm install && npm start</code> and open via server URL.`
+                    : `⚠️ <b>尚未偵測到後台伺服器</b>。請執行 <code>npm install && npm start</code> 啟動服務。`;
             }
         }
     }
 
-    async function toggleRouteBookmark(event, operator, route, dirParam, serviceType = '1', origTc = '', destTc = '') {
+    async function toggleRouteBookmark(event, operator, route, dirParam, serviceType = '1', origTc = '', destTc = '', origEn = '', destEn = '') {
         if (event) event.stopPropagation();
         const id = getBookmarkId(operator, route, dirParam, serviceType);
 
         if (isLocalServerOnline) {
+            const password = await ensureAdminPassword();
+            if (!password) return;
+
             try {
                 const res = await fetch(`${LOCAL_SERVER}/api/bookmarks/toggle`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ operator, route, dirParam, serviceType, origTc, destTc })
+                    body: JSON.stringify({ password, operator, route, dirParam, serviceType, origTc, destTc, origEn, destEn })
                 });
+                if (res.status === 401) {
+                    sessionStorage.removeItem('bus_admin_pwd');
+                    alert(t('adminExpiredPwd'));
+                    return;
+                }
                 const json = await res.json();
                 bookmarkedRoutes = json.bookmarks || [];
             } catch (e) {
-                alert('同步至本地後台伺服器失敗，請確認 server.js 正在運行。');
+                alert(currentLang === 'en' ? 'Failed to sync with server.' : '同步至後台伺服器失敗，請確認 server.js 正在運行。');
+                return;
             }
         } else {
             const idx = bookmarkedRoutes.findIndex(b => b.id === id);
@@ -1453,7 +1870,7 @@
                 bookmarkedRoutes.splice(idx, 1);
             } else {
                 bookmarkedRoutes.push({
-                    id, operator, route, dirParam, serviceType, origTc, destTc,
+                    id, operator, route, dirParam, serviceType, origTc, destTc, origEn, destEn,
                     addedAt: new Date().toLocaleString('zh-HK', { hour12: false })
                 });
             }
@@ -1470,7 +1887,7 @@
 
     function downloadLocalExcel() {
         if (!isLocalServerOnline) {
-            alert('請先在終端機執行 npm start 啟動本地伺服器，即可直接下載生成的 .xlsx 檔案。');
+            alert(currentLang === 'en' ? 'Backend server is offline.' : '請先啟動後台伺服器，即可直接下載生成的 .xlsx 檔案。');
             return;
         }
         window.location.href = `${LOCAL_SERVER}/api/download-excel`;
@@ -1485,31 +1902,32 @@
         updateBookmarkBadges();
         const container = document.getElementById('bookmarkedRoutesContainer');
         const tbody = document.getElementById('bmRecordsTableBody');
+        const isEn = currentLang === 'en';
 
         if (bookmarkedRoutes.length === 0) {
-            container.innerHTML = `<div class="status-msg" style="margin-bottom:0;">尚未收藏任何監察路線。請在「九巴路線」、「城巴路線」或「通宵巴士」列表點擊 <b>☆ 監察</b>。</div>`;
+            container.innerHTML = `<div class="status-msg" style="margin-bottom:0;">${t('noBookmarksMsg')}</div>`;
         } else {
             container.innerHTML = bookmarkedRoutes.map(b => `
                 <div class="route-card ${b.operator === 'CTB' ? 'is-ctb' : ''}" style="padding:10px 14px;">
                     <div class="route-info">
                         <div class="route-number-row">
                             <span class="route-number" style="font-size:1.25rem;">${b.route}</span>
-                            <span class="${b.operator === 'CTB' ? 'badge-ctb' : 'badge-kmb'}">${b.operator === 'CTB' ? '城巴' : '九巴'}</span>
-                            <span class="district-pill">${b.dirParam === 'outbound' ? '去程' : '回程'}</span>
+                            <span class="${b.operator === 'CTB' ? 'badge-ctb' : 'badge-kmb'}">${b.operator === 'CTB' ? t('ctbShort') : t('kmbShort')}</span>
+                            <span class="district-pill">${b.dirParam === 'outbound' ? t('outbound') : t('inbound')}</span>
                         </div>
-                        <div class="route-dest">${b.origTc} <span>往</span> <strong>${b.destTc}</strong></div>
+                        <div class="route-dest">${getRouteOrig(b)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(b)}</strong></div>
                     </div>
                     <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                        <button class="timetable-btn" onclick="openRouteTimetable('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">🕒 班次表</button>
-                        <button class="map-locate-btn" onclick="openBusPositionMap('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}', true)">🗺️ 地圖</button>
-                        <button class="bm-btn bookmarked" onclick="toggleRouteBookmark(event, '${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">★ 取消監察</button>
+                        <button class="timetable-btn" onclick="openRouteTimetable('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">${t('timetableShort')}</button>
+                        <button class="map-locate-btn" onclick="openBusPositionMap('${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}', true)">${t('mapShort')}</button>
+                        <button class="bm-btn bookmarked" onclick="toggleRouteBookmark(event, '${b.operator}', '${b.route}', '${b.dirParam}', '${b.serviceType || '1'}')">${t('watchRemove')}</button>
                     </div>
                 </div>
             `).join('');
         }
 
         if (!isLocalServerOnline) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:18px; color:#991b1b;">本地後台未啟動（請執行 <code>npm start</code> 後透過 <code>http://localhost:3000</code> 開啟）</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:18px; color:#991b1b;">${isEn ? 'Backend server offline' : '後台伺服器未啟動'}</td></tr>`;
             return;
         }
 
@@ -1519,17 +1937,18 @@
             const tripList = json.trips || [];
 
             if (tripList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:18px; color:#64748b;">背景監察器正在等待巴士由總站開出並記錄各站累積時間（每 30 秒掃描一次）...</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:18px; color:#64748b;">${t('waitingTripsMsg')}</td></tr>`;
                 return;
             }
 
             let html = '';
             tripList.forEach(trip => {
-                const depLabel = `${trip.departureTimeStr}${trip.isEstimatedDep ? ' <small>(途中估算)</small>' : ''}`;
+                const depLabel = `${trip.departureTimeStr}${trip.isEstimatedDep ? ` <small>${t('estDepTag')}</small>` : ''}`;
+                const destName = isEn ? (trip.destEn || trip.destTc) : trip.destTc;
                 html += `
                     <tr style="background:#fef3c7;">
                         <td colspan="5" style="font-weight:bold; color:#92400e;">
-                            🚌 班次識別【總站開出時間：${depLabel}】｜ ${trip.route} (${trip.operator === 'KMB' ? '九巴' : '城巴'} 往 ${trip.destTc})
+                            ${t('tripHeaderBanner')(depLabel, trip.route, trip.operator === 'KMB' ? t('kmbShort') : t('ctbShort'), destName)}
                         </td>
                     </tr>
                 `;
@@ -1538,18 +1957,19 @@
                     .sort((a, b) => a.seq - b.seq);
 
                 recordedStops.forEach(st => {
-                    const schedStr = st.scheduledEtaTs ? new Date(st.scheduledEtaTs).toLocaleTimeString('zh-HK', { hour12: false }) : '—';
+                    const schedStr = st.scheduledEtaTs ? new Date(st.scheduledEtaTs).toLocaleTimeString('en-GB', { hour12: false }) : '—';
                     const actualStr = st.actualArrivalTs
-                        ? `<strong style="color:#059669;">${new Date(st.actualArrivalTs).toLocaleTimeString('zh-HK', { hour12: false })}</strong>`
-                        : `<span style="color:#d97706;">行駛中...</span>`;
+                        ? `<strong style="color:#059669;">${new Date(st.actualArrivalTs).toLocaleTimeString('en-GB', { hour12: false })}</strong>`
+                        : `<span style="color:#d97706;">${t('inTransit')}</span>`;
                     const cumStr = st.cumulativeMins !== null
-                        ? `<span class="badge-live">+${st.cumulativeMins} 分鐘</span>`
-                        : `<span class="badge-scheduled">${st.status}</span>`;
+                        ? `<span class="badge-live">+${st.cumulativeMins} ${t('minsUnit')}</span>`
+                        : `<span class="badge-scheduled">${isEn ? 'Scheduled' : st.status}</span>`;
+                    const stopLabel = isEn ? (st.stopNameEn || st.stopName) : st.stopName;
 
                     html += `
                         <tr>
-                            <td style="color:#64748b; font-size:0.8rem;">${trip.departureTimeStr} 班次</td>
-                            <td>${st.seq}. ${st.stopName}</td>
+                            <td style="color:#64748b; font-size:0.8rem;">${trip.departureTimeStr} ${t('tripLabel')}</td>
+                            <td>${st.seq}. ${stopLabel}</td>
                             <td class="tt-slot">${schedStr}</td>
                             <td class="tt-slot">${actualStr}</td>
                             <td>${cumStr}</td>
@@ -1560,7 +1980,7 @@
 
             tbody.innerHTML = html;
         } catch (e) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:18px; color:#dc2626;">讀取班次記錄失敗</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:18px; color:#dc2626;">${isEn ? 'Failed to load trip records' : '讀取班次記錄失敗'}</td></tr>`;
         }
     }
 
@@ -1580,6 +2000,7 @@
                         ...json.data,
                         stop: stopId,
                         name_tc: cleanName,
+                        name_en: (json.data.name_en || '').trim() || cleanName,
                         district: detectDistrict(json.data.lat, json.data.long)
                     };
                     kmbStopsMap[stopId] = info;
@@ -1587,7 +2008,7 @@
                 }
             }
         } catch (e) { /* ignore */ }
-        return existing || { stop: stopId, name_tc: `站點 ${stopId}`, lat: null, long: null, district: 'OTHER' };
+        return existing || { stop: stopId, name_tc: `Stop ${stopId}`, name_en: `Stop ${stopId}`, lat: null, long: null, district: 'OTHER' };
     }
 
     async function resolveCtbStopInfo(stopId) {
@@ -1603,7 +2024,7 @@
                     const info = {
                         stopId,
                         name_tc: cleanName,
-                        name_en: (json.data.name_en || '').trim(),
+                        name_en: (json.data.name_en || '').trim() || cleanName,
                         lat: parseFloat(json.data.lat),
                         long: parseFloat(json.data.long),
                         district: detectDistrict(json.data.lat, json.data.long)
@@ -1613,12 +2034,16 @@
                 }
             }
         } catch (e) { /* ignore */ }
-        return { stopId, name_tc: `城巴站點 (${stopId})`, name_en: '', lat: null, long: null, district: 'OTHER' };
+        return { stopId, name_tc: `CTB Stop (${stopId})`, name_en: `CTB Stop (${stopId})`, lat: null, long: null, district: 'OTHER' };
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
+        document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-HK';
+        applyLanguageUI();
+
         const statusBox = document.getElementById('statusBox');
         const auditBanner = document.getElementById('auditBanner');
+        statusBox.textContent = t('loadingInit');
         await syncBookmarksWithLocalServer();
 
         try {
@@ -1642,11 +2067,15 @@
             });
 
             auditBanner.style.display = 'block';
-            auditBanner.innerHTML = `✅ 站點資料庫已載入（共 ${kmbAllStops.length} 個九巴站點）｜ ${isLocalServerOnline ? '🟢 本地 Excel 自動監察背景服務已連線' : '⚪ 尚未啟動本地 server.js'}`;
+            auditBanner.innerHTML = currentLang === 'en'
+                ? `✅ Database loaded (${kmbAllStops.length} KMB stops) ｜ ${isLocalServerOnline ? '🟢 Excel Background Monitor Online' : '⚪ Backend Offline'}`
+                : `✅ 站點資料庫已載入（共 ${kmbAllStops.length} 個九巴站點）｜ ${isLocalServerOnline ? '🟢 Excel 自動監察背景服務已連線' : '⚪ 尚未啟動本地 server.js'}`;
 
             await loadKmbRoutes();
         } catch (error) {
-            statusBox.innerHTML = '⚠️ 站點列表載入較慢，請檢查網絡連線或嘗試重新整理。';
+            statusBox.innerHTML = currentLang === 'en'
+                ? '⚠️ Slow network while loading stop database. Please refresh.'
+                : '⚠️ 站點列表載入較慢，請檢查網絡連線或嘗試重新整理。';
         }
     });
 
@@ -1686,7 +2115,7 @@
             refreshBookmarkRecords();
         } else if (isKmbStop) {
             document.getElementById('statusBox').style.display = 'block';
-            document.getElementById('statusBox').innerHTML = '請選擇香港地區或輸入九巴站名 / 16位 Stop ID 搜尋。';
+            document.getElementById('statusBox').innerHTML = t('stopModeHint');
         }
     }
 
@@ -1710,15 +2139,17 @@
     }
 
     // ==========================================
-    // 班次時間與「表列班次 / 實時」格式化
+    // 班次時間格式化（支援中英備註）
     // ==========================================
     function analyzeBusArrival(etaItem) {
         const etaString = etaItem.eta;
-        const remark = (etaItem.rmk_tc || '').trim();
-        const isScheduled = remark.includes('原定') || remark.includes('表列') || remark.includes('Scheduled');
+        const remarkTc = (etaItem.rmk_tc || '').trim();
+        const remarkEn = (etaItem.rmk_en || '').trim();
+        const remark = currentLang === 'en' ? (remarkEn || remarkTc) : (remarkTc || remarkEn);
+        const isScheduled = remarkTc.includes('原定') || remarkTc.includes('表列') || remarkEn.toLowerCase().includes('scheduled');
 
         if (!etaString) {
-            return { minsText: remark || '暫無班次', clockText: '', isArriving: false, isScheduled, remark };
+            return { minsText: remark || t('noBusData'), clockText: '', isArriving: false, isScheduled, remark };
         }
 
         const now = new Date();
@@ -1726,10 +2157,10 @@
         const diffMins = Math.floor((etaTime - now) / 60000);
         const clockText = `${String(etaTime.getHours()).padStart(2, '0')}:${String(etaTime.getMinutes()).padStart(2, '0')}`;
 
-        let minsText = `${diffMins} 分鐘`;
+        let minsText = `${diffMins} ${t('minsUnit')}`;
         let isArriving = false;
         if (diffMins <= 0) {
-            minsText = '即將抵達';
+            minsText = t('arrivingNow');
             isArriving = true;
         } else if (diffMins === 1) {
             isArriving = true;
@@ -1738,11 +2169,11 @@
         return { minsText, clockText, isArriving, isScheduled, remark };
     }
 
-    function renderEtaCardHtml(operator, route, destTc, etaList, extraBtnsHtml = '') {
+    function renderEtaCardHtml(operator, route, destDisplay, etaList, extraBtnsHtml = '') {
         etaList.sort((a, b) => a.eta_seq - b.eta_seq);
         const firstInfo = analyzeBusArrival(etaList[0]);
         const nextInfos = etaList.slice(1)
-            .filter(b => b.eta || (b.rmk_tc && b.rmk_tc.trim()))
+            .filter(b => b.eta || (b.rmk_tc && b.rmk_tc.trim()) || (b.rmk_en && b.rmk_en.trim()))
             .map(b => analyzeBusArrival(b));
 
         const isCtb = operator === 'CTB';
@@ -1750,16 +2181,16 @@
 
         const primaryStatusBadge = etaList[0].eta
             ? (firstInfo.isScheduled
-                ? `<span class="badge-scheduled">📅 表列班次</span>`
-                : `<span class="badge-live">📡 實時</span>`)
+                ? `<span class="badge-scheduled">${t('scheduledTag')}</span>`
+                : `<span class="badge-live">${t('liveTag')}</span>`)
             : '';
 
         const nextBusesHtml = nextInfos.map((info, idx) => {
-            const label = idx === 0 ? '第2班' : '第3班';
+            const label = idx === 0 ? t('bus2') : t('bus3');
             const badge = info.isScheduled
-                ? `<span class="badge-scheduled">表列</span>`
-                : (info.clockText ? `<span class="badge-live">實時</span>` : '');
-            const rmkNote = info.remark && !info.remark.includes('原定') ? ` (${info.remark})` : '';
+                ? `<span class="badge-scheduled">${t('scheduledShort')}</span>`
+                : (info.clockText ? `<span class="badge-live">${t('liveShort')}</span>` : '');
+            const rmkNote = info.remark && !info.remark.includes('原定') && !info.remark.toLowerCase().includes('scheduled') ? ` (${info.remark})` : '';
             return `
                 <div class="eta-next-item">
                     <span>${label}:</span>
@@ -1776,11 +2207,11 @@
                 <div class="route-info">
                     <div class="route-number-row">
                         <span class="route-number">${route}</span>
-                        <span class="${isCtb ? 'badge-ctb' : 'badge-kmb'}">${isCtb ? '城巴 CTB' : '九巴 KMB'}</span>
-                        ${isNight ? `<span class="badge-night">🌙 通宵</span>` : `<span class="badge-day">☀️ 日間</span>`}
+                        <span class="${isCtb ? 'badge-ctb' : 'badge-kmb'}">${isCtb ? t('ctbBadge') : t('kmbBadge')}</span>
+                        ${isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : `<span class="badge-day">${t('dayBadge')}</span>`}
                         ${extraBtnsHtml}
                     </div>
-                    <div class="route-dest"><span>往</span> ${destTc || ''}</div>
+                    <div class="route-dest"><span>${t('to')}</span> ${destDisplay || ''}</div>
                     ${firstInfo.remark ? `<div class="eta-rmk">※ ${firstInfo.remark}</div>` : ''}
                 </div>
                 <div class="eta-times">
@@ -1821,18 +2252,17 @@
         );
     }
 
-   let currentAlignedTrips = []; // 儲存按「同一輛巴士車次」對齊後的橫向班次資料
-
     async function openRouteTimetable(operator, route, dirParam, serviceType) {
         activeTimetableTarget = { operator, route, dirParam, serviceType };
         const panel = document.getElementById('timetablePanel');
         const titleEl = document.getElementById('ttPanelTitle');
         const tbody = document.getElementById('ttTableBody');
         const metaInfo = document.getElementById('ttMetaInfo');
+        const isEn = currentLang === 'en';
 
         panel.style.display = 'block';
-        titleEl.textContent = `🕒 ${operator === 'KMB' ? '九巴' : '城巴'} ${route} 沿途完整班次表（按同一班車對齊）`;
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#64748b;">⏳ 正在讀取並串聯 ${route} 線各班車沿途時間軸...</td></tr>`;
+        titleEl.textContent = t('ttTitle')(operator === 'KMB' ? t('kmbShort') : t('ctbShort'), route);
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#64748b;">⏳ ${isEn ? `Loading & aligning trips for ${route}...` : `正在讀取並串聯 ${route} 線各班車沿途時間軸...`}</td></tr>`;
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         try {
@@ -1868,8 +2298,7 @@
                 }
             }
 
-            // 演算法：將各站點獨立的預報時間，依「時間與站序單調遞增」串聯成同一班車（Trip Columns）
-            const tripsColumns = []; // [{ lastSeq, lastTs, slotsBySeq: { [seq]: analyzedSlot } }]
+            const tripsColumns = [];
 
             stopsList.forEach(s => {
                 const rawEtas = (stopSeqMap[s.seq] || [])
@@ -1880,7 +2309,6 @@
                     const etaTs = new Date(rawItem.eta).getTime();
                     const analyzed = analyzeBusArrival(rawItem);
 
-                    // 尋找最適合接續的現有車次（必須站序比該車最後一站大，且到達時間晚於該車最後一站）
                     let matchedCol = null;
                     let bestDiff = Infinity;
 
@@ -1888,7 +2316,6 @@
                         if (col.lastSeq < s.seq && !col.slotsBySeq[s.seq]) {
                             const seqGap = s.seq - col.lastSeq;
                             const diffSecs = (etaTs - col.lastTs) / 1000;
-                            // 合理站間行駛時間：每站至少 15 秒，最多 15 分鐘
                             if (diffSecs >= seqGap * 15 && diffSecs <= seqGap * 15 * 60) {
                                 if (diffSecs < bestDiff) {
                                     bestDiff = diffSecs;
@@ -1899,12 +2326,7 @@
                     }
 
                     if (!matchedCol) {
-                        matchedCol = {
-                            firstSeq: s.seq,
-                            lastSeq: s.seq,
-                            lastTs: etaTs,
-                            slotsBySeq: {}
-                        };
+                        matchedCol = { firstSeq: s.seq, lastSeq: s.seq, lastTs: etaTs, slotsBySeq: {} };
                         tripsColumns.push(matchedCol);
                     }
 
@@ -1914,7 +2336,6 @@
                 });
             });
 
-            // 依預計抵達終點（或最後一站）的時間先後排序，取前 3 班獨立車次
             tripsColumns.sort((a, b) => a.lastTs - b.lastTs);
             currentAlignedTrips = tripsColumns.slice(0, 3);
 
@@ -1922,20 +2343,23 @@
                 seq: s.seq,
                 stopId: s.stopId,
                 name_tc: s.name_tc,
+                name_en: s.name_en,
                 slots: [0, 1, 2].map(colIdx => {
                     const col = currentAlignedTrips[colIdx];
                     if (!col) return null;
                     if (col.slotsBySeq[s.seq]) return col.slotsBySeq[s.seq];
-                    // 若此站序早於該車次被偵測到的第一站，標示為「已過站」
                     if (s.seq < col.firstSeq) return { passed: true };
                     return null;
                 })
             }));
 
-            metaInfo.textContent = `更新時間：${new Date().toLocaleTimeString('zh-HK', { hour12: false })} ｜ 共 ${stopsList.length} 站（已按同一班車時間軸對齊）`;
+            const timeNow = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            metaInfo.textContent = isEn
+                ? `Updated: ${timeNow} ｜ ${stopsList.length} stops (Aligned by individual bus trip)`
+                : `更新時間：${timeNow} ｜ 共 ${stopsList.length} 站（已按同一班車時間軸對齊）`;
             renderTimetableRows();
         } catch (err) {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#dc2626;">❌ 載入班次表失敗 (${err.message})</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#dc2626;">❌ ${err.message}</td></tr>`;
         }
     }
 
@@ -1950,19 +2374,12 @@
             if (onlyScheduled && !hasScheduled) return '';
 
             const cellsHtml = row.slots.map(slot => {
-                if (!slot) {
-                    return `<td class="tt-slot" style="color:#94a3b8;">—</td>`;
-                }
-                if (slot.passed) {
-                    return `<td class="tt-slot" style="color:#94a3b8; font-size:0.78rem;">已過站</td>`;
-                }
-                if (!slot.clockText && slot.minsText === '暫無班次') {
-                    return `<td class="tt-slot" style="color:#94a3b8;">—</td>`;
-                }
-                if (onlyScheduled && !slot.isScheduled) {
-                    return `<td class="tt-slot" style="color:#94a3b8;">(實時)</td>`;
-                }
-                const badge = slot.isScheduled ? `<span class="badge-scheduled">表列</span>` : `<span class="badge-live">實時</span>`;
+                if (!slot) return `<td class="tt-slot" style="color:#94a3b8;">—</td>`;
+                if (slot.passed) return `<td class="tt-slot" style="color:#94a3b8; font-size:0.78rem;">${t('passedStop')}</td>`;
+                if (!slot.clockText && slot.minsText === t('noBusData')) return `<td class="tt-slot" style="color:#94a3b8;">—</td>`;
+                if (onlyScheduled && !slot.isScheduled) return `<td class="tt-slot" style="color:#94a3b8;">(${t('liveShort')})</td>`;
+
+                const badge = slot.isScheduled ? `<span class="badge-scheduled">${t('scheduledShort')}</span>` : `<span class="badge-live">${t('liveShort')}</span>`;
                 return `
                     <td class="tt-slot">
                         <span class="tt-time-main">${slot.clockText || slot.minsText}</span>
@@ -1972,14 +2389,15 @@
                 `;
             }).join('');
 
+            const stopDisplay = getStopDisplayName(row);
             const clickFn = operator === 'KMB'
-                ? `fetchKmbSingleRouteEta('${row.stopId}', '${row.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${serviceType}')`
-                : `fetchCtbEta('${row.stopId}', '${row.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}')`;
+                ? `fetchKmbSingleRouteEta('${row.stopId}', '${row.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${serviceType}', '${(row.name_en || '').replace(/'/g, "\\'")}')`
+                : `fetchCtbEta('${row.stopId}', '${row.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${(row.name_en || '').replace(/'/g, "\\'")}')`;
 
-            return `<tr><td class="tt-stop-cell" onclick="${clickFn}">${row.seq}. ${row.name_tc}</td>${cellsHtml}</tr>`;
+            return `<tr><td class="tt-stop-cell" onclick="${clickFn}">${row.seq}. ${stopDisplay}</td>${cellsHtml}</tr>`;
         }).join('');
 
-        tbody.innerHTML = rowsHtml || `<tr><td colspan="4" style="text-align:center; padding:20px; color:#64748b;">目前班次皆已開出並進入實時衛星追蹤。</td></tr>`;
+        tbody.innerHTML = rowsHtml || `<tr><td colspan="4" style="text-align:center; padding:20px; color:#64748b;">${currentLang === 'en' ? 'All upcoming buses are already in live GPS tracking.' : '目前班次皆已開出並進入實時衛星追蹤。'}</td></tr>`;
     }
 
     // ==========================================
@@ -1997,7 +2415,7 @@
         }
 
         statusBox.style.display = 'block';
-        statusBox.innerHTML = '⏳ 正在取得九巴 (KMB) 路線資料庫...';
+        statusBox.innerHTML = currentLang === 'en' ? '⏳ Loading KMB routes...' : '⏳ 正在取得九巴 (KMB) 路線資料庫...';
 
         try {
             const res = await fetch(`${KMB_API}/route/`);
@@ -2009,6 +2427,8 @@
                 service_type: r.service_type,
                 orig_tc: r.orig_tc,
                 dest_tc: r.dest_tc,
+                orig_en: r.orig_en || r.orig_tc,
+                dest_en: r.dest_en || r.dest_tc,
                 isNight: isOvernightRoute(r.route)
             }));
             list.sort((a, b) => a.route.localeCompare(b.route, undefined, { numeric: true }));
@@ -2018,7 +2438,7 @@
             section.style.display = 'block';
             renderKmbRouteList();
         } catch (err) {
-            statusBox.innerHTML = `❌ 載入九巴路線失敗 (${err.message})`;
+            statusBox.innerHTML = `❌ ${err.message}`;
         }
     }
 
@@ -2030,21 +2450,29 @@
     function renderKmbRouteList() {
         if (!cachedKmbRoutes) return;
         const serviceType = document.getElementById('kmbRouteServiceFilter').value;
-        const keyword = document.getElementById('kmbRouteSearchInput').value.trim().toUpperCase();
+        const keyword = document.getElementById('kmbRouteSearchInput').value.trim().toLowerCase();
         const titleEl = document.getElementById('kmbRouteTitle');
         const resultsEl = document.getElementById('kmbRouteResults');
+        const isEn = currentLang === 'en';
 
         const filtered = cachedKmbRoutes.filter(r => {
             const matchService = serviceType === 'ALL' || (serviceType === 'NIGHT' && r.isNight) || (serviceType === 'DAY' && !r.isNight);
-            const matchKw = !keyword || r.route.toUpperCase().includes(keyword) || r.orig_tc.includes(keyword) || r.dest_tc.includes(keyword);
+            const matchKw = !keyword ||
+                r.route.toLowerCase().includes(keyword) ||
+                r.orig_tc.toLowerCase().includes(keyword) ||
+                r.dest_tc.toLowerCase().includes(keyword) ||
+                r.orig_en.toLowerCase().includes(keyword) ||
+                r.dest_en.toLowerCase().includes(keyword);
             return matchService && matchKw;
         });
 
         const limit = 60;
-        titleEl.textContent = `🔴 九巴路線 (${filtered.length} 個方向/班次${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
+        titleEl.textContent = isEn
+            ? `🔴 KMB Routes (${filtered.length} directions${filtered.length > limit ? `, showing first ${limit}` : ''})`
+            : `🔴 九巴路線 (${filtered.length} 個方向/班次${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
 
         if (filtered.length === 0) {
-            resultsEl.innerHTML = `<div class="status-msg">找不到符合條件的九巴路線。</div>`;
+            resultsEl.innerHTML = `<div class="status-msg">${isEn ? 'No matching KMB routes found.' : '找不到符合條件的九巴路線。'}</div>`;
             return;
         }
 
@@ -2059,24 +2487,24 @@
                         <div style="flex:1; cursor:pointer;">
                             <div style="display:flex; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
                                 <span class="rl-route-badge">${r.route}</span>
-                                <span class="badge-kmb">九巴 KMB</span>
-                                ${r.isNight ? `<span class="badge-night">🌙 通宵</span>` : `<span class="badge-day">☀️ 日間</span>`}
-                                ${r.service_type !== '1' ? `<span class="district-pill">特別班次 (${r.service_type})</span>` : ''}
+                                <span class="badge-kmb">${t('kmbBadge')}</span>
+                                ${r.isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : `<span class="badge-day">${t('dayBadge')}</span>`}
+                                ${r.service_type !== '1' ? `<span class="district-pill">${t('specialTrip')} (${r.service_type})</span>` : ''}
                             </div>
                             <div class="route-dest">
-                                <span>由</span> ${r.orig_tc} <span>往</span> <strong>${r.dest_tc}</strong>
+                                <span>${t('from')}</span> ${getRouteOrig(r)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(r)}</strong>
                             </div>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <button class="bm-btn ${bmActive ? 'bookmarked' : ''}"
-                                    onclick="toggleRouteBookmark(event, 'KMB', '${r.route}', '${r.dirParam}', '${r.service_type}', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}')">
-                                ${bmActive ? '★ 已監察' : '☆ 監察'}
+                                    onclick="toggleRouteBookmark(event, 'KMB', '${r.route}', '${r.dirParam}', '${r.service_type}', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}', '${r.orig_en.replace(/'/g, "\\'")}', '${r.dest_en.replace(/'/g, "\\'")}')">
+                                ${bmActive ? t('watchActive') : t('watchAdd')}
                             </button>
-                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.85rem; cursor:pointer;">站點 ▾</span>
+                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.85rem; cursor:pointer;">${t('stopsBtn')}</span>
                         </div>
                     </div>
                     <div class="rl-stops-drawer" id="${drawerId}">
-                        <div class="rl-drawer-hint">⏳ 正在載入九巴沿途車站...</div>
+                        <div class="rl-drawer-hint">${t('loadingStops')}</div>
                     </div>
                 </div>
             `;
@@ -2093,6 +2521,7 @@
                 seq: parseInt(item.seq, 10),
                 stopId: item.stop,
                 name_tc: info.name_tc,
+                name_en: info.name_en,
                 lat: parseFloat(info.lat),
                 long: parseFloat(info.long),
                 district: info.district || 'OTHER'
@@ -2113,33 +2542,36 @@
             const stopsList = await getKmbRouteStopsList(cacheKey, route, dirParam, serviceType);
             drawer.innerHTML = `
                 <div class="rl-drawer-top">
-                    <div class="rl-drawer-hint">✅ 共 ${stopsList.length} 個站點，點擊車站查詢九巴 ${route}：</div>
+                    <div class="rl-drawer-hint">${t('stopsLoadedHint')(stopsList.length, t('kmbShort'), route)}</div>
                     <div class="action-btn-group">
-                        <button class="timetable-btn" onclick="openRouteTimetable('KMB', '${route}', '${dirParam}', '${serviceType}')">🕒 路線班次表</button>
-                        <button class="map-locate-btn" onclick="openBusPositionMap('KMB', '${route}', '${dirParam}', '${serviceType}', true)">🗺️ 地圖追蹤位置</button>
+                        <button class="timetable-btn" onclick="openRouteTimetable('KMB', '${route}', '${dirParam}', '${serviceType}')">${t('timetableBtn')}</button>
+                        <button class="map-locate-btn" onclick="openBusPositionMap('KMB', '${route}', '${dirParam}', '${serviceType}', true)">${t('mapTrackBtn')}</button>
                     </div>
                 </div>
                 <div class="rl-stop-chips">
                     ${stopsList.map(s => {
                         const isTarget = highlightDistrict !== 'ALL' && s.district === highlightDistrict;
-                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchKmbSingleRouteEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${serviceType}')">${s.seq}. ${s.name_tc}</span>`;
+                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchKmbSingleRouteEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${serviceType}', '${(s.name_en || '').replace(/'/g, "\\'")}')">${s.seq}. ${getStopDisplayName(s)}</span>`;
                     }).join('')}
                 </div>
             `;
         } catch (err) {
-            drawer.innerHTML = `<div class="rl-drawer-hint" style="color:#dc2626;">❌ 載入站點失敗，請重試。</div>`;
+            drawer.innerHTML = `<div class="rl-drawer-hint" style="color:#dc2626;">${t('stopsLoadFail')}</div>`;
             delete routeStopsCache[cacheKey];
         }
     }
 
-    async function fetchKmbSingleRouteEta(stopId, stopName, route, dirParam, serviceType) {
-        activeQuery = { operator: 'KMB_SINGLE', stopId, stopName, route, dirParam, serviceType };
+    async function fetchKmbSingleRouteEta(stopId, stopNameTc, route, dirParam, serviceType, stopNameEn = '') {
+        activeQuery = { operator: 'KMB_SINGLE', stopId, stopName: stopNameTc, stopNameEn, route, dirParam, serviceType };
         const statusBox = document.getElementById('statusBox');
         const etaSection = document.getElementById('etaSection');
         const titleEl = document.getElementById('currentStopTitle');
+        const displayStop = currentLang === 'en' ? (stopNameEn || stopNameTc) : stopNameTc;
 
         statusBox.style.display = 'block';
-        statusBox.innerHTML = `⏳ 正在查詢九巴 ${route} 於「${stopName}」的班次...`;
+        statusBox.innerHTML = currentLang === 'en'
+            ? `⏳ Fetching KMB ${route} ETA at "${displayStop}"...`
+            : `⏳ 正在查詢九巴 ${route} 於「${displayStop}」的班次...`;
         etaSection.style.display = 'none';
         scrollToTopDisplay();
 
@@ -2156,17 +2588,18 @@
             document.getElementById('kmbServiceTabs').style.display = 'none';
             document.getElementById('etaMapBtn').style.display = 'inline-flex';
             document.getElementById('etaTimetableBtn').style.display = 'inline-flex';
-            titleEl.innerHTML = `<span class="operator-tag op-kmb">九巴</span>📍 ${stopName}`;
+            titleEl.innerHTML = `<span class="operator-tag op-kmb">${t('kmbShort')}</span>📍 ${displayStop}`;
 
+            const destStr = rawData[0] ? (currentLang === 'en' ? (rawData[0].dest_en || rawData[0].dest_tc) : rawData[0].dest_tc) : '';
             document.getElementById('etaResults').innerHTML = rawData.length === 0
-                ? `<div class="status-msg" style="margin-bottom:0;">九巴 <b>${route}</b> 在此站目前沒有班次資料。</div>`
-                : renderEtaCardHtml('KMB', route, rawData[0].dest_tc, rawData);
+                ? `<div class="status-msg" style="margin-bottom:0;">${currentLang === 'en' ? `No upcoming KMB <b>${route}</b> arrivals at this stop.` : `九巴 <b>${route}</b> 在此站目前沒有班次資料。`}</div>`
+                : renderEtaCardHtml('KMB', route, destStr, rawData);
 
             resetAutoRefresh();
             scrollToTopDisplay();
         } catch (error) {
             statusBox.style.display = 'block';
-            statusBox.innerHTML = '❌ 查詢失敗，請檢查網絡連線。';
+            statusBox.innerHTML = currentLang === 'en' ? '❌ Query failed. Check network connection.' : '❌ 查詢失敗，請檢查網絡連線。';
         }
     }
 
@@ -2185,16 +2618,18 @@
         }
 
         statusBox.style.display = 'block';
-        statusBox.innerHTML = '⏳ 正在取得城巴 (CTB) 路線資料庫...';
+        statusBox.innerHTML = currentLang === 'en' ? '⏳ Loading CTB routes...' : '⏳ 正在取得城巴 (CTB) 路線資料庫...';
 
         try {
             const res = await fetch(`${CTB_API}/route/ctb`);
             const json = await res.json();
             const expanded = [];
             (json.data || []).forEach(r => {
-                expanded.push({ operator: 'CTB', route: r.route, dirParam: 'outbound', orig_tc: r.orig_tc, dest_tc: r.dest_tc, isNight: isOvernightRoute(r.route) });
+                const origEn = r.orig_en || r.orig_tc;
+                const destEn = r.dest_en || r.dest_tc;
+                expanded.push({ operator: 'CTB', route: r.route, dirParam: 'outbound', orig_tc: r.orig_tc, dest_tc: r.dest_tc, orig_en: origEn, dest_en: destEn, isNight: isOvernightRoute(r.route) });
                 if (r.orig_tc !== r.dest_tc) {
-                    expanded.push({ operator: 'CTB', route: r.route, dirParam: 'inbound', orig_tc: r.dest_tc, dest_tc: r.orig_tc, isNight: isOvernightRoute(r.route) });
+                    expanded.push({ operator: 'CTB', route: r.route, dirParam: 'inbound', orig_tc: r.dest_tc, dest_tc: r.orig_tc, orig_en: destEn, dest_en: origEn, isNight: isOvernightRoute(r.route) });
                 }
             });
             expanded.sort((a, b) => a.route.localeCompare(b.route, undefined, { numeric: true }));
@@ -2204,7 +2639,7 @@
             section.style.display = 'block';
             renderCtbRouteList();
         } catch (err) {
-            statusBox.innerHTML = `❌ 載入城巴路線失敗 (${err.message})`;
+            statusBox.innerHTML = `❌ ${err.message}`;
         }
     }
 
@@ -2216,21 +2651,29 @@
     function renderCtbRouteList() {
         if (!cachedCtbRoutes) return;
         const serviceType = document.getElementById('ctbServiceFilter').value;
-        const keyword = document.getElementById('ctbSearchInput').value.trim().toUpperCase();
+        const keyword = document.getElementById('ctbSearchInput').value.trim().toLowerCase();
         const titleEl = document.getElementById('ctbRouteTitle');
         const resultsEl = document.getElementById('ctbRouteResults');
+        const isEn = currentLang === 'en';
 
         const filtered = cachedCtbRoutes.filter(r => {
             const matchService = serviceType === 'ALL' || (serviceType === 'NIGHT' && r.isNight) || (serviceType === 'DAY' && !r.isNight);
-            const matchKw = !keyword || r.route.toUpperCase().includes(keyword) || r.orig_tc.includes(keyword) || r.dest_tc.includes(keyword);
+            const matchKw = !keyword ||
+                r.route.toLowerCase().includes(keyword) ||
+                r.orig_tc.toLowerCase().includes(keyword) ||
+                r.dest_tc.toLowerCase().includes(keyword) ||
+                r.orig_en.toLowerCase().includes(keyword) ||
+                r.dest_en.toLowerCase().includes(keyword);
             return matchService && matchKw;
         });
 
         const limit = 60;
-        titleEl.textContent = `🔵 城巴路線 (${filtered.length} 個方向${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
+        titleEl.textContent = isEn
+            ? `🔵 CTB Routes (${filtered.length} directions${filtered.length > limit ? `, showing first ${limit}` : ''})`
+            : `🔵 城巴路線 (${filtered.length} 個方向${filtered.length > limit ? `，顯示前 ${limit} 項` : ''})`;
 
         if (filtered.length === 0) {
-            resultsEl.innerHTML = `<div class="status-msg">找不到符合條件的城巴路線。</div>`;
+            resultsEl.innerHTML = `<div class="status-msg">${isEn ? 'No matching CTB routes found.' : '找不到符合條件的城巴路線。'}</div>`;
             return;
         }
 
@@ -2244,23 +2687,23 @@
                         <div style="flex:1; cursor:pointer;">
                             <div style="display:flex; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
                                 <span class="rl-route-badge">${r.route}</span>
-                                <span class="badge-ctb">城巴 CTB</span>
-                                ${r.isNight ? `<span class="badge-night">🌙 通宵</span>` : `<span class="badge-day">☀️ 日間</span>`}
+                                <span class="badge-ctb">${t('ctbBadge')}</span>
+                                ${r.isNight ? `<span class="badge-night">${t('nightBadge')}</span>` : `<span class="badge-day">${t('dayBadge')}</span>`}
                             </div>
                             <div class="route-dest">
-                                <span>由</span> ${r.orig_tc} <span>往</span> <strong>${r.dest_tc}</strong>
+                                <span>${t('from')}</span> ${getRouteOrig(r)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(r)}</strong>
                             </div>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <button class="bm-btn ${bmActive ? 'bookmarked' : ''}"
-                                    onclick="toggleRouteBookmark(event, 'CTB', '${r.route}', '${r.dirParam}', '1', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}')">
-                                ${bmActive ? '★ 已監察' : '☆ 監察'}
+                                    onclick="toggleRouteBookmark(event, 'CTB', '${r.route}', '${r.dirParam}', '1', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}', '${r.orig_en.replace(/'/g, "\\'")}', '${r.dest_en.replace(/'/g, "\\'")}')">
+                                ${bmActive ? t('watchActive') : t('watchAdd')}
                             </button>
-                            <span style="color:var(--ctb-blue); font-weight:bold; font-size:0.85rem; cursor:pointer;">站點 ▾</span>
+                            <span style="color:var(--ctb-blue); font-weight:bold; font-size:0.85rem; cursor:pointer;">${t('stopsBtn')}</span>
                         </div>
                     </div>
                     <div class="rl-stops-drawer" id="ctb-drawer-${idx}">
-                        <div class="rl-drawer-hint">⏳ 正在載入城巴沿途車站...</div>
+                        <div class="rl-drawer-hint">${t('loadingStops')}</div>
                     </div>
                 </div>
             `;
@@ -2277,6 +2720,7 @@
                 seq: parseInt(item.seq, 10),
                 stopId: item.stop,
                 name_tc: stopInfo.name_tc,
+                name_en: stopInfo.name_en,
                 lat: stopInfo.lat,
                 long: stopInfo.long,
                 district: stopInfo.district
@@ -2297,33 +2741,36 @@
             const stopsList = await getCtbRouteStopsList(cacheKey, route, dirParam);
             drawer.innerHTML = `
                 <div class="rl-drawer-top">
-                    <div class="rl-drawer-hint">✅ 共 ${stopsList.length} 個站點，點擊車站查詢城巴 ${route}：</div>
+                    <div class="rl-drawer-hint">${t('stopsLoadedHint')(stopsList.length, t('ctbShort'), route)}</div>
                     <div class="action-btn-group">
-                        <button class="timetable-btn" onclick="openRouteTimetable('CTB', '${route}', '${dirParam}', '1')">🕒 路線班次表</button>
-                        <button class="map-locate-btn" onclick="openBusPositionMap('CTB', '${route}', '${dirParam}', '1', true)">🗺️ 地圖追蹤位置</button>
+                        <button class="timetable-btn" onclick="openRouteTimetable('CTB', '${route}', '${dirParam}', '1')">${t('timetableBtn')}</button>
+                        <button class="map-locate-btn" onclick="openBusPositionMap('CTB', '${route}', '${dirParam}', '1', true)">${t('mapTrackBtn')}</button>
                     </div>
                 </div>
                 <div class="rl-stop-chips">
                     ${stopsList.map(s => {
                         const isTarget = highlightDistrict !== 'ALL' && s.district === highlightDistrict;
-                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchCtbEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}')">${s.seq}. ${s.name_tc}</span>`;
+                        return `<span class="rl-stop-chip ${isTarget ? 'highlight-district' : ''}" onclick="fetchCtbEta('${s.stopId}', '${s.name_tc.replace(/'/g, "\\'")}', '${route}', '${dirParam}', '${(s.name_en || '').replace(/'/g, "\\'")}')">${s.seq}. ${getStopDisplayName(s)}</span>`;
                     }).join('')}
                 </div>
             `;
         } catch (err) {
-            drawer.innerHTML = `<div class="rl-drawer-hint" style="color:#dc2626;">❌ 載入站點失敗，請重試。</div>`;
+            drawer.innerHTML = `<div class="rl-drawer-hint" style="color:#dc2626;">${t('stopsLoadFail')}</div>`;
             delete routeStopsCache[cacheKey];
         }
     }
 
-    async function fetchCtbEta(stopId, stopName, route, dirParam) {
-        activeQuery = { operator: 'CTB', stopId, stopName, route, dirParam, serviceType: '1' };
+    async function fetchCtbEta(stopId, stopNameTc, route, dirParam, stopNameEn = '') {
+        activeQuery = { operator: 'CTB', stopId, stopName: stopNameTc, stopNameEn, route, dirParam, serviceType: '1' };
         const statusBox = document.getElementById('statusBox');
         const etaSection = document.getElementById('etaSection');
         const titleEl = document.getElementById('currentStopTitle');
+        const displayStop = currentLang === 'en' ? (stopNameEn || stopNameTc) : stopNameTc;
 
         statusBox.style.display = 'block';
-        statusBox.innerHTML = `⏳ 正在查詢城巴 ${route} 於「${stopName}」的班次...`;
+        statusBox.innerHTML = currentLang === 'en'
+            ? `⏳ Fetching CTB ${route} ETA at "${displayStop}"...`
+            : `⏳ 正在查詢城巴 ${route} 於「${displayStop}」的班次...`;
         etaSection.style.display = 'none';
         scrollToTopDisplay();
 
@@ -2340,22 +2787,23 @@
             document.getElementById('kmbServiceTabs').style.display = 'none';
             document.getElementById('etaMapBtn').style.display = 'inline-flex';
             document.getElementById('etaTimetableBtn').style.display = 'inline-flex';
-            titleEl.innerHTML = `<span class="operator-tag op-ctb">城巴</span>📍 ${stopName}`;
+            titleEl.innerHTML = `<span class="operator-tag op-ctb">${t('ctbShort')}</span>📍 ${displayStop}`;
 
+            const destStr = rawData[0] ? (currentLang === 'en' ? (rawData[0].dest_en || rawData[0].dest_tc) : rawData[0].dest_tc) : '';
             document.getElementById('etaResults').innerHTML = rawData.length === 0
-                ? `<div class="status-msg" style="margin-bottom:0;">城巴 <b>${route}</b> 在此站目前沒有班次資料。</div>`
-                : renderEtaCardHtml('CTB', route, rawData[0].dest_tc, rawData);
+                ? `<div class="status-msg" style="margin-bottom:0;">${currentLang === 'en' ? `No upcoming CTB <b>${route}</b> arrivals at this stop.` : `城巴 <b>${route}</b> 在此站目前沒有班次資料。`}</div>`
+                : renderEtaCardHtml('CTB', route, destStr, rawData);
 
             resetAutoRefresh();
             scrollToTopDisplay();
         } catch (error) {
             statusBox.style.display = 'block';
-            statusBox.innerHTML = '❌ 查詢失敗，請檢查網絡連線。';
+            statusBox.innerHTML = currentLang === 'en' ? '❌ Query failed. Check network connection.' : '❌ 查詢失敗，請檢查網絡連線。';
         }
     }
 
     // ==========================================
-    // 香港政府地政總署 (LandsD) 地圖 + 自動更新
+    // 香港政府地政總署 (LandsD) 地圖 + 官方道路軌跡
     // ==========================================
     function openMapFromCurrentQuery() {
         if (!activeQuery || !activeQuery.route) return;
@@ -2382,13 +2830,13 @@
         if (mapAutoRefreshEnabled) {
             btn.classList.remove('paused');
             dot.classList.remove('paused');
-            btn.innerHTML = `⏱️ 自動更新 (<span id="mapCountdown">${mapCountdownValue}</span>s)`;
+            btn.innerHTML = `⏱️ <span id="mapAutoLabel">${t('mapAutoLabel')}</span> (<span id="mapCountdown">${mapCountdownValue}</span>s)`;
             startMapAutoRefreshTimer();
         } else {
             clearInterval(mapRefreshTimer);
             btn.classList.add('paused');
             dot.classList.add('paused');
-            btn.innerHTML = `⏸️ 已暫停 (點擊恢復)`;
+            btn.textContent = t('mapPausedLabel');
         }
     }
 
@@ -2416,26 +2864,29 @@
     async function openBusPositionMap(operator, route, dirParam, serviceType, isInitialOpen = true) {
         const routeKey = `${operator}_${route}_${dirParam}_${serviceType}`;
         activeMapTarget = { operator, route, dirParam, serviceType };
+        const isEn = currentLang === 'en';
 
         const mapPanel = document.getElementById('mapPanel');
         const mapTitle = document.getElementById('mapPanelTitle');
         const summaryBar = document.getElementById('mapSummaryBar');
 
         mapPanel.style.display = 'block';
-        mapTitle.textContent = `🗺️ ${operator === 'KMB' ? '九巴' : '城巴'} ${route} 實時巴士位置推算`;
+        mapTitle.textContent = t('mapPanelTitle')(operator === 'KMB' ? t('kmbShort') : t('ctbShort'), route);
 
         if (isInitialOpen) {
-            summaryBar.innerHTML = '⏳ 正在載入地政總署地圖並計算沿途站點 ETA 差值...';
+            summaryBar.innerHTML = isEn
+                ? '⏳ Loading LandsD map & estimating live bus positions...'
+                : '⏳ 正在載入地政總署地圖並計算沿途站點 ETA 差值...';
             mapPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         if (!leafletMap) {
             leafletMap = L.map('busMap').setView([22.3193, 114.1694], 12);
             L.tileLayer('https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/basemap/wgs84/{z}/{x}/{y}.png', {
-                attribution: '&copy; 香港特別行政區政府地政總署 Lands Department',
+                attribution: '&copy; Lands Department, HKSAR Government',
                 maxZoom: 19
             }).addTo(leafletMap);
-            L.tileLayer('https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/label/hk/tc/wgs84/{z}/{x}/{y}.png', {
+            L.tileLayer(`https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/label/hk/${isEn ? 'en' : 'tc'}/wgs84/{z}/{x}/{y}.png`, {
                 maxZoom: 19
             }).addTo(leafletMap);
             mapLayerGroup = L.layerGroup().addTo(leafletMap);
@@ -2483,27 +2934,51 @@
             }
 
             mapLayerGroup.clearLayers();
-            const latLngs = validStops.map(s => [s.lat, s.long]);
             const lineColor = operator === 'KMB' ? '#e30613' : '#0284c7';
-            const polyline = L.polyline(latLngs, { color: lineColor, weight: 4, opacity: 0.75 }).addTo(mapLayerGroup);
+            let routeLayer = null;
+
+            // 嘗試載入官方道路 GeoJSON 軌跡，若無則退回站點連線
+            try {
+                const shapeRes = await fetch(`${LOCAL_SERVER}/api/route-shape?operator=${operator}&route=${route}&dirParam=${dirParam}`);
+                if (shapeRes.ok) {
+                    const shapeData = await shapeRes.json();
+                    if (shapeData.found && shapeData.feature) {
+                        routeLayer = L.geoJSON(shapeData.feature, {
+                            style: { color: lineColor, weight: 4.5, opacity: 0.8 }
+                        }).addTo(mapLayerGroup);
+                    }
+                }
+            } catch (e) { /* ignore */ }
+
+            if (!routeLayer) {
+                const latLngs = validStops.map(s => [s.lat, s.long]);
+                routeLayer = L.polyline(latLngs, { color: lineColor, weight: 4, opacity: 0.75 }).addTo(mapLayerGroup);
+            }
 
             validStops.forEach((s, idx) => {
                 const etaObj = stopEtaList[idx];
+                const minsVal = etaObj ? Math.max(0, Math.round((etaObj.ts - now) / 60000)) : null;
                 const minsText = etaObj
-                    ? `${Math.max(0, Math.round((etaObj.ts - now) / 60000))} 分鐘${etaObj.rmk.includes('原定') ? ' [表列]' : ' [實時]'}`
-                    : '暫無 ETA';
+                    ? (isEn
+                        ? `${minsVal} min${etaObj.rmk.includes('原定') ? ' [Sched.]' : ' [Live]'}`
+                        : `${minsVal} 分鐘${etaObj.rmk.includes('原定') ? ' [表列]' : ' [實時]'}`)
+                    : t('noBusData');
                 L.circleMarker([s.lat, s.long], {
                     radius: 5, color: '#ffffff', weight: 1.5, fillColor: lineColor, fillOpacity: 0.9
-                }).addTo(mapLayerGroup).bindPopup(`<b>${s.seq}. ${s.name_tc}</b><br>預計到站：${minsText}`);
+                }).addTo(mapLayerGroup).bindPopup(`<b>${s.seq}. ${getStopDisplayName(s)}</b><br>ETA: ${minsText}`);
             });
 
             const estimatedBuses = [];
             if (stopEtaList[0] !== null) {
                 const minsToFirst = (stopEtaList[0].ts - now) / 60000;
                 if (minsToFirst <= 3 && minsToFirst >= -1) {
+                    const mVal = Math.max(0, Math.round(minsToFirst));
+                    const s0 = getStopDisplayName(validStops[0]);
                     estimatedBuses.push({
                         lat: validStops[0].lat, lng: validStops[0].long,
-                        desc: `正位於起點站「${validStops[0].name_tc}」附近（約 ${Math.max(0, Math.round(minsToFirst))} 分鐘後開出）`
+                        desc: isEn
+                            ? `Near terminus "${s0}" (departing in ~${mVal} min)`
+                            : `正位於起點站「${s0}」附近（約 ${mVal} 分鐘後開出）`
                     });
                 }
             }
@@ -2514,10 +2989,14 @@
                 if (prevObj !== null && currObj !== null && currObj.ts < prevObj.ts - 150000) {
                     const minsToCurr = Math.max(0, (currObj.ts - now) / 60000);
                     const progress = Math.min(0.85, Math.max(0.15, 1 - (minsToCurr / 3)));
+                    const sPrev = getStopDisplayName(validStops[i - 1]);
+                    const sCurr = getStopDisplayName(validStops[i]);
                     estimatedBuses.push({
                         lat: validStops[i - 1].lat + (validStops[i].lat - validStops[i - 1].lat) * progress,
                         lng: validStops[i - 1].long + (validStops[i].long - validStops[i - 1].long) * progress,
-                        desc: `介乎「${validStops[i - 1].name_tc}」與「${validStops[i].name_tc}」之間（約 ${Math.round(minsToCurr)} 分鐘後抵達第 ${validStops[i].seq} 站）`
+                        desc: isEn
+                            ? `Between "${sPrev}" and "${sCurr}" (~${Math.round(minsToCurr)} min to Stop #${validStops[i].seq})`
+                            : `介乎「${sPrev}」與「${sCurr}」之間（約 ${Math.round(minsToCurr)} 分鐘後抵達第 ${validStops[i].seq} 站）`
                     });
                 }
             }
@@ -2529,23 +3008,27 @@
             });
 
             estimatedBuses.forEach((bus, bIdx) => {
-                const m = L.marker([bus.lat, bus.lng], { icon: busIcon }).addTo(mapLayerGroup).bindPopup(`<b>🚌 推算班次 #${bIdx + 1}</b><br>${bus.desc}`);
+                const m = L.marker([bus.lat, bus.lng], { icon: busIcon }).addTo(mapLayerGroup).bindPopup(`<b>🚌 ${isEn ? 'Estimated Bus' : '推算班次'} #${bIdx + 1}</b><br>${bus.desc}`);
                 if (bIdx === 0 && isInitialOpen) m.openPopup();
             });
 
-            if (lastFittedRouteKey !== routeKey) {
-                leafletMap.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+            if (lastFittedRouteKey !== routeKey && routeLayer.getBounds().isValid()) {
+                leafletMap.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
                 lastFittedRouteKey = routeKey;
             }
 
-            const timeNowStr = new Date().toLocaleTimeString('zh-HK', { hour12: false });
+            const timeNowStr = new Date().toLocaleTimeString('en-GB', { hour12: false });
             summaryBar.innerHTML = estimatedBuses.length > 0
-                ? `✅ <b>[${timeNowStr} 更新]</b> 推算目前共有 <b>${estimatedBuses.length} 輛</b>巴士在線行駛：<br>${estimatedBuses.map((b, i) => `• <b>班次 ${i + 1}</b>：${b.desc}`).join('<br>')}`
-                : `ℹ️ <b>[${timeNowStr} 更新]</b> 尚未有巴士進入兩站中途區間（可能正於總站準備按表列時間開出）。`;
+                ? (isEn
+                    ? `✅ <b>[Updated ${timeNowStr}]</b> Estimated <b>${estimatedBuses.length}</b> active bus(es) en route:<br>${estimatedBuses.map((b, i) => `• <b>Bus ${i + 1}</b>: ${b.desc}`).join('<br>')}`
+                    : `✅ <b>[${timeNowStr} 更新]</b> 推算目前共有 <b>${estimatedBuses.length} 輛</b>巴士在線行駛：<br>${estimatedBuses.map((b, i) => `• <b>班次 ${i + 1}</b>：${b.desc}`).join('<br>')}`)
+                : (isEn
+                    ? `ℹ️ <b>[Updated ${timeNowStr}]</b> No buses currently between intermediate stops (likely awaiting scheduled departure at terminus).`
+                    : `ℹ️ <b>[${timeNowStr} 更新]</b> 尚未有巴士進入兩站中途區間（可能正於總站準備按表列時間開出）。`);
 
             startMapAutoRefreshTimer();
         } catch (err) {
-            summaryBar.innerHTML = `❌ 推算巴士位置時發生錯誤 (${err.message})`;
+            summaryBar.innerHTML = `❌ ${err.message}`;
             startMapAutoRefreshTimer();
         }
     }
@@ -2565,7 +3048,7 @@
         }
 
         statusBox.style.display = 'block';
-        statusBox.innerHTML = '⏳ 正在同步「九巴 + 城巴」全港通宵路線...';
+        statusBox.innerHTML = currentLang === 'en' ? '⏳ Syncing KMB + CTB overnight routes...' : '⏳ 正在同步「九巴 + 城巴」全港通宵路線...';
 
         try {
             const [kmbRes, ctbRes] = await Promise.all([fetch(`${KMB_API}/route/`), fetch(`${CTB_API}/route/ctb`)]);
@@ -2575,14 +3058,22 @@
 
             (kmbJson.data || []).forEach(r => {
                 if (isOvernightRoute(r.route)) {
-                    combined.push({ operator: 'KMB', route: r.route, dirParam: r.bound === 'O' ? 'outbound' : 'inbound', service_type: r.service_type, orig_tc: r.orig_tc, dest_tc: r.dest_tc });
+                    combined.push({
+                        operator: 'KMB', route: r.route,
+                        dirParam: r.bound === 'O' ? 'outbound' : 'inbound',
+                        service_type: r.service_type,
+                        orig_tc: r.orig_tc, dest_tc: r.dest_tc,
+                        orig_en: r.orig_en || r.orig_tc, dest_en: r.dest_en || r.dest_tc
+                    });
                 }
             });
             (ctbJson.data || []).forEach(r => {
                 if (isOvernightRoute(r.route)) {
-                    combined.push({ operator: 'CTB', route: r.route, dirParam: 'outbound', service_type: '1', orig_tc: r.orig_tc, dest_tc: r.dest_tc });
+                    const origEn = r.orig_en || r.orig_tc;
+                    const destEn = r.dest_en || r.dest_tc;
+                    combined.push({ operator: 'CTB', route: r.route, dirParam: 'outbound', service_type: '1', orig_tc: r.orig_tc, dest_tc: r.dest_tc, orig_en: origEn, dest_en: destEn });
                     if (r.orig_tc !== r.dest_tc) {
-                        combined.push({ operator: 'CTB', route: r.route, dirParam: 'inbound', service_type: '1', orig_tc: r.dest_tc, dest_tc: r.orig_tc });
+                        combined.push({ operator: 'CTB', route: r.route, dirParam: 'inbound', service_type: '1', orig_tc: r.dest_tc, dest_tc: r.orig_tc, orig_en: destEn, dest_en: origEn });
                     }
                 }
             });
@@ -2594,7 +3085,7 @@
             section.style.display = 'block';
             renderDistrictNightList();
         } catch (err) {
-            statusBox.innerHTML = `❌ 載入通宵路線失敗 (${err.message})`;
+            statusBox.innerHTML = `❌ ${err.message}`;
         }
     }
 
@@ -2607,20 +3098,28 @@
     function renderDistrictNightList() {
         if (!cachedAllNightRoutes) return;
         const selectedDistrict = document.getElementById('nightDistrictSelect').value;
-        const keyword = document.getElementById('nightRouteFilterInput').value.trim().toUpperCase();
+        const keyword = document.getElementById('nightRouteFilterInput').value.trim().toLowerCase();
         const titleEl = document.getElementById('districtNightTitle');
         const resultsEl = document.getElementById('districtNightResults');
+        const isEn = currentLang === 'en';
 
         const filtered = cachedAllNightRoutes.filter(r => {
             const matchDist = routeMatchesDistrict(r, selectedDistrict);
-            const matchKw = !keyword || r.route.toUpperCase().includes(keyword) || r.dest_tc.includes(keyword) || r.orig_tc.includes(keyword);
+            const matchKw = !keyword ||
+                r.route.toLowerCase().includes(keyword) ||
+                r.dest_tc.toLowerCase().includes(keyword) ||
+                r.orig_tc.toLowerCase().includes(keyword) ||
+                r.dest_en.toLowerCase().includes(keyword) ||
+                r.orig_en.toLowerCase().includes(keyword);
             return matchDist && matchKw;
         });
 
-        titleEl.textContent = `🌙 ${DISTRICT_NAMES[selectedDistrict]}通宵巴士 (${filtered.length} 條路線/方向)`;
+        titleEl.textContent = isEn
+            ? `🌙 ${getDistrictName(selectedDistrict)} Overnight Buses (${filtered.length} routes)`
+            : `🌙 ${getDistrictName(selectedDistrict)}通宵巴士 (${filtered.length} 條路線/方向)`;
 
         if (filtered.length === 0) {
-            resultsEl.innerHTML = `<div class="status-msg">找不到符合條件的通宵巴士路線。</div>`;
+            resultsEl.innerHTML = `<div class="status-msg">${isEn ? 'No matching overnight bus routes.' : '找不到符合條件的通宵巴士路線。'}</div>`;
             return;
         }
 
@@ -2640,21 +3139,21 @@
                         <div style="flex:1; cursor:pointer;">
                             <div style="display:flex; align-items:center; margin-bottom:4px; gap:6px;">
                                 <span class="rl-route-badge">${r.route}</span>
-                                <span class="operator-tag ${isCtb ? 'op-ctb' : 'op-kmb'}">${isCtb ? '城巴' : '九巴'}</span>
-                                <span class="badge-night">通宵</span>
+                                <span class="operator-tag ${isCtb ? 'op-ctb' : 'op-kmb'}">${isCtb ? t('ctbShort') : t('kmbShort')}</span>
+                                <span class="badge-night">${isEn ? 'Night' : '通宵'}</span>
                             </div>
-                            <div class="route-dest"><span>由</span> ${r.orig_tc} <span>往</span> <strong>${r.dest_tc}</strong></div>
+                            <div class="route-dest"><span>${t('from')}</span> ${getRouteOrig(r)} <span>${t('to').toLowerCase()}</span> <strong>${getRouteDest(r)}</strong></div>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <button class="bm-btn ${bmActive ? 'bookmarked' : ''}"
-                                    onclick="toggleRouteBookmark(event, '${r.operator}', '${r.route}', '${r.dirParam}', '${r.service_type}', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}')">
-                                ${bmActive ? '★ 已監察' : '☆ 監察'}
+                                    onclick="toggleRouteBookmark(event, '${r.operator}', '${r.route}', '${r.dirParam}', '${r.service_type}', '${r.orig_tc.replace(/'/g, "\\'")}', '${r.dest_tc.replace(/'/g, "\\'")}', '${r.orig_en.replace(/'/g, "\\'")}', '${r.dest_en.replace(/'/g, "\\'")}')">
+                                ${bmActive ? t('watchActive') : t('watchAdd')}
                             </button>
-                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.85rem; cursor:pointer;">站點 ▾</span>
+                            <span style="color:var(--kmb-red); font-weight:bold; font-size:0.85rem; cursor:pointer;">${t('stopsBtn')}</span>
                         </div>
                     </div>
                     <div class="rl-stops-drawer" id="${drawerId}">
-                        <div class="rl-drawer-hint">⏳ 正在載入沿途車站...</div>
+                        <div class="rl-drawer-hint">${t('loadingStops')}</div>
                     </div>
                 </div>
             `;
@@ -2673,12 +3172,13 @@
         const selectedDistrict = document.getElementById('districtSelect').value;
         const stopListEl = document.getElementById('stopList');
         const statusBox = document.getElementById('statusBox');
+        const isEn = currentLang === 'en';
 
         if (/^[A-Fa-f0-9]{16}$/.test(query)) {
             stopListEl.style.display = 'none';
             const stopIdUpper = query.toUpperCase();
             const info = await resolveKmbStopInfo(stopIdUpper);
-            fetchKmbStopEta(stopIdUpper, info.name_tc);
+            fetchKmbStopEta(stopIdUpper, info.name_tc, info.name_en);
             return;
         }
 
@@ -2696,20 +3196,20 @@
         if (matches.length === 0) {
             stopListEl.style.display = 'none';
             statusBox.style.display = 'block';
-            statusBox.innerHTML = `在所選條件下找不到符合的九巴站點。`;
+            statusBox.innerHTML = isEn ? 'No matching KMB stops found.' : '在所選條件下找不到符合的九巴站點。';
             return;
         }
 
         statusBox.style.display = 'none';
         const limit = 50;
         stopListEl.innerHTML = `
-            <div class="stop-list-header">找到 ${matches.length} 個九巴站點</div>
+            <div class="stop-list-header">${isEn ? `Found ${matches.length} KMB stops` : `找到 ${matches.length} 個九巴站點`}</div>
             ${matches.slice(0, limit).map(stop => `
-                <div class="stop-item" onclick="selectKmbStop('${stop.stop}', '${stop.name_tc.replace(/'/g, "\\'")}')">
+                <div class="stop-item" onclick="selectKmbStop('${stop.stop}', '${stop.name_tc.replace(/'/g, "\\'")}', '${stop.name_en.replace(/'/g, "\\'")}')">
                     <div>
-                        <strong>${stop.name_tc}</strong>
-                        <span class="district-pill">${DISTRICT_NAMES[stop.district] || ''}</span><br>
-                        <small style="color:#666">${stop.name_en}</small>
+                        <strong>${isEn ? stop.name_en : stop.name_tc}</strong>
+                        <span class="district-pill">${getDistrictName(stop.district)}</span><br>
+                        <small style="color:#666">${isEn ? stop.name_tc : stop.name_en}</small>
                     </div>
                     <span class="stop-id-badge">${stop.stop}</span>
                 </div>
@@ -2718,24 +3218,27 @@
         stopListEl.style.display = 'block';
     }
 
-    function quickSelectKmb(stopId, stopName) {
-        document.getElementById('searchInput').value = stopName;
+    function quickSelectKmb(stopId, stopDisplay) {
+        document.getElementById('searchInput').value = stopDisplay;
         document.getElementById('stopList').style.display = 'none';
-        fetchKmbStopEta(stopId, stopName);
+        const info = kmbStopsMap[stopId];
+        fetchKmbStopEta(stopId, info ? info.name_tc : stopDisplay, info ? info.name_en : stopDisplay);
     }
 
-    function selectKmbStop(stopId, stopName) {
+    function selectKmbStop(stopId, stopNameTc, stopNameEn = '') {
         document.getElementById('stopList').style.display = 'none';
-        fetchKmbStopEta(stopId, stopName);
+        fetchKmbStopEta(stopId, stopNameTc, stopNameEn);
     }
 
-    async function fetchKmbStopEta(stopId, stopName) {
-        activeQuery = { operator: 'KMB_ALL_STOP', stopId, stopName };
+    async function fetchKmbStopEta(stopId, stopNameTc, stopNameEn = '') {
+        activeQuery = { operator: 'KMB_ALL_STOP', stopId, stopName: stopNameTc, stopNameEn };
         const statusBox = document.getElementById('statusBox');
         const etaSection = document.getElementById('etaSection');
+        const isEn = currentLang === 'en';
+        const displayStop = isEn ? (stopNameEn || stopNameTc) : stopNameTc;
 
         statusBox.style.display = 'block';
-        statusBox.innerHTML = '⏳ 正在查詢九巴實時及表列班次...';
+        statusBox.innerHTML = isEn ? '⏳ Fetching KMB arrivals...' : '⏳ 正在查詢九巴實時及表列班次...';
         etaSection.style.display = 'none';
         scrollToTopDisplay();
 
@@ -2749,7 +3252,7 @@
             document.getElementById('kmbServiceTabs').style.display = 'flex';
             document.getElementById('etaMapBtn').style.display = 'none';
             document.getElementById('etaTimetableBtn').style.display = 'none';
-            document.getElementById('currentStopTitle').innerHTML = `<span class="operator-tag op-kmb">九巴</span>📍 ${stopName}`;
+            document.getElementById('currentStopTitle').innerHTML = `<span class="operator-tag op-kmb">${t('kmbShort')}</span>📍 ${displayStop}`;
 
             const groupedMap = {};
             rawData.forEach(item => {
@@ -2760,6 +3263,7 @@
                         dirParam: item.dir === 'O' ? 'outbound' : 'inbound',
                         serviceType: item.service_type,
                         dest_tc: item.dest_tc,
+                        dest_en: item.dest_en || item.dest_tc,
                         isNight: isOvernightRoute(item.route),
                         etas: []
                     };
@@ -2773,7 +3277,7 @@
             scrollToTopDisplay();
         } catch (error) {
             statusBox.style.display = 'block';
-            statusBox.innerHTML = '❌ 查詢失敗，請檢查網絡連線。';
+            statusBox.innerHTML = isEn ? '❌ Query failed. Check network connection.' : '❌ 查詢失敗，請檢查網絡連線。';
         }
     }
 
@@ -2799,16 +3303,17 @@
         if (currentServiceFilter === 'NIGHT') displayList = nightRoutes;
 
         if (displayList.length === 0) {
-            etaResults.innerHTML = `<div class="status-msg" style="margin-bottom:0;">此站點目前沒有相關路線資料。</div>`;
+            etaResults.innerHTML = `<div class="status-msg" style="margin-bottom:0;">${currentLang === 'en' ? 'No matching routes at this stop.' : '此站點目前沒有相關路線資料。'}</div>`;
             return;
         }
 
         etaResults.innerHTML = displayList.map(group => {
             const extraBtnsHtml = `
-                <button class="timetable-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="openRouteTimetable('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}')">🕒 班次表</button>
-                <button class="map-locate-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="openBusPositionMap('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}', true)">🗺️ 地圖</button>
+                <button class="timetable-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="openRouteTimetable('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}')">${t('timetableShort')}</button>
+                <button class="map-locate-btn" style="padding:2px 8px; font-size:0.75rem;" onclick="openBusPositionMap('KMB', '${group.route}', '${group.dirParam}', '${group.serviceType}', true)">${t('mapShort')}</button>
             `;
-            return renderEtaCardHtml('KMB', group.route, group.dest_tc, group.etas, extraBtnsHtml);
+            const destDisplay = currentLang === 'en' ? group.dest_en : group.dest_tc;
+            return renderEtaCardHtml('KMB', group.route, destDisplay, group.etas, extraBtnsHtml);
         }).join('');
     }
 
@@ -2826,11 +3331,11 @@
     function refreshCurrentEta() {
         if (!activeQuery) return;
         if (activeQuery.operator === 'KMB_ALL_STOP') {
-            fetchKmbStopEta(activeQuery.stopId, activeQuery.stopName);
+            fetchKmbStopEta(activeQuery.stopId, activeQuery.stopName, activeQuery.stopNameEn);
         } else if (activeQuery.operator === 'KMB_SINGLE') {
-            fetchKmbSingleRouteEta(activeQuery.stopId, activeQuery.stopName, activeQuery.route, activeQuery.dirParam, activeQuery.serviceType);
+            fetchKmbSingleRouteEta(activeQuery.stopId, activeQuery.stopName, activeQuery.route, activeQuery.dirParam, activeQuery.serviceType, activeQuery.stopNameEn);
         } else if (activeQuery.operator === 'CTB') {
-            fetchCtbEta(activeQuery.stopId, activeQuery.stopName, activeQuery.route, activeQuery.dirParam);
+            fetchCtbEta(activeQuery.stopId, activeQuery.stopName, activeQuery.route, activeQuery.dirParam, activeQuery.stopNameEn);
         }
     }
 </script>
