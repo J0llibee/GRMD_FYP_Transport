@@ -116,27 +116,27 @@
         "stopName": "伯爵街",
         "stopNameEn": "EARL STREET",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795770499734,
+        "cumulativeMins": 26,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
         "stopName": "勵德街",
         "stopNameEn": "KNIGHT STREET",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795770499734,
+        "cumulativeMins": 26,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
         "stopName": "拔萃男書院,太子道西",
         "stopNameEn": "DIOCESAN BOYS' SCHOOL, PRINCE EDWARD ROAD WEST",
         "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "actualArrivalTs": 1795770617340,
+        "cumulativeMins": 28,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
@@ -916,10 +916,10 @@
         "seq": 21,
         "stopName": "尖沙咀德成街",
         "stopNameEn": "TAK SHING STREET TSIM SHA TSUI",
-        "scheduledEtaTs": null,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "途中切入追蹤"
+        "scheduledEtaTs": 1795770370000,
+        "actualArrivalTs": 1795770499734,
+        "cumulativeMins": 37,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
@@ -1058,18 +1058,18 @@
         "stopName": "太子道西",
         "stopNameEn": "PRINCE EDWARD ROAD WEST",
         "scheduledEtaTs": 1795771242000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795770499734,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "喇沙利道",
         "stopNameEn": "LA SALLE ROAD",
         "scheduledEtaTs": 1795771454000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795770651945,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -1102,7 +1102,7 @@
         "seq": 15,
         "stopName": "協和小學, MOKO",
         "stopNameEn": "HEEP WOH PRIMARY SCHOOL, MOKO",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795771723000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -1156,7 +1156,7 @@
         "seq": 21,
         "stopName": "尖沙咀德成街",
         "stopNameEn": "TAK SHING STREET TSIM SHA TSUI",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795771858000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -1226,27 +1226,27 @@
         "stopName": "竹園南邨榮園樓",
         "stopNameEn": "WING YUEN HOUSE, CHUK YUEN SOUTH ESTATE",
         "scheduledEtaTs": 1795770402000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795770499734,
+        "cumulativeMins": 3,
+        "status": "已到站"
       },
       "3": {
         "seq": 3,
         "stopName": "馬仔坑遊樂場",
         "stopNameEn": "MA CHAI HANG RECREATION GROUND",
         "scheduledEtaTs": 1795770507000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795770576839,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "摩士公園",
         "stopNameEn": "MORSE PARK",
         "scheduledEtaTs": 1795770666000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795770651945,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
@@ -1369,7 +1369,7 @@
         "seq": 18,
         "stopName": "旺角豉油街",
         "stopNameEn": "SOY STREET MONG KOK",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795772262000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
