@@ -8,6 +8,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 const TIMEZONE = 'Asia/Hong_Kong';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'bus2026';
+
+// GitHub 自動備份設定（免費方案持久化儲存）
+const GITHUB_TOKEN = (process.env.GITHUB_TOKEN || '').trim();
+const GITHUB_REPO = (process.env.GITHUB_REPO || '').trim();
+const GITHUB_BRANCH = (process.env.GITHUB_BRANCH || 'main').trim();
+const GITHUB_BACKUP_INTERVAL_MS = 3 * 60 * 1000;
 
 const KMB_API = 'https://data.etabus.gov.hk/v1/transport/kmb';
 const CTB_API = 'https://rt.data.gov.hk/v1/transport/citybus-nwfb';
@@ -20,7 +27,6 @@ if (!fs.existsSync(DATA_DIR)) {
 const BOOKMARKS_FILE = path.join(DATA_DIR, 'bookmarks.json');
 const SHAPES_FILE = path.join(__dirname, 'bus_shapes.json');
 
-// 固定與滾動 48 小時檔案路徑（確保重啟不丟失且穩定保留最近 48 小時數據）
 const ROLLING_48H_EXCEL_FILENAME = 'bus_arrival_records_48h_rolling.xlsx';
 const ROLLING_48H_EXCEL_FILE = path.join(DATA_DIR, ROLLING_48H_EXCEL_FILENAME);
 const ROLLING_48H_TRIPS_FILE = path.join(DATA_DIR, 'trip_records_48h_rolling.json');
@@ -70,7 +76,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// 載入香港運輸署官方巴士路線道路軌跡 GeoJSON（若檔案存在）
 let busShapesFeatures = [];
 if (fs.existsSync(SHAPES_FILE)) {
     try {
@@ -104,17 +109,17 @@ function loadInitialBookmarks() {
             serviceType,
             origTc: '(雲端預設)',
             destTc: '(雲端預設)',
+            origEn: '(Cloud Default)',
+            destEn: '(Cloud Default)',
             addedAt: nowStr
         };
     }).filter(Boolean);
 }
 
-// 啟動時從 48 小時滾動 JSON 恢復歷史班次，避免伺服器重啟或跨日導致記錄歸零
 function loadInitialTrips() {
     const cutoff = Date.now() - RETENTION_MS;
     const loaded = {};
 
-    // 1. 優先讀取統一的 48 小時滾動檔
     if (fs.existsSync(ROLLING_48H_TRIPS_FILE)) {
         try {
             const parsed = JSON.parse(fs.readFileSync(ROLLING_48H_TRIPS_FILE, 'utf8'));
@@ -126,28 +131,6 @@ function loadInitialTrips() {
         } catch (e) {
             console.error('⚠️ 讀取 48 小時歷史班次失敗:', e.message);
         }
-    }
-
-    // 2. 若滾動檔為空，嘗試掃描目錄下所有舊的 trip_records_*.json 合併最近 48 小時數據
-    if (Object.keys(loaded).length === 0) {
-        try {
-            const files = fs.readdirSync(DATA_DIR).filter(f => f.startsWith('trip_records_') && f.endsWith('.json'));
-            files.forEach(f => {
-                try {
-                    const parsed = JSON.parse(fs.readFileSync(path.join(DATA_DIR, f), 'utf8'));
-                    Object.entries(parsed).forEach(([id, t]) => {
-                        if (t && t.departureTs >= cutoff && !loaded[id]) {
-                            loaded[id] = t;
-                        }
-                    });
-                } catch { /* ignore */ }
-            });
-        } catch { /* ignore */ }
-    }
-
-    const count = Object.keys(loaded).length;
-    if (count > 0) {
-        console.log(`♻️ 已從磁碟自動恢復最近 48 小時內的 ${count} 個班次記錄`);
     }
     return loaded;
 }
@@ -162,15 +145,120 @@ let ctbStopsMap = {};
 let isPolling = false;
 let drainMode = false;
 let lastPollTimeStr = '尚未執行';
+let lastGithubBackupTs = 0;
+let isBackingUpGithub = false;
 
 function saveBookmarks() {
     fs.writeFileSync(BOOKMARKS_FILE, JSON.stringify(bookmarks, null, 2));
 }
 
+// ==========================================
+// GitHub 自動備份與啟動還原模組
+// ==========================================
+async function fetchFileFromGithub(repoFilePath) {
+    if (!GITHUB_TOKEN || !GITHUB_REPO) return null;
+    const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoFilePath}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
+    try {
+        const res = await fetch(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github+json',
+                'User-Agent': 'bus-monitor-app'
+            }
+        });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!data.content) return null;
+        return Buffer.from(data.content, 'base64').toString('utf8');
+    } catch (err) {
+        return null;
+    }
+}
+
+async function uploadFileToGithub(localFilePath, repoFilePath) {
+    if (!GITHUB_TOKEN || !GITHUB_REPO || !fs.existsSync(localFilePath)) return false;
+
+    const contentBase64 = fs.readFileSync(localFilePath).toString('base64');
+    const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoFilePath}`;
+    const headers = {
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+        'User-Agent': 'bus-monitor-app'
+    };
+
+    try {
+        let sha;
+        const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_BRANCH)}`, { headers });
+        if (getRes.ok) {
+            const existing = await getRes.json();
+            sha = existing.sha;
+        }
+
+        const putRes = await fetch(apiUrl, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify({
+                message: `Auto backup ${repoFilePath} (${formatTime(Date.now())})`,
+                content: contentBase64,
+                branch: GITHUB_BRANCH,
+                ...(sha ? { sha } : {})
+            })
+        });
+        return putRes.ok;
+    } catch (err) {
+        return false;
+    }
+}
+
+async function restoreFromGithub() {
+    if (!GITHUB_TOKEN || !GITHUB_REPO) return;
+    const bmRaw = await fetchFileFromGithub('backups/bookmarks.json');
+    if (bmRaw) {
+        try {
+            const parsedBm = JSON.parse(bmRaw);
+            if (Array.isArray(parsedBm) && parsedBm.length > 0) {
+                bookmarks = parsedBm;
+                saveBookmarks();
+            }
+        } catch (e) { /* ignore */ }
+    }
+
+    const tripsRaw = await fetchFileFromGithub('backups/trip_records_48h_rolling.json');
+    if (tripsRaw) {
+        try {
+            const parsedTrips = JSON.parse(tripsRaw);
+            if (parsedTrips && typeof parsedTrips === 'object') {
+                trips = { ...parsedTrips, ...trips };
+                pruneOldTrips(Date.now());
+            }
+        } catch (e) { /* ignore */ }
+    }
+}
+
+async function triggerGithubBackup(force = false) {
+    if (!GITHUB_TOKEN || !GITHUB_REPO || isBackingUpGithub) return;
+    const now = Date.now();
+    if (!force && now - lastGithubBackupTs < GITHUB_BACKUP_INTERVAL_MS) return;
+
+    isBackingUpGithub = true;
+    try {
+        const ok1 = await uploadFileToGithub(BOOKMARKS_FILE, 'backups/bookmarks.json');
+        const ok2 = await uploadFileToGithub(ROLLING_48H_TRIPS_FILE, 'backups/trip_records_48h_rolling.json');
+        const ok3 = await uploadFileToGithub(ROLLING_48H_EXCEL_FILE, `backups/${ROLLING_48H_EXCEL_FILENAME}`);
+        if (ok1 || ok2 || ok3) {
+            lastGithubBackupTs = now;
+            console.log(`☁️ [${formatTime(now)}] 已自動備份記錄至 GitHub (${GITHUB_REPO})`);
+        }
+    } finally {
+        isBackingUpGithub = false;
+    }
+}
+
 async function resolveDefaultBookmarkNames() {
     let updated = false;
     for (const bm of bookmarks) {
-        if (bm.origTc !== '(雲端預設)' && bm.destTc !== '(雲端預設)') continue;
+        if (bm.origTc !== '(雲端預設)' && bm.destTc !== '(雲端預設)' && bm.origEn && bm.destEn) continue;
         try {
             if (bm.operator === 'KMB') {
                 const res = await fetch(`${KMB_API}/route/${bm.route}/${bm.dirParam}/${bm.serviceType || '1'}`);
@@ -178,16 +266,22 @@ async function resolveDefaultBookmarkNames() {
                 if (json.data) {
                     bm.origTc = (json.data.orig_tc || '').trim() || bm.origTc;
                     bm.destTc = (json.data.dest_tc || '').trim() || bm.destTc;
+                    bm.origEn = (json.data.orig_en || '').trim() || bm.origTc;
+                    bm.destEn = (json.data.dest_en || '').trim() || bm.destTc;
                     updated = true;
                 }
             } else {
                 const res = await fetch(`${CTB_API}/route/ctb/${bm.route}`);
                 const json = await res.json();
                 if (json.data) {
-                    const orig = (json.data.orig_tc || '').trim();
-                    const dest = (json.data.dest_tc || '').trim();
-                    bm.origTc = bm.dirParam === 'outbound' ? orig : dest;
-                    bm.destTc = bm.dirParam === 'outbound' ? dest : orig;
+                    const origTc = (json.data.orig_tc || '').trim();
+                    const destTc = (json.data.dest_tc || '').trim();
+                    const origEn = (json.data.orig_en || origTc).trim();
+                    const destEn = (json.data.dest_en || destTc).trim();
+                    bm.origTc = bm.dirParam === 'outbound' ? origTc : destTc;
+                    bm.destTc = bm.dirParam === 'outbound' ? destTc : origTc;
+                    bm.origEn = bm.dirParam === 'outbound' ? origEn : destEn;
+                    bm.destEn = bm.dirParam === 'outbound' ? destEn : origEn;
                     updated = true;
                 }
             }
@@ -196,7 +290,6 @@ async function resolveDefaultBookmarkNames() {
     if (updated) {
         saveBookmarks();
         saveToExcel();
-        console.log('✅ 已自動補全雲端預設路線的中文起訖點名稱');
     }
 }
 
@@ -213,7 +306,6 @@ function isHubOrExpresswayStop(stopName = '') {
     return /轉車站|轉乘站|西隧|紅隧|東隧|大橋|口岸/.test(stopName);
 }
 
-// 硬性物理合理性校驗：杜絕前車串號、時空倒流與循環站重複觸發
 function isArrivalPhysicallyValid(trip, seq, arrivalTs) {
     if (seq > 1 && arrivalTs < trip.departureTs + 15000) return false;
 
@@ -221,7 +313,6 @@ function isArrivalPhysicallyValid(trip, seq, arrivalTs) {
         .map(Number)
         .filter(s => s !== seq && trip.stops[s].actualArrivalTs !== null);
 
-    // 1. 與前方已到站點比較（允許相鄰 1 站最多 60 秒 GPS 亂序，其餘必須嚴格遞增）
     const prevSeqs = recordedSeqs.filter(s => s < seq);
     if (prevSeqs.length > 0) {
         const maxPrevSeq = Math.max(...prevSeqs);
@@ -233,7 +324,6 @@ function isArrivalPhysicallyValid(trip, seq, arrivalTs) {
         if (diffSecs < minAllowedSecs) return false;
     }
 
-    // 2. 與後方已到站點比較（回填漏站時不可晚於後方站點）
     const nextSeqs = recordedSeqs.filter(s => s > seq);
     if (nextSeqs.length > 0) {
         const minNextSeq = Math.min(...nextSeqs);
@@ -248,7 +338,6 @@ function isArrivalPhysicallyValid(trip, seq, arrivalTs) {
     return true;
 }
 
-// 動態計算路線當前平均班距（分鐘），自動適應頻密班次與疏落班次
 function getRouteHeadwayMins(routeKeyPrefix) {
     const formalTrips = Object.values(trips)
         .filter(t => t.routeKeyPrefix === routeKeyPrefix && !t.isEstimatedDep)
@@ -268,7 +357,6 @@ function getRouteHeadwayMins(routeKeyPrefix) {
     return diffs[Math.floor(diffs.length / 2)];
 }
 
-// 計算某班車目前相對於基準時間表的「實時誤點偏移量（分鐘）」
 function getTripCurrentDelayMins(trip) {
     const arrivedWithSched = Object.values(trip.stops)
         .filter(st => st.actualArrivalTs !== null && st.scheduledEtaTs !== null)
@@ -281,7 +369,6 @@ function getTripCurrentDelayMins(trip) {
     return sumDelay / recent.length;
 }
 
-// 判斷班次是否仍在行駛中
 function isTripStillActive(trip, nowTs) {
     if (nowTs - trip.departureTs > 140 * 60000) return false;
     const seqs = Object.keys(trip.stops).map(Number);
@@ -292,7 +379,6 @@ function isTripStillActive(trip, nowTs) {
     return true;
 }
 
-// 事後清洗：將因漏站、ETA 邊界或相鄰站 30~90 秒亂序回報而分裂的「(途中估算)」碎片自動縫合回主班次
 function stitchFragmentedTrips() {
     const tripIds = Object.keys(trips);
     const formalTrips = tripIds.map(id => trips[id]).filter(t => !t.isEstimatedDep);
@@ -370,6 +456,7 @@ function saveToExcel() {
                 '班次識別(總站開出時間)': trip.departureTimeStr + (trip.isEstimatedDep ? ' (途中估算)' : ''),
                 '站序': st.seq,
                 '車站名稱': st.stopName,
+                '車站英文名稱': st.stopNameEn || '',
                 '最初預計時間': st.scheduledEtaTs ? formatTime(st.scheduledEtaTs) : '',
                 '實際到達時間': st.actualArrivalTs ? formatTime(st.actualArrivalTs) : '行駛中...',
                 '由總站起累積時間(分鐘)': st.cumulativeMins !== null ? st.cumulativeMins : '',
@@ -402,7 +489,7 @@ function saveToExcel() {
     );
     wsDetail['!cols'] = [
         { wch: 12 }, { wch: 10 }, { wch: 8 }, { wch: 8 }, { wch: 24 },
-        { wch: 6 }, { wch: 26 }, { wch: 18 }, { wch: 16 }, { wch: 22 }, { wch: 16 }
+        { wch: 6 }, { wch: 26 }, { wch: 28 }, { wch: 18 }, { wch: 16 }, { wch: 22 }, { wch: 16 }
     ];
     XLSX.utils.book_append_sheet(wb, wsDetail, '班次行程及累積時間');
 
@@ -422,21 +509,18 @@ function saveToExcel() {
     const wsBm = XLSX.utils.json_to_sheet(bmRows.length > 0 ? bmRows : [{ '提示': '尚無收藏路線' }]);
     XLSX.utils.book_append_sheet(wb, wsBm, '已Bookmark路線');
 
-    // 1. 寫入統一的 48 小時滾動 Excel 主檔
     try {
         XLSX.writeFile(wb, ROLLING_48H_EXCEL_FILE);
     } catch (err) {
         console.error('⚠️ 寫入 48 小時滾動 Excel 失敗:', err.message);
     }
 
-    // 2. 同步更新本次啟動的 Session Excel 備份檔（同樣包含完整 48 小時內容）
     try {
         XLSX.writeFile(wb, SESSION_EXCEL_FILE);
     } catch (err) {
         console.error('⚠️ 寫入 Session Excel 失敗:', err.message);
     }
 
-    // 3. 持久化 48 小時完整 JSON 狀態，供重啟時無縫恢復
     try {
         fs.writeFileSync(ROLLING_48H_TRIPS_FILE, JSON.stringify(trips, null, 2));
     } catch (err) {
@@ -449,7 +533,9 @@ async function ensureKmbStops() {
     const res = await fetch(`${KMB_API}/stop`);
     const json = await res.json();
     (json.data || []).forEach(s => {
-        kmbStopsMap[s.stop] = (s.name_tc || s.name_en || s.stop).trim();
+        const tc = (s.name_tc || s.name_en || s.stop).trim();
+        const en = (s.name_en || s.name_tc || s.stop).trim();
+        kmbStopsMap[s.stop] = { tc, en };
     });
 }
 
@@ -461,11 +547,15 @@ async function getRouteStops(operator, route, dirParam, serviceType = '1') {
         await ensureKmbStops();
         const res = await fetch(`${KMB_API}/route-stop/${route}/${dirParam}/${serviceType}`);
         const json = await res.json();
-        const list = (json.data || []).map(item => ({
-            seq: parseInt(item.seq, 10),
-            stopId: item.stop,
-            stopName: kmbStopsMap[item.stop] || item.stop
-        }));
+        const list = (json.data || []).map(item => {
+            const info = kmbStopsMap[item.stop] || { tc: item.stop, en: item.stop };
+            return {
+                seq: parseInt(item.seq, 10),
+                stopId: item.stop,
+                stopName: info.tc,
+                stopNameEn: info.en
+            };
+        });
         routeStopsCache[key] = list;
         return list;
     } else {
@@ -476,15 +566,18 @@ async function getRouteStops(operator, route, dirParam, serviceType = '1') {
                 try {
                     const sRes = await fetch(`${CTB_API}/stop/${item.stop}`);
                     const sJson = await sRes.json();
-                    ctbStopsMap[item.stop] = (sJson.data?.name_tc || sJson.data?.name_en || item.stop).trim();
+                    const tc = (sJson.data?.name_tc || sJson.data?.name_en || item.stop).trim();
+                    const en = (sJson.data?.name_en || sJson.data?.name_tc || item.stop).trim();
+                    ctbStopsMap[item.stop] = { tc, en };
                 } catch {
-                    ctbStopsMap[item.stop] = item.stop;
+                    ctbStopsMap[item.stop] = { tc: item.stop, en: item.stop };
                 }
             }
             return {
                 seq: parseInt(item.seq, 10),
                 stopId: item.stop,
-                stopName: ctbStopsMap[item.stop]
+                stopName: ctbStopsMap[item.stop].tc,
+                stopNameEn: ctbStopsMap[item.stop].en
             };
         }));
         routeStopsCache[key] = list;
@@ -492,7 +585,6 @@ async function getRouteStops(operator, route, dirParam, serviceType = '1') {
     }
 }
 
-// 驗證某個候選 ETA 是否符合這班車的基準時間軸與實時誤點進度
 function isEtaConsistentWithTrip(trip, seq, etaTs) {
     const diffFromDepMins = (etaTs - trip.departureTs) / 60000;
 
@@ -550,7 +642,6 @@ function isEtaConsistentWithTrip(trip, seq, etaTs) {
 }
 
 function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, scheduledEtaTs, stopsList, currentStopEtasSnapshot = {}) {
-    // 1. 第 1 站（總站）正式開出：一次性鎖定全線基準時間軸（Baseline Schedule）
     if (seq === 1) {
         if (drainMode) return null;
 
@@ -570,6 +661,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             route: meta.route,
             dirParam: meta.dirParam,
             destTc: meta.destTc,
+            destEn: meta.destEn || meta.destTc,
             departureTs: preciseDepTs,
             departureTimeStr: depTimeStr,
             isEstimatedDep: false,
@@ -579,6 +671,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             newTrip.stops[s.seq] = {
                 seq: s.seq,
                 stopName: s.stopName,
+                stopNameEn: s.stopNameEn || s.stopName,
                 scheduledEtaTs: s.seq === 1 ? (scheduledEtaTs || preciseDepTs) : null,
                 actualArrivalTs: s.seq === 1 ? preciseDepTs : null,
                 cumulativeMins: s.seq === 1 ? 0 : null,
@@ -595,7 +688,6 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             }
         });
 
-        // 吸收合併剛在 3.5 分鐘內搶先建立了前幾站記錄的估算車
         Object.keys(trips).forEach(oldId => {
             const oldT = trips[oldId];
             if (oldT.routeKeyPrefix === routeKeyPrefix && oldT.isEstimatedDep && Math.abs(oldT.departureTs - preciseDepTs) <= 3.5 * 60000) {
@@ -620,12 +712,10 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
         return newTrip;
     }
 
-    // 2. 尋找現有班次（正式總站班次優先）
     const candidateTrips = Object.values(trips)
         .filter(t => t.routeKeyPrefix === routeKeyPrefix)
         .sort((a, b) => Number(a.isEstimatedDep) - Number(b.isEstimatedDep));
 
-    // 防重報檢查
     const duplicateStopTrip = candidateTrips.find(t => {
         const existing = t.stops[seq];
         return existing && existing.actualArrivalTs && Math.abs(arrivalTs - existing.actualArrivalTs) <= 2.5 * 60000;
@@ -664,7 +754,6 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             if (!isRecentBackfill) continue;
         }
 
-        // 【核心改進 A】優先以「基準時間表 + 動態誤點偏移」進行全局軌跡鎖定
         const baselineSchedTs = trip.stops[seq]?.scheduledEtaTs;
         if (baselineSchedTs) {
             const delayMins = getTripCurrentDelayMins(trip);
@@ -682,7 +771,6 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             }
         }
 
-        // 【核心改進 B】退回動態車程區間匹配（支援跨過轉車站／隧道跳站）
         if (highestSeqSoFar > 0) {
             const prevStop = trip.stops[highestSeqSoFar];
             const currStop = trip.stops[seq];
@@ -729,7 +817,6 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
         }
     }
 
-    // 【核心改進 C】活躍班次排他保護
     if (!bestTrip) {
         const activeFormalTrips = candidateTrips.filter(t => !t.isEstimatedDep && isTripStillActive(t, arrivalTs));
         if (activeFormalTrips.length === 1) {
@@ -753,7 +840,10 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
         }
     }
 
-    // 3. 途中切入估算班次前，嚴格檢查是否屬於某輛正式班次現役路段附近的亂序站點（必須通過物理校驗）
+    const stopObj = stopsList.find(s => s.seq === seq);
+    const sNameTc = stopObj?.stopName || `第${seq}站`;
+    const sNameEn = stopObj?.stopNameEn || sNameTc;
+
     if (!bestTrip) {
         const nearFormalTrip = candidateTrips.find(t => {
             if (t.isEstimatedDep) return false;
@@ -768,7 +858,8 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
             if (!nearFormalTrip.stops[seq]?.actualArrivalTs) {
                 nearFormalTrip.stops[seq] = {
                     seq,
-                    stopName: stopsList.find(s => s.seq === seq)?.stopName || `第${seq}站`,
+                    stopName: sNameTc,
+                    stopNameEn: sNameEn,
                     scheduledEtaTs: nearFormalTrip.stops[seq]?.scheduledEtaTs || scheduledEtaTs || null,
                     actualArrivalTs: arrivalTs,
                     cumulativeMins: Math.max(0, Math.round((arrivalTs - nearFormalTrip.departureTs) / 60000)),
@@ -803,6 +894,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
                 route: meta.route,
                 dirParam: meta.dirParam,
                 destTc: meta.destTc,
+                destEn: meta.destEn || meta.destTc,
                 departureTs: estDepTs,
                 departureTimeStr: estDepStr,
                 isEstimatedDep: true,
@@ -812,6 +904,7 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
                 trips[tripId].stops[s.seq] = {
                     seq: s.seq,
                     stopName: s.stopName,
+                    stopNameEn: s.stopNameEn || s.stopName,
                     scheduledEtaTs: null,
                     actualArrivalTs: null,
                     cumulativeMins: null,
@@ -832,7 +925,8 @@ function findOrCreateTripForStopArrival(routeKeyPrefix, meta, seq, arrivalTs, sc
 
     bestTrip.stops[seq] = {
         seq,
-        stopName: stopsList.find(s => s.seq === seq)?.stopName || `第${seq}站`,
+        stopName: sNameTc,
+        stopNameEn: sNameEn,
         scheduledEtaTs: validSched,
         actualArrivalTs: arrivalTs,
         cumulativeMins: cumMins,
@@ -902,7 +996,6 @@ async function pollBookmarkedRoutes() {
                 .filter(t => t.routeKeyPrefix === routeKeyPrefix && !t.isEstimatedDep)
                 .sort((a, b) => a.departureTs - b.departureTs);
 
-            // 多班次 ETA 隊列追蹤（防止轉車站／隧道隱藏前車導致串號或進位邊界分裂）
             sortedStops.forEach(s => {
                 const etaList = (stopAllEtasMap[s.seq] || []).sort((a, b) => a.eta_seq - b.eta_seq);
                 const existingTrackersForStop = Object.values(activeStopTrackers)
@@ -939,7 +1032,6 @@ async function pollBookmarkedRoutes() {
                     }
                 });
 
-                // 持續為已開出的班次補齊後方尚未抵達站點的基準時間表
                 activeTrips.forEach(t => {
                     if (t.stops[s.seq] && !t.stops[s.seq].actualArrivalTs && !t.stops[s.seq].scheduledEtaTs) {
                         const matchingEta = etaList.find(item => isEtaConsistentWithTrip(t, s.seq, item.etaTs));
@@ -960,7 +1052,6 @@ async function pollBookmarkedRoutes() {
 
                 const isWithinArrivalWindow = now >= tr.latestEtaTs - 45000 && now <= tr.latestEtaTs + 15 * 60000;
 
-                // 僅當消失前為隊首班次 (lastEtaSeq === 1) 才判定為真實到站，避免後方班次暫時隱藏造成誤判
                 if (isWithinArrivalWindow && tr.lastEtaSeq === 1) {
                     const realisticArrivalTs = Math.min(now, Math.max(tr.latestEtaTs, now - 12000));
                     findOrCreateTripForStopArrival(
@@ -979,19 +1070,11 @@ async function pollBookmarkedRoutes() {
             });
         }
 
-        // 寫入 Excel 前執行碎片自動縫合清洗
         stitchFragmentedTrips();
 
         lastPollTimeStr = formatTime(now);
         saveToExcel();
-        console.log(`[${lastPollTimeStr}] 監察完成，已寫入 48 小時主檔 ${ROLLING_48H_EXCEL_FILENAME}（保留 48h 內共 ${Object.keys(trips).length} 個班次）`);
-
-        if (drainMode) {
-            const remaining = Object.values(trips).filter(t => isTripStillActive(t, Date.now())).length;
-            if (remaining === 0) {
-                console.log('🏁 所有在途班次均已抵達終點，48 小時 Excel 數據已完整封存！');
-            }
-        }
+        triggerGithubBackup(false);
     } catch (err) {
         console.error('背景監察錯誤:', err.message);
     } finally {
@@ -999,7 +1082,6 @@ async function pollBookmarkedRoutes() {
     }
 }
 
-// 自適應輪詢排程：有車輛接近站點（<= 90 秒）時加密至 15 秒一次，否則維持 25 秒
 async function scheduleNextPoll() {
     await pollBookmarkedRoutes();
 
@@ -1034,10 +1116,17 @@ app.get('/api/status', (req, res) => {
     });
 });
 
+app.post('/api/auth/verify', (req, res) => {
+    const { password } = req.body || {};
+    if (password === ADMIN_PASSWORD) {
+        return res.json({ valid: true });
+    }
+    return res.status(401).json({ valid: false, error: '密碼錯誤' });
+});
+
 app.post('/api/drain', (req, res) => {
     drainMode = true;
     const activeCount = Object.values(trips).filter(t => isTripStillActive(t, Date.now())).length;
-    console.log(`🛑 已進入 Drain Mode：停止接收新班次，等待剩餘 ${activeCount} 班在途車輛抵達終點...`);
     res.json({ drainMode: true, remainingActiveTrips: activeCount });
 });
 
@@ -1068,7 +1157,12 @@ app.get('/api/route-shape', (req, res) => {
 });
 
 app.post('/api/bookmarks/toggle', (req, res) => {
-    const { operator, route, dirParam, serviceType = '1', origTc = '', destTc = '' } = req.body;
+    const { password, operator, route, dirParam, serviceType = '1', origTc = '', destTc = '', origEn = '', destEn = '' } = req.body;
+
+    if (password !== ADMIN_PASSWORD) {
+        return res.status(401).json({ error: '管理密碼錯誤或未輸入密碼，無權更改監察路線' });
+    }
+
     const id = `${operator}_${route}_${dirParam}_${serviceType}`;
     const idx = bookmarks.findIndex(b => b.id === id);
 
@@ -1084,6 +1178,8 @@ app.post('/api/bookmarks/toggle', (req, res) => {
             serviceType,
             origTc,
             destTc,
+            origEn: origEn || origTc,
+            destEn: destEn || destTc,
             addedAt: `${formatDate(Date.now())} ${formatTime(Date.now())}`
         });
         bookmarked = true;
@@ -1091,6 +1187,7 @@ app.post('/api/bookmarks/toggle', (req, res) => {
 
     saveBookmarks();
     saveToExcel();
+    triggerGithubBackup(true);
     if (bookmarked) pollBookmarkedRoutes();
 
     res.json({ bookmarked, bookmarks });
@@ -1114,18 +1211,22 @@ app.get('/api/download-excel', (req, res) => {
     }
 });
 
-saveBookmarks();
-saveToExcel();
+async function bootstrap() {
+    await restoreFromGithub();
+    saveBookmarks();
+    saveToExcel();
 
-app.listen(PORT, HOST, () => {
-    console.log('====================================================');
-    console.log(`✅ 雲端巴士班次與累積時間監察系統已啟動：http://${HOST}:${PORT}`);
-    console.log(`📊 48 小時滾動 Excel 主檔：${ROLLING_48H_EXCEL_FILENAME}`);
-    console.log(`📁 本次啟動備份 Excel 檔：${SESSION_EXCEL_FILENAME}`);
-    console.log('====================================================');
-    if (bookmarks.length > 0) {
-        resolveDefaultBookmarkNames().then(() => scheduleNextPoll());
-    } else {
-        scheduleNextPoll();
-    }
-});
+    app.listen(PORT, HOST, () => {
+        console.log('====================================================');
+        console.log(`✅ 雲端巴士班次與累積時間監察系統已啟動：http://${HOST}:${PORT}`);
+        console.log(`📊 48 小時滾動 Excel 主檔：${ROLLING_48H_EXCEL_FILENAME}`);
+        console.log('====================================================');
+        if (bookmarks.length > 0) {
+            resolveDefaultBookmarkNames().then(() => scheduleNextPoll());
+        } else {
+            scheduleNextPoll();
+        }
+    });
+}
+
+bootstrap();
