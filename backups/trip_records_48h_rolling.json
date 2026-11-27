@@ -23297,9 +23297,9 @@
         "stopName": "屯門碼頭總站",
         "stopNameEn": "TUEN MUN PIER HEAD B/T",
         "scheduledEtaTs": 1795817474000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818233281,
+        "cumulativeMins": 81,
+        "status": "已到站"
       }
     }
   },
@@ -24323,9 +24323,9 @@
         "stopName": "龍門居",
         "stopNameEn": "Lung Mun Oasis",
         "scheduledEtaTs": 1795818175000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818208289,
+        "cumulativeMins": 68,
+        "status": "已到站"
       }
     }
   },
@@ -24572,9 +24572,9 @@
         "stopName": "港澳碼頭, 干諾道中",
         "stopNameEn": "Macao Ferry, Connaught Road Central",
         "scheduledEtaTs": 1795817590000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818208289,
+        "cumulativeMins": 58,
+        "status": "已到站"
       },
       "27": {
         "seq": 27,
@@ -24893,9 +24893,9 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795818072000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818233281,
+        "cumulativeMins": 51,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
@@ -25214,18 +25214,18 @@
         "stopName": "兆康苑兆賢閣",
         "stopNameEn": "SIU YIN HOUSE SIU HONG COURT",
         "scheduledEtaTs": 1795817770000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818325480,
+        "cumulativeMins": 52,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
         "stopName": "屯門醫院",
         "stopNameEn": "TUEN MUN HOSPITAL",
         "scheduledEtaTs": 1795817799000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818325480,
+        "cumulativeMins": 52,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -25652,9 +25652,9 @@
         "stopName": "西區海底隧道巴士轉乘站",
         "stopNameEn": "Western Harbour Crossing Bus-Bus Interchange",
         "scheduledEtaTs": 1795818178000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818233281,
+        "cumulativeMins": 44,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
