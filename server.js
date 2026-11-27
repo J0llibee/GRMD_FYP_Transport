@@ -19,6 +19,28 @@ const GITHUB_BACKUP_INTERVAL_MS = 3 * 60 * 1000;
 const KMB_API = 'https://data.etabus.gov.hk/v1/transport/kmb';
 const CTB_API = 'https://rt.data.gov.hk/v1/transport/citybus-nwfb';
 
+async function safeFetchJson(url, retries = 2) {
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const res = await fetch(url, {
+                headers: {
+                    'Accept': 'application/json',
+                    'User-Agent': 'HK-Bus-Monitor/1.0'
+                }
+            });
+            const text = await res.text();
+            if (!res.ok || text.trim().startsWith('<')) {
+                throw new Error(`HTTP ${res.status} (收到 HTML 非 JSON 回應)`);
+            }
+            return JSON.parse(text);
+        } catch (err) {
+            if (i === retries) return null;
+            await new Promise(r => setTimeout(r, 800 * (i + 1)));
+        }
+    }
+    return null;
+}
+
 const DATA_DIR = process.env.DATA_DIR || __dirname;
 if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -261,9 +283,8 @@ async function resolveDefaultBookmarkNames() {
         if (bm.origTc !== '(雲端預設)' && bm.destTc !== '(雲端預設)' && bm.origEn && bm.destEn) continue;
         try {
             if (bm.operator === 'KMB') {
-                const res = await fetch(`${KMB_API}/route/${bm.route}/${bm.dirParam}/${bm.serviceType || '1'}`);
-                const json = await res.json();
-                if (json.data) {
+                const json = await safeFetchJson(`${KMB_API}/route/${bm.route}/${bm.dirParam}/${bm.serviceType || '1'}`);
+                if (json && json.data) {
                     bm.origTc = (json.data.orig_tc || '').trim() || bm.origTc;
                     bm.destTc = (json.data.dest_tc || '').trim() || bm.destTc;
                     bm.origEn = (json.data.orig_en || '').trim() || bm.origTc;
@@ -271,9 +292,8 @@ async function resolveDefaultBookmarkNames() {
                     updated = true;
                 }
             } else {
-                const res = await fetch(`${CTB_API}/route/ctb/${bm.route}`);
-                const json = await res.json();
-                if (json.data) {
+                const json = await safeFetchJson(`${CTB_API}/route/ctb/${bm.route}`);
+                if (json && json.data) {
                     const origTc = (json.data.orig_tc || '').trim();
                     const destTc = (json.data.dest_tc || '').trim();
                     const origEn = (json.data.orig_en || origTc).trim();
@@ -530,9 +550,9 @@ function saveToExcel() {
 
 async function ensureKmbStops() {
     if (Object.keys(kmbStopsMap).length > 0) return;
-    const res = await fetch(`${KMB_API}/stop`);
-    const json = await res.json();
-    (json.data || []).forEach(s => {
+    const json = await safeFetchJson(`${KMB_API}/stop`);
+    if (!json || !json.data) return;
+    json.data.forEach(s => {
         const tc = (s.name_tc || s.name_en || s.stop).trim();
         const en = (s.name_en || s.name_tc || s.stop).trim();
         kmbStopsMap[s.stop] = { tc, en };
@@ -545,9 +565,9 @@ async function getRouteStops(operator, route, dirParam, serviceType = '1') {
 
     if (operator === 'KMB') {
         await ensureKmbStops();
-        const res = await fetch(`${KMB_API}/route-stop/${route}/${dirParam}/${serviceType}`);
-        const json = await res.json();
-        const list = (json.data || []).map(item => {
+        const json = await safeFetchJson(`${KMB_API}/route-stop/${route}/${dirParam}/${serviceType}`);
+        if (!json || !json.data) return [];
+        const list = json.data.map(item => {
             const info = kmbStopsMap[item.stop] || { tc: item.stop, en: item.stop };
             return {
                 seq: parseInt(item.seq, 10),
@@ -559,19 +579,14 @@ async function getRouteStops(operator, route, dirParam, serviceType = '1') {
         routeStopsCache[key] = list;
         return list;
     } else {
-        const res = await fetch(`${CTB_API}/route-stop/ctb/${route}/${dirParam}`);
-        const json = await res.json();
-        const list = await Promise.all((json.data || []).map(async item => {
+        const json = await safeFetchJson(`${CTB_API}/route-stop/ctb/${route}/${dirParam}`);
+        if (!json || !json.data) return [];
+        const list = await Promise.all(json.data.map(async item => {
             if (!ctbStopsMap[item.stop]) {
-                try {
-                    const sRes = await fetch(`${CTB_API}/stop/${item.stop}`);
-                    const sJson = await sRes.json();
-                    const tc = (sJson.data?.name_tc || sJson.data?.name_en || item.stop).trim();
-                    const en = (sJson.data?.name_en || sJson.data?.name_tc || item.stop).trim();
-                    ctbStopsMap[item.stop] = { tc, en };
-                } catch {
-                    ctbStopsMap[item.stop] = { tc: item.stop, en: item.stop };
-                }
+                const sJson = await safeFetchJson(`${CTB_API}/stop/${item.stop}`);
+                const tc = (sJson?.data?.name_tc || sJson?.data?.name_en || item.stop).trim();
+                const en = (sJson?.data?.name_en || sJson?.data?.name_tc || item.stop).trim();
+                ctbStopsMap[item.stop] = { tc, en };
             }
             return {
                 seq: parseInt(item.seq, 10),
@@ -955,9 +970,9 @@ async function pollBookmarkedRoutes() {
             const stopAllEtasMap = {};
 
             if (bm.operator === 'KMB') {
-                const res = await fetch(`${KMB_API}/route-eta/${bm.route}/${serviceType}`);
-                const json = await res.json();
-                (json.data || []).forEach(item => {
+                const json = await safeFetchJson(`${KMB_API}/route-eta/${bm.route}/${serviceType}`);
+                if (!json || !json.data) continue;
+                json.data.forEach(item => {
                     if (item.dir === targetDirCode && item.eta) {
                         const seq = parseInt(item.seq, 10);
                         if (!stopAllEtasMap[seq]) stopAllEtasMap[seq] = [];
@@ -969,24 +984,22 @@ async function pollBookmarkedRoutes() {
                     }
                 });
             } else {
-                const batchSize = 8;
+                const batchSize = 6;
                 for (let i = 0; i < stops.length; i += batchSize) {
                     const batch = stops.slice(i, i + batchSize);
                     await Promise.all(batch.map(async s => {
-                        try {
-                            const res = await fetch(`${CTB_API}/eta/ctb/${s.stopId}/${bm.route}`);
-                            const json = await res.json();
-                            const matched = (json.data || [])
-                                .filter(item => item.dir === targetDirCode && item.eta)
-                                .map(item => ({
-                                    eta_seq: item.eta_seq,
-                                    etaTs: new Date(item.eta).getTime(),
-                                    rmk: (item.rmk_tc || '').trim()
-                                }));
-                            if (matched.length > 0) {
-                                stopAllEtasMap[s.seq] = matched;
-                            }
-                        } catch (e) { /* ignore */ }
+                        const json = await safeFetchJson(`${CTB_API}/eta/ctb/${s.stopId}/${bm.route}`);
+                        if (!json || !json.data) return;
+                        const matched = json.data
+                            .filter(item => item.dir === targetDirCode && item.eta)
+                            .map(item => ({
+                                eta_seq: item.eta_seq,
+                                etaTs: new Date(item.eta).getTime(),
+                                rmk: (item.rmk_tc || '').trim()
+                            }));
+                        if (matched.length > 0) {
+                            stopAllEtasMap[s.seq] = matched;
+                        }
                     }));
                 }
             }
