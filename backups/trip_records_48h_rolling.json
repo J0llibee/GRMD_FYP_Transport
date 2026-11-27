@@ -22592,18 +22592,18 @@
         "stopName": "聖保祿醫院, 銅鑼灣道",
         "stopNameEn": "St. Paul's Hospital, Tung Lo Wan Road",
         "scheduledEtaTs": 1795817021000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817480087,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "36": {
         "seq": 36,
         "stopName": "銅鑼灣 (摩頓台)",
         "stopNameEn": "Causeway Bay (Moreton Terrace)",
         "scheduledEtaTs": 1795817080000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817539982,
+        "cumulativeMins": 72,
+        "status": "已到站"
       }
     }
   },
@@ -22922,9 +22922,9 @@
         "stopName": "葵涌交滙處",
         "stopNameEn": "KWAI CHUNG INTERCHANGE",
         "scheduledEtaTs": 1795817196000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817446183,
+        "cumulativeMins": 68,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -23600,9 +23600,9 @@
         "stopName": "九龍站",
         "stopNameEn": "Kowloon Station",
         "scheduledEtaTs": 1795817189000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817388385,
+        "cumulativeMins": 67,
+        "status": "已到站"
       }
     }
   },
@@ -23984,18 +23984,18 @@
         "stopName": "聖保祿醫院, 銅鑼灣道",
         "stopNameEn": "St. Paul's Hospital, Tung Lo Wan Road",
         "scheduledEtaTs": 1795817531000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817388385,
+        "cumulativeMins": 60,
+        "status": "已到站"
       },
       "42": {
         "seq": 42,
         "stopName": "銅鑼灣 (摩頓台)",
         "stopNameEn": "Causeway Bay (Moreton Terrace)",
         "scheduledEtaTs": 1795817594000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817505793,
+        "cumulativeMins": 62,
+        "status": "已到站"
       }
     }
   },
@@ -24278,9 +24278,9 @@
         "stopName": "屯門中央廣場, 海榮路",
         "stopNameEn": "Tuen Mun Central Square, Hoi Wing Road",
         "scheduledEtaTs": 1795817477000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817539982,
+        "cumulativeMins": 57,
+        "status": "已到站"
       },
       "31": {
         "seq": 31,
@@ -25142,9 +25142,9 @@
         "stopName": "翠寧花園",
         "stopNameEn": "TSUI NING GARDEN",
         "scheduledEtaTs": 1795817060000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817446183,
+        "cumulativeMins": 38,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
@@ -26747,9 +26747,9 @@
         "stopName": "葵芳邨",
         "stopNameEn": "KWAI FONG ESTATE",
         "scheduledEtaTs": 1795817193000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817446183,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -27016,7 +27016,7 @@
         "seq": 35,
         "stopName": "蝴蝶邨蝶心樓",
         "stopNameEn": "TIP SUM HOUSE BUTTERFLY ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795820874000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -27025,7 +27025,7 @@
         "seq": 36,
         "stopName": "湖景邨湖碧樓",
         "stopNameEn": "WU PIK HOUSE WU KING ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795820920000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
