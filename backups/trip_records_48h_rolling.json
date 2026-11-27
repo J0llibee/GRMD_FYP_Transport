@@ -11666,9 +11666,9 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795805466000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805595487,
+        "cumulativeMins": 52,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
@@ -12005,27 +12005,27 @@
         "stopName": "寶怡花園",
         "stopNameEn": "BLOSSOM GARDEN",
         "scheduledEtaTs": 1795805294000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805450478,
+        "cumulativeMins": 49,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
         "stopName": "寶田轉車站 - 盈豐園",
         "stopNameEn": "PO TIN BBI - GOODRICH GARDEN",
         "scheduledEtaTs": 1795805394000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805547785,
+        "cumulativeMins": 51,
+        "status": "已到站"
       },
       "26": {
         "seq": 26,
         "stopName": "田景邨田樂樓",
         "stopNameEn": "TIN LOK HOUSE TIN KING ESTATE",
         "scheduledEtaTs": 1795805486000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805595487,
+        "cumulativeMins": 52,
+        "status": "已到站"
       },
       "27": {
         "seq": 27,
@@ -12584,18 +12584,18 @@
         "stopName": "友愛邨",
         "stopNameEn": "YAU OI ESTATE",
         "scheduledEtaTs": 1795805292000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805547785,
+        "cumulativeMins": 37,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "屯門公園",
         "stopNameEn": "TUEN MUN PARK",
         "scheduledEtaTs": 1795805359000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805547785,
+        "cumulativeMins": 37,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
@@ -12887,9 +12887,9 @@
         "stopName": "西區海底隧道巴士轉乘站",
         "stopNameEn": "Western Harbour Crossing Bus-Bus Interchange",
         "scheduledEtaTs": 1795805547000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805570092,
+        "cumulativeMins": 23,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
@@ -13217,18 +13217,18 @@
         "stopName": "麒麟圍",
         "stopNameEn": "KEI LUN WAI",
         "scheduledEtaTs": 1795805383000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805547785,
+        "cumulativeMins": 22,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
         "stopName": "欣田邨",
         "stopNameEn": "YAN TIN ESTATE",
         "scheduledEtaTs": 1795805466000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805595487,
+        "cumulativeMins": 23,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
