@@ -23288,9 +23288,9 @@
         "stopName": "屯門碼頭(兆禧苑)",
         "stopNameEn": "TUEN MUN PIER HEAD(SIU HEI COURT)",
         "scheduledEtaTs": 1795817263000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817952783,
+        "cumulativeMins": 76,
+        "status": "已到站"
       },
       "38": {
         "seq": 38,
@@ -24305,18 +24305,18 @@
         "stopName": "兆山苑, 龍門路",
         "stopNameEn": "Siu Shan Court, Lung Mun Road",
         "scheduledEtaTs": 1795817922000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817980687,
+        "cumulativeMins": 65,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
         "stopName": "新屯門中心, 龍門路",
         "stopNameEn": "Sun Tuen Mun Centre, Lung Mun Road",
         "scheduledEtaTs": 1795817987000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818036183,
+        "cumulativeMins": 66,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -25169,45 +25169,45 @@
         "stopName": "新墟街市",
         "stopNameEn": "SAN HUI MARKET",
         "scheduledEtaTs": 1795817404000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817952783,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
         "stopName": "紅橋",
         "stopNameEn": "HUNG KIU",
         "scheduledEtaTs": 1795817458000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817952783,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
         "stopName": "虎地",
         "stopNameEn": "FU TEI",
         "scheduledEtaTs": 1795817554000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818061377,
+        "cumulativeMins": 48,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
         "scheduledEtaTs": 1795817602000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818061377,
+        "cumulativeMins": 48,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "兆康路",
         "stopNameEn": "SIU HONG ROAD",
         "scheduledEtaTs": 1795817649000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818116091,
+        "cumulativeMins": 49,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
@@ -26783,27 +26783,27 @@
         "stopName": "荃灣眾安街",
         "stopNameEn": "CHUNG ON STREET TSUEN WAN",
         "scheduledEtaTs": 1795817609000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817952783,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "荃灣建明街",
         "stopNameEn": "KIN MING STREET TSUEN WAN",
         "scheduledEtaTs": 1795817701000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795817952783,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795817857000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795818061377,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
