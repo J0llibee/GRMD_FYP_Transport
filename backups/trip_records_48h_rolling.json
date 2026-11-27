@@ -13781,9 +13781,9 @@
         "stopName": "屯門碼頭總站",
         "stopNameEn": "TUEN MUN PIER HEAD B/T",
         "scheduledEtaTs": 1795808374000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809263489,
+        "cumulativeMins": 84,
+        "status": "已到站"
       }
     }
   },
@@ -14093,9 +14093,9 @@
         "stopName": "杜老誌道, 軒尼詩道",
         "stopNameEn": "Tonnochy Road, Hennessy Road",
         "scheduledEtaTs": 1795809302000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809342285,
+        "cumulativeMins": 56,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
@@ -14378,18 +14378,18 @@
         "stopName": "荃灣眾安街",
         "stopNameEn": "CHUNG ON STREET TSUEN WAN",
         "scheduledEtaTs": 1795809298000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809315982,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
         "stopName": "大窩口轉車站 -大窩口站",
         "stopNameEn": "TAI WO HAU BBI -TAI WO HAU STATION",
         "scheduledEtaTs": 1795809407000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809415093,
+        "cumulativeMins": 57,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
@@ -14717,9 +14717,9 @@
         "stopName": "田景邨田裕樓",
         "stopNameEn": "TIN YUE HOUSE TIN KING ESTATE",
         "scheduledEtaTs": 1795809236000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809315982,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
@@ -14966,9 +14966,9 @@
         "stopName": "大欖涌, 青山公路",
         "stopNameEn": "Tai Lam Chung, Castle Peak Road",
         "scheduledEtaTs": 1795809451000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809391383,
+        "cumulativeMins": 42,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
@@ -15698,18 +15698,18 @@
         "stopName": "大欖涌, 青山公路",
         "stopNameEn": "Tai Lam Chung, Castle Peak Road",
         "scheduledEtaTs": 1795808939000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809290579,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
         "stopName": "屯門公路巴士轉乘站, 青山公路",
         "stopNameEn": "Tuen Mun Road Bus-Bus Interchange, Castle Peak Road",
         "scheduledEtaTs": 1795809000000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809391383,
+        "cumulativeMins": 27,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
@@ -15965,18 +15965,18 @@
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
         "scheduledEtaTs": 1795809145000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809315982,
+        "cumulativeMins": 24,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
         "stopName": "虎地",
         "stopNameEn": "FU TEI",
         "scheduledEtaTs": 1795809217000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809365292,
+        "cumulativeMins": 24,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
@@ -16598,18 +16598,18 @@
         "stopName": "和田邨",
         "stopNameEn": "WO TIN ESTATE",
         "scheduledEtaTs": 1795810160000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809290579,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
         "stopName": "寶田轉車站 - 盈豐園",
         "stopNameEn": "PO TIN BBI - GOODRICH GARDEN",
         "scheduledEtaTs": 1795810292000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809391383,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -16901,27 +16901,27 @@
         "stopName": "掃管笏",
         "stopNameEn": "SO KWUN WAT",
         "scheduledEtaTs": 1795811797000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809342285,
+        "cumulativeMins": 9,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
         "stopName": "掃管笏路",
         "stopNameEn": "SO KWUN WAT ROAD",
         "scheduledEtaTs": 1795811857000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809391383,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "星堤",
         "stopNameEn": "AVIGNON",
         "scheduledEtaTs": 1795811895000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795809391383,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
@@ -17053,7 +17053,7 @@
         "seq": 25,
         "stopName": "屯門碼頭(兆禧苑)",
         "stopNameEn": "TUEN MUN PIER HEAD (SIU HEI COURT)",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795812949000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -17062,7 +17062,7 @@
         "seq": 26,
         "stopName": "邁亞美海灣",
         "stopNameEn": "MIAMI BEACH TOWERS",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795812988000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
