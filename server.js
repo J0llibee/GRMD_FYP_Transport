@@ -51,6 +51,8 @@ const SHAPES_FILE = path.join(__dirname, 'bus_shapes.json');
 
 const ROLLING_48H_EXCEL_FILENAME = 'bus_arrival_records_48h_rolling.xlsx';
 const ROLLING_48H_EXCEL_FILE = path.join(DATA_DIR, ROLLING_48H_EXCEL_FILENAME);
+const ROLLING_48H_CSV_FILENAME = 'bus_arrival_records_48h_rolling.csv';
+const ROLLING_48H_CSV_FILE = path.join(DATA_DIR, ROLLING_48H_CSV_FILENAME);
 const ROLLING_48H_TRIPS_FILE = path.join(DATA_DIR, 'trip_records_48h_rolling.json');
 
 const RETENTION_MS = 48 * 3600 * 1000;
@@ -296,9 +298,10 @@ async function triggerGithubBackup(force = false) {
         const ok1 = await uploadFileToGithub(BOOKMARKS_FILE, 'backups/bookmarks.json');
         const ok2 = await uploadFileToGithub(ROLLING_48H_TRIPS_FILE, 'backups/trip_records_48h_rolling.json');
         const ok3 = await uploadFileToGithub(ROLLING_48H_EXCEL_FILE, `backups/${ROLLING_48H_EXCEL_FILENAME}`);
-        if (ok1 && ok2 && ok3) {
+        const ok4 = await uploadFileToGithub(ROLLING_48H_CSV_FILE, `backups/${ROLLING_48H_CSV_FILENAME}`);
+        if (ok1 && ok2 && ok3 && ok4) {
             lastGithubBackupTs = now;
-            console.log(`☁️ [${formatTime(now)}] 已自動備份記錄至 GitHub (${GITHUB_REPO} @ ${GITHUB_BRANCH})`);
+            console.log(`☁️ [${formatTime(now)}] 已自動備份 Excel & CSV 記錄至 GitHub (${GITHUB_REPO} @ ${GITHUB_BRANCH})`);
         }
     } finally {
         isBackingUpGithub = false;
@@ -561,6 +564,13 @@ function saveToExcel() {
         XLSX.writeFile(wb, ROLLING_48H_EXCEL_FILE);
     } catch (err) {
         console.error('⚠️ 寫入 48 小時滾動 Excel 失敗:', err.message);
+    }
+
+    try {
+        const csvContent = '\uFEFF' + XLSX.utils.sheet_to_csv(wsDetail);
+        fs.writeFileSync(ROLLING_48H_CSV_FILE, csvContent, 'utf8');
+    } catch (err) {
+        console.error('⚠️ 寫入 48 小時 CSV 失敗:', err.message);
     }
 
     try {
@@ -1169,6 +1179,7 @@ app.get('/api/status', (req, res) => {
         running: true,
         drainMode,
         rollingExcelFileName: ROLLING_48H_EXCEL_FILENAME,
+        rollingCsvFileName: ROLLING_48H_CSV_FILENAME,
         excelFileName: ROLLING_48H_EXCEL_FILENAME,
         sessionExcelFileName: SESSION_EXCEL_FILENAME,
         excelPath: ROLLING_48H_EXCEL_FILE,
@@ -1281,6 +1292,15 @@ app.get('/api/download-excel', (req, res) => {
     }
 });
 
+app.get('/api/download-csv', (req, res) => {
+    saveToExcel();
+    if (fs.existsSync(ROLLING_48H_CSV_FILE)) {
+        res.download(ROLLING_48H_CSV_FILE, ROLLING_48H_CSV_FILENAME);
+    } else {
+        res.status(404).send('尚未產生 CSV 檔案');
+    }
+});
+
 async function bootstrap() {
     await restoreFromGithub();
     saveBookmarks();
@@ -1290,6 +1310,7 @@ async function bootstrap() {
         console.log('====================================================');
         console.log(`✅ 雲端巴士班次與累積時間監察系統已啟動：http://${HOST}:${PORT}`);
         console.log(`📊 48 小時滾動 Excel 主檔：${ROLLING_48H_EXCEL_FILENAME}`);
+        console.log(`📄 48 小時滾動 CSV 預覽檔：${ROLLING_48H_CSV_FILENAME}`);
         console.log('====================================================');
         if (bookmarks.length > 0) {
             resolveDefaultBookmarkNames().then(() => scheduleNextPoll());
