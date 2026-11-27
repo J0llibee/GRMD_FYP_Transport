@@ -11060,27 +11060,27 @@
         "stopName": "美樂花園, 湖翠路",
         "stopNameEn": "Melody Garden, Wu Chui Road",
         "scheduledEtaTs": 1795805342000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805666683,
+        "cumulativeMins": 69,
+        "status": "已到站"
       },
       "33": {
         "seq": 33,
         "stopName": "兆山苑, 龍門路",
         "stopNameEn": "Siu Shan Court, Lung Mun Road",
         "scheduledEtaTs": 1795805410000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805719000,
+        "cumulativeMins": 70,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
         "stopName": "新屯門中心, 龍門路",
         "stopNameEn": "Sun Tuen Mun Centre, Lung Mun Road",
         "scheduledEtaTs": 1795805472000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805790879,
+        "cumulativeMins": 72,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -11675,18 +11675,18 @@
         "stopName": "愉景新城",
         "stopNameEn": "DISCOVERY PARK",
         "scheduledEtaTs": 1795805562000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805742583,
+        "cumulativeMins": 54,
+        "status": "已到站"
       },
       "26": {
         "seq": 26,
         "stopName": "荃灣站",
         "stopNameEn": "TSUEN WAN STATION",
         "scheduledEtaTs": 1795805621000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805790879,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "27": {
         "seq": 27,
@@ -12032,18 +12032,18 @@
         "stopName": "田景邨田裕樓",
         "stopNameEn": "TIN YUE HOUSE TIN KING ESTATE",
         "scheduledEtaTs": 1795805559000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805691877,
+        "cumulativeMins": 53,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
         "stopName": "石排站",
         "stopNameEn": "SHEK PAI STATION",
         "scheduledEtaTs": 1795805672000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805790879,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
@@ -12602,9 +12602,9 @@
         "stopName": "屯門站總站",
         "stopNameEn": "TUEN MUN STATION BUS TERMINUS",
         "scheduledEtaTs": 1795805516000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805691877,
+        "cumulativeMins": 40,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
@@ -13235,18 +13235,18 @@
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
         "scheduledEtaTs": 1795805543000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805691877,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
         "stopName": "虎地",
         "stopNameEn": "FU TEI",
         "scheduledEtaTs": 1795805617000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795805742583,
+        "cumulativeMins": 26,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
