@@ -27044,9 +27044,9 @@
         "stopName": "屯門碼頭總站",
         "stopNameEn": "TUEN MUN PIER HEAD B/T",
         "scheduledEtaTs": 1795821225000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795821463380,
+        "cumulativeMins": 75,
+        "status": "已到站"
       }
     }
   }
