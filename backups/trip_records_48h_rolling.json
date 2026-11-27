@@ -1940,27 +1940,27 @@
         "stopName": "紅橋",
         "stopNameEn": "HUNG KIU",
         "scheduledEtaTs": 1795796680000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795796604878,
+        "cumulativeMins": 23,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
         "stopName": "新墟街市",
         "stopNameEn": "SAN HUI MARKET",
         "scheduledEtaTs": 1795796746000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795796684981,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
         "stopName": "屯門市中心總站",
         "stopNameEn": "TUEN MUN CENTRAL BUS TERMINUS",
         "scheduledEtaTs": 1795796859000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795796764391,
+        "cumulativeMins": 26,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
@@ -2644,7 +2644,7 @@
         "seq": 26,
         "stopName": "香港青年協會李兆基書院",
         "stopNameEn": "HKFYG LEE SHAU KEE COLLEGE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795800232000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -2653,7 +2653,7 @@
         "seq": 27,
         "stopName": "美湖居",
         "stopNameEn": "MAYWOOD COURT",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795800296000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
