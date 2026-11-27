@@ -27017,18 +27017,18 @@
         "stopName": "蝴蝶邨蝶心樓",
         "stopNameEn": "TIP SUM HOUSE BUTTERFLY ESTATE",
         "scheduledEtaTs": 1795820874000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795821201385,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "36": {
         "seq": 36,
         "stopName": "湖景邨湖碧樓",
         "stopNameEn": "WU PIK HOUSE WU KING ESTATE",
         "scheduledEtaTs": 1795820920000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795821201385,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "37": {
         "seq": 37,
