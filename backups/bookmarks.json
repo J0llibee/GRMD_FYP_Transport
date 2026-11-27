@@ -202,17 +202,5 @@
     "origEn": "AIRPORT (CHEONG TAT ROAD)",
     "destEn": "YUEN LONG STATION",
     "addedAt": "2026-11-27 16:45:09"
-  },
-  {
-    "id": "KMB_1_outbound_1",
-    "operator": "KMB",
-    "route": "1",
-    "dirParam": "outbound",
-    "serviceType": "1",
-    "origTc": "竹園邨",
-    "destTc": "尖沙咀碼頭",
-    "origEn": "CHUK YUEN ESTATE",
-    "destEn": "STAR FERRY",
-    "addedAt": "2026-11-27 16:45:44"
   }
 ]
