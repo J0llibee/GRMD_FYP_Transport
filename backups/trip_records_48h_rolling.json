@@ -13406,27 +13406,27 @@
         "stopName": "葵涌交滙處",
         "stopNameEn": "KWAI CHUNG INTERCHANGE",
         "scheduledEtaTs": 1795808153000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808251581,
+        "cumulativeMins": 68,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
         "stopName": "美孚轉車站",
         "stopNameEn": "MEI FOO BBI",
         "scheduledEtaTs": 1795808217000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808303487,
+        "cumulativeMins": 68,
+        "status": "已到站"
       },
       "36": {
         "seq": 36,
         "stopName": "美孚巴士總站",
         "stopNameEn": "MEI FOO BUS TERMINUS",
         "scheduledEtaTs": 1795808305000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808354382,
+        "cumulativeMins": 69,
+        "status": "已到站"
       }
     }
   },
@@ -13727,27 +13727,27 @@
         "stopName": "富健花園",
         "stopNameEn": "GLORIOUS GARDEN",
         "scheduledEtaTs": 1795807866000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808251581,
+        "cumulativeMins": 68,
+        "status": "已到站"
       },
       "33": {
         "seq": 33,
         "stopName": "新屯門中心",
         "stopNameEn": "SUN TUEN MUN CENTRE",
         "scheduledEtaTs": 1795807923000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808251581,
+        "cumulativeMins": 68,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
         "stopName": "兆山苑柳景閣",
         "stopNameEn": "LAU KING HOUSE SIU SHAN COURT",
         "scheduledEtaTs": 1795808019000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808354382,
+        "cumulativeMins": 69,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -14609,9 +14609,9 @@
         "stopName": "友愛邨",
         "stopNameEn": "YAU OI ESTATE",
         "scheduledEtaTs": 1795808199000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808303487,
+        "cumulativeMins": 38,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
@@ -15233,27 +15233,27 @@
         "stopName": "天耀邨耀豐樓",
         "stopNameEn": "YIU FUNG HOUSE TIN YIU ESTATE",
         "scheduledEtaTs": 1795808245000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808277979,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
         "stopName": "景湖居",
         "stopNameEn": "KENSWOOD COURT",
         "scheduledEtaTs": 1795808392000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808380487,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "麗湖居",
         "stopNameEn": "LYNWOOD COURT",
         "scheduledEtaTs": 1795808437000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808429390,
+        "cumulativeMins": 13,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
@@ -15457,7 +15457,7 @@
         "seq": 33,
         "stopName": "國泰城",
         "stopNameEn": "CATHAY CITY",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811792000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -15466,7 +15466,7 @@
         "seq": 34,
         "stopName": "暢連路",
         "stopNameEn": "CHEONG LIN ROAD",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811917000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -15475,7 +15475,7 @@
         "seq": 35,
         "stopName": "暢達路(一號客運大樓)(北)",
         "stopNameEn": "Terminal 1 (North), Cheong Tat Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795812015000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -15572,9 +15572,9 @@
         "stopName": "屯門中央廣場, 海榮路",
         "stopNameEn": "Tuen Mun Central Square, Hoi Wing Road",
         "scheduledEtaTs": 1795808308000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808429390,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -15866,27 +15866,27 @@
         "stopName": "新屯門中心",
         "stopNameEn": "SUN TUEN MUN CENTRE",
         "scheduledEtaTs": 1795808083000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808251581,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
         "stopName": "龍門站",
         "stopNameEn": "LUNG MUN STATION",
         "scheduledEtaTs": 1795808135000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808303487,
+        "cumulativeMins": 7,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
         "stopName": "青雲站",
         "stopNameEn": "TSING WUN STATION",
         "scheduledEtaTs": 1795808232000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808403278,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
@@ -16135,7 +16135,7 @@
         "seq": 34,
         "stopName": "葵涌交滙處",
         "stopNameEn": "KWAI CHUNG INTERCHANGE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811848000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -16144,7 +16144,7 @@
         "seq": 35,
         "stopName": "美孚轉車站",
         "stopNameEn": "MEI FOO BBI",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811909000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -16214,9 +16214,9 @@
         "stopName": "葵芳邨",
         "stopNameEn": "KWAI FONG ESTATE",
         "scheduledEtaTs": 1795808170000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795808303487,
+        "cumulativeMins": 7,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
@@ -16492,7 +16492,7 @@
         "seq": 36,
         "stopName": "湖景邨湖碧樓",
         "stopNameEn": "WU PIK HOUSE WU KING ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811821000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -16501,7 +16501,7 @@
         "seq": 37,
         "stopName": "屯門碼頭(兆禧苑)",
         "stopNameEn": "TUEN MUN PIER HEAD(SIU HEI COURT)",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795811918000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
