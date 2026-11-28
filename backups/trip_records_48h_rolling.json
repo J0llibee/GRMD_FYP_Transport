@@ -34877,27 +34877,27 @@
         "stopName": "葵涌道荔景邨",
         "stopNameEn": "LAI KING ESTATE KWAI CHUNG ROAD",
         "scheduledEtaTs": 1795890960000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891593687,
+        "cumulativeMins": 73,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
         "stopName": "葵涌交滙處",
         "stopNameEn": "KWAI CHUNG INTERCHANGE",
         "scheduledEtaTs": 1795891143000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891657576,
+        "cumulativeMins": 74,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
         "stopName": "美孚轉車站",
         "stopNameEn": "MEI FOO BBI",
         "scheduledEtaTs": 1795891267000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891718382,
+        "cumulativeMins": 75,
+        "status": "已到站"
       },
       "36": {
         "seq": 36,
@@ -36431,9 +36431,9 @@
         "stopName": "菁田邨",
         "stopNameEn": "Ching Tin Estate",
         "scheduledEtaTs": 1795891726000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891620283,
+        "cumulativeMins": 62,
+        "status": "已到站"
       }
     }
   },
@@ -36707,18 +36707,18 @@
         "stopName": "恒福花園, 海榮路",
         "stopNameEn": "Hanford Garden, Hoi Wing Road",
         "scheduledEtaTs": 1795891284000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891620283,
+        "cumulativeMins": 62,
+        "status": "已到站"
       },
       "30": {
         "seq": 30,
         "stopName": "屯門中央廣場, 海榮路",
         "stopNameEn": "Tuen Mun Central Square, Hoi Wing Road",
         "scheduledEtaTs": 1795891400000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891743796,
+        "cumulativeMins": 64,
+        "status": "已到站"
       },
       "31": {
         "seq": 31,
@@ -37277,36 +37277,36 @@
         "stopName": "紅橋",
         "stopNameEn": "HUNG KIU",
         "scheduledEtaTs": 1795893041000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891593687,
+        "cumulativeMins": 43,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
         "stopName": "虎地",
         "stopNameEn": "FU TEI",
         "scheduledEtaTs": 1795893145000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891657576,
+        "cumulativeMins": 44,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
         "scheduledEtaTs": 1795893199000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891657576,
+        "cumulativeMins": 44,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "兆康路",
         "stopNameEn": "SIU HONG ROAD",
         "scheduledEtaTs": 1795893265000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891718382,
+        "cumulativeMins": 45,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
@@ -37892,9 +37892,9 @@
         "stopName": "豐景園",
         "stopNameEn": "GOODVIEW GARDEN",
         "scheduledEtaTs": 1795891498000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891743796,
+        "cumulativeMins": 31,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -38177,9 +38177,9 @@
         "stopName": "砵典乍街, 干諾道中",
         "stopNameEn": "Pottinger Street, Connaught Road Central",
         "scheduledEtaTs": 1795891473000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891683378,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -38516,27 +38516,27 @@
         "stopName": "兆邦苑",
         "stopNameEn": "SIU PONG COURT",
         "scheduledEtaTs": 1795891422000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891593687,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "寶田轉車站 - 寶田",
         "stopNameEn": "PO TIN BBI - PO TIN",
         "scheduledEtaTs": 1795891532000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891657576,
+        "cumulativeMins": 15,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "大興警署",
         "stopNameEn": "TAI HING POLICE STATION",
         "scheduledEtaTs": 1795891641000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891718382,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
@@ -38855,18 +38855,18 @@
         "stopName": "荃灣建明街",
         "stopNameEn": "KIN MING STREET TSUEN WAN",
         "scheduledEtaTs": 1795891425000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891593687,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795891567000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795891657576,
+        "cumulativeMins": 15,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
