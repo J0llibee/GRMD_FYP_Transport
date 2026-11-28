@@ -27533,36 +27533,36 @@
         "stopName": "五柳路",
         "stopNameEn": "NG LAU ROAD",
         "scheduledEtaTs": 1795884772000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795883335683,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
         "stopName": "虎地",
         "stopNameEn": "FU TEI",
         "scheduledEtaTs": 1795884826000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795883335683,
+        "cumulativeMins": 25,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
         "stopName": "紅橋",
         "stopNameEn": "HUNG KIU",
         "scheduledEtaTs": 1795884907000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795883456879,
+        "cumulativeMins": 27,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
         "stopName": "新墟街市",
         "stopNameEn": "SAN HUI MARKET",
         "scheduledEtaTs": 1795884977000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795883514885,
+        "cumulativeMins": 28,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
@@ -28040,18 +28040,18 @@
         "stopName": "國泰城",
         "stopNameEn": "CATHAY CITY",
         "scheduledEtaTs": 1795883140000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795883456879,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "3": {
         "seq": 3,
         "stopName": "機場警署",
         "stopNameEn": "AIRPORT POLICE STATION",
         "scheduledEtaTs": 1795883237000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795883485288,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
