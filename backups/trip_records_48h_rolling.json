@@ -31433,9 +31433,9 @@
         "stopName": "屯門碼頭總站",
         "stopNameEn": "TUEN MUN PIER HEAD B/T",
         "scheduledEtaTs": 1795889182000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890044293,
+        "cumulativeMins": 78,
+        "status": "已到站"
       }
     }
   },
@@ -32237,18 +32237,18 @@
         "stopName": "富泰邨",
         "stopNameEn": "FU TAI ESTATE",
         "scheduledEtaTs": 1795889681000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890009982,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
         "stopName": "聚康山莊",
         "stopNameEn": "BENEVILLE",
         "scheduledEtaTs": 1795889738000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890009982,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "30": {
         "seq": 30,
@@ -32960,9 +32960,9 @@
         "stopName": "天慈邨",
         "stopNameEn": "TIN TSZ ESTATE",
         "scheduledEtaTs": 1795889994000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890009982,
+        "cumulativeMins": 68,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
@@ -33878,27 +33878,27 @@
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
         "scheduledEtaTs": 1795889972000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889949286,
+        "cumulativeMins": 51,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "兆邦苑",
         "stopNameEn": "SIU PONG COURT",
         "scheduledEtaTs": 1795890079000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890009982,
+        "cumulativeMins": 52,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
         "stopName": "寶田轉車站 - 寶田",
         "stopNameEn": "PO TIN BBI - PO TIN",
         "scheduledEtaTs": 1795890176000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890069589,
+        "cumulativeMins": 53,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
@@ -34448,36 +34448,36 @@
         "stopName": "黃金泳灘",
         "stopNameEn": "GOLDEN BEACH",
         "scheduledEtaTs": 1795889676000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889949286,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
         "stopName": "香港黃金海岸",
         "stopNameEn": "HONG KONG GOLD COAST",
         "scheduledEtaTs": 1795889726000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890069589,
+        "cumulativeMins": 48,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
         "stopName": "愛琴海岸",
         "stopNameEn": "AEGEAN COAST",
         "scheduledEtaTs": 1795889776000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890069589,
+        "cumulativeMins": 48,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
         "stopName": "星堤",
         "stopNameEn": "AVIGNON",
         "scheduledEtaTs": 1795889857000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890069589,
+        "cumulativeMins": 48,
+        "status": "已到站"
       },
       "25": {
         "seq": 25,
@@ -35108,18 +35108,18 @@
         "stopName": "兆康路",
         "stopNameEn": "SIU HONG ROAD",
         "scheduledEtaTs": 1795891465000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889922679,
+        "cumulativeMins": 45,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
         "stopName": "兆康苑兆賢閣",
         "stopNameEn": "SIU YIN HOUSE SIU HONG COURT",
         "scheduledEtaTs": 1795891575000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890044293,
+        "cumulativeMins": 47,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
@@ -35411,18 +35411,18 @@
         "stopName": "鳴琴站",
         "stopNameEn": "MING KUM STATION",
         "scheduledEtaTs": 1795889776000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889949286,
+        "cumulativeMins": 44,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
         "stopName": "中電",
         "stopNameEn": "CHINA LIGHT BUILDING",
         "scheduledEtaTs": 1795889902000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890009982,
+        "cumulativeMins": 45,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
@@ -35957,36 +35957,36 @@
         "stopName": "掃管笏變電站",
         "stopNameEn": "SO KWUN WAT SUB-STATION",
         "scheduledEtaTs": 1795889827000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889922679,
+        "cumulativeMins": 41,
+        "status": "已到站"
       },
       "45": {
         "seq": 45,
         "stopName": "星堤",
         "stopNameEn": "AVIGNON",
         "scheduledEtaTs": 1795889865000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889922679,
+        "cumulativeMins": 41,
+        "status": "已到站"
       },
       "46": {
         "seq": 46,
         "stopName": "掃管笏路88 號",
         "stopNameEn": "88 SO KWUN WAT ROAD",
         "scheduledEtaTs": 1795889904000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890044293,
+        "cumulativeMins": 43,
+        "status": "已到站"
       },
       "47": {
         "seq": 47,
         "stopName": "掃管笏",
         "stopNameEn": "SO KWUN WAT",
         "scheduledEtaTs": 1795889954000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890044293,
+        "cumulativeMins": 43,
+        "status": "已到站"
       },
       "48": {
         "seq": 48,
@@ -36875,18 +36875,18 @@
         "stopName": "寶田轉車站 - 寶田",
         "stopNameEn": "PO TIN BBI - PO TIN",
         "scheduledEtaTs": 1795889743000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889922679,
+        "cumulativeMins": 15,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "大興警署",
         "stopNameEn": "TAI HING POLICE STATION",
         "scheduledEtaTs": 1795889852000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890044293,
+        "cumulativeMins": 17,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
@@ -37214,9 +37214,9 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795891562000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889922679,
+        "cumulativeMins": 15,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -37321,7 +37321,7 @@
         "seq": 23,
         "stopName": "屯門醫院",
         "stopNameEn": "TUEN MUN HOSPITAL",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795893407000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -37526,9 +37526,9 @@
         "stopName": "湖景邨湖碧樓, 湖翠路",
         "stopNameEn": "Wu Pik House Wu King Estate, Wu Chui Road",
         "scheduledEtaTs": 1795889979000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795889934679,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
@@ -37544,9 +37544,9 @@
         "stopName": "湖景邨湖翠樓, 湖景路",
         "stopNameEn": "Wu Tsui House Wu King Estate, Wu King Road",
         "scheduledEtaTs": 1795890077000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890056293,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
@@ -37829,9 +37829,9 @@
         "stopName": "機場地面運輸中心",
         "stopNameEn": "AIRPORT (GTC)",
         "scheduledEtaTs": 1795889937000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795890069589,
+        "cumulativeMins": 3,
+        "status": "已到站"
       },
       "3": {
         "seq": 3,
@@ -38062,7 +38062,7 @@
         "seq": 28,
         "stopName": "富泰邨",
         "stopNameEn": "FU TAI ESTATE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795893445000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -38071,7 +38071,7 @@
         "seq": 29,
         "stopName": "聚康山莊",
         "stopNameEn": "BENEVILLE",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795893494000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -38080,7 +38080,7 @@
         "seq": 30,
         "stopName": "富泰邨總站",
         "stopNameEn": "FU TAI ESTATE BUS TERMINUS",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795893588000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
