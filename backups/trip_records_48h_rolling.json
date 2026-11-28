@@ -27302,18 +27302,18 @@
         "stopName": "海港政府大樓, 統一碼頭道",
         "stopNameEn": "Harbour Building, Pier Road",
         "scheduledEtaTs": 1795884557000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884620483,
+        "cumulativeMins": 50,
+        "status": "已到站"
       },
       "28": {
         "seq": 28,
         "stopName": "怡和大廈, 干諾道中",
         "stopNameEn": "Jardine House, Connaught Road Central",
         "scheduledEtaTs": 1795884628000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884677085,
+        "cumulativeMins": 51,
+        "status": "已到站"
       },
       "29": {
         "seq": 29,
@@ -27791,27 +27791,27 @@
         "stopName": "蝴蝶站",
         "stopNameEn": "BUTTERFLY STATION",
         "scheduledEtaTs": 1795884205000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884564076,
+        "cumulativeMins": 29,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "新屯門中心",
         "stopNameEn": "SUN TUEN MUN CENTRE",
         "scheduledEtaTs": 1795884283000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884620483,
+        "cumulativeMins": 30,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
         "stopName": "龍門站",
         "stopNameEn": "LUNG MUN STATION",
         "scheduledEtaTs": 1795884370000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884620483,
+        "cumulativeMins": 30,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
@@ -28442,9 +28442,9 @@
         "stopName": "寶田轉車站 - 寶田",
         "stopNameEn": "PO TIN BBI - PO TIN",
         "scheduledEtaTs": 1795884378000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884564076,
+        "cumulativeMins": 17,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -28781,9 +28781,9 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795884430000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884564076,
+        "cumulativeMins": 17,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -29066,9 +29066,9 @@
         "stopName": "港珠澳大橋香港口岸",
         "stopNameEn": "HZMB HONG KONG PORT",
         "scheduledEtaTs": 1795884319000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884564076,
+        "cumulativeMins": 15,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
@@ -29360,27 +29360,27 @@
         "stopName": "兆山苑, 龍門路",
         "stopNameEn": "Siu Shan Court, Lung Mun Road",
         "scheduledEtaTs": 1795884466000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884564076,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
         "stopName": "蝴蝶邨蝶心樓, 湖翠路",
         "stopNameEn": "Tip Sum House Butterfly Estate, Wu Chui Road",
         "scheduledEtaTs": 1795884569000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884677085,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
         "stopName": "湖景邨湖碧樓, 湖翠路",
         "stopNameEn": "Wu Pik House Wu King Estate, Wu Chui Road",
         "scheduledEtaTs": 1795884609000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884677085,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
@@ -29690,18 +29690,18 @@
         "stopName": "堅拿道東, 軒尼詩道",
         "stopNameEn": "Canal Road East, Hennessy Road",
         "scheduledEtaTs": 1795884563000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884564076,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "廣生行大廈, 軒尼詩道",
         "stopNameEn": "Kwong Sang Hong Building, Hennessy Road",
         "scheduledEtaTs": 1795884686000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795884677085,
+        "cumulativeMins": 6,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
@@ -29950,7 +29950,7 @@
         "seq": 32,
         "stopName": "美樂花園, 湖翠路",
         "stopNameEn": "Melody Garden, Wu Chui Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795888179000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -29959,7 +29959,7 @@
         "seq": 33,
         "stopName": "兆山苑, 龍門路",
         "stopNameEn": "Siu Shan Court, Lung Mun Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795888250000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -30299,6 +30299,444 @@
         "stopName": "屯門公路轉車站",
         "stopNameEn": "TUEN MUN ROAD BBI",
         "scheduledEtaTs": 1795887810000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      }
+    }
+  },
+  "CTB_N952_inbound_1_DEP_1795884600000": {
+    "tripId": "CTB_N952_inbound_1_DEP_1795884600000",
+    "routeKeyPrefix": "CTB_N952_inbound_1",
+    "date": "2026-11-29",
+    "operator": "CTB",
+    "route": "N952",
+    "dirParam": "inbound",
+    "destTc": "屯門 (置樂花園)",
+    "destEn": "Tuen Mun (Chi Lok Fa Yuen)",
+    "departureTs": 1795884600000,
+    "departureTimeStr": "00:50:00",
+    "isEstimatedDep": false,
+    "stops": {
+      "1": {
+        "seq": 1,
+        "stopName": "銅鑼灣 (摩頓台)",
+        "stopNameEn": "Causeway Bay (Moreton Terrace)",
+        "scheduledEtaTs": 1795884600000,
+        "actualArrivalTs": 1795884600000,
+        "cumulativeMins": 0,
+        "status": "已由總站開出"
+      },
+      "2": {
+        "seq": 2,
+        "stopName": "銅鑼灣 - 怡和街",
+        "stopNameEn": "Causeway Bay - Yee Wo Street",
+        "scheduledEtaTs": 1795884732000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "3": {
+        "seq": 3,
+        "stopName": "堅拿道東, 軒尼詩道",
+        "stopNameEn": "Canal Road East, Hennessy Road",
+        "scheduledEtaTs": 1795884823000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "4": {
+        "seq": 4,
+        "stopName": "廣生行大廈, 軒尼詩道",
+        "stopNameEn": "Kwong Sang Hong Building, Hennessy Road",
+        "scheduledEtaTs": 1795884932000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "5": {
+        "seq": 5,
+        "stopName": "菲林明道, 軒尼詩道",
+        "stopNameEn": "Fleming Road, Hennessy Road",
+        "scheduledEtaTs": 1795885039000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "6": {
+        "seq": 6,
+        "stopName": "盧押道, 軒尼詩道",
+        "stopNameEn": "Luard Road, Hennessy Road",
+        "scheduledEtaTs": 1795885089000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "7": {
+        "seq": 7,
+        "stopName": "金鐘 - 太古廣場, 金鐘道",
+        "stopNameEn": "Admiralty - Pacific Place, Queensway",
+        "scheduledEtaTs": 1795885161000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "8": {
+        "seq": 8,
+        "stopName": "滙豐總行大廈, 皇后大道中",
+        "stopNameEn": "HSBC Main Building, Queen's Road Central",
+        "scheduledEtaTs": 1795885265000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "9": {
+        "seq": 9,
+        "stopName": "砵典乍街, 干諾道中",
+        "stopNameEn": "Pottinger Street, Connaught Road Central",
+        "scheduledEtaTs": 1795885379000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "10": {
+        "seq": 10,
+        "stopName": "租庇利街, 干諾道中",
+        "stopNameEn": "Jubilee Street, Connaught Road Central",
+        "scheduledEtaTs": 1795885413000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "11": {
+        "seq": 11,
+        "stopName": "永安中心, 干諾道中",
+        "stopNameEn": "Wing On Centre, Connaught Road Central",
+        "scheduledEtaTs": 1795885454000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "12": {
+        "seq": 12,
+        "stopName": "皇后街, 干諾道西",
+        "stopNameEn": "Queen Street, Connaught Road West",
+        "scheduledEtaTs": 1795885576000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "13": {
+        "seq": 13,
+        "stopName": "西區海底隧道巴士轉乘站",
+        "stopNameEn": "Western Harbour Crossing Bus-Bus Interchange",
+        "scheduledEtaTs": 1795885857000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "14": {
+        "seq": 14,
+        "stopName": "碧堤半島, 青山公路",
+        "stopNameEn": "Bellagio, Castle Peak Road",
+        "scheduledEtaTs": 1795886799000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "15": {
+        "seq": 15,
+        "stopName": "深井村, 青山公路",
+        "stopNameEn": "Sham Tseng Village, Castle Peak Road",
+        "scheduledEtaTs": 1795886862000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "16": {
+        "seq": 16,
+        "stopName": "馬灣碼頭, 青山公路",
+        "stopNameEn": "Ma Wan Pier, Castle Peak Road",
+        "scheduledEtaTs": 1795886902000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "17": {
+        "seq": 17,
+        "stopName": "浪翠園第三期, 青山公路",
+        "stopNameEn": "Sea Crest Villa Phase 3, Castle Peak Road",
+        "scheduledEtaTs": 1795886936000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "18": {
+        "seq": 18,
+        "stopName": "浪翠園第四期, 青山公路",
+        "stopNameEn": "Sea Crest Villa Phase 4, Castle Peak Road",
+        "scheduledEtaTs": 1795886955000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "19": {
+        "seq": 19,
+        "stopName": "青龍頭村, 青山公路",
+        "stopNameEn": "Tsing Lung Tau Tsuen, Castle Peak Road",
+        "scheduledEtaTs": 1795886988000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "20": {
+        "seq": 20,
+        "stopName": "豪景花園, 青山公路",
+        "stopNameEn": "Hong Kong Garden, Castle Peak Road",
+        "scheduledEtaTs": 1795887011000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "21": {
+        "seq": 21,
+        "stopName": "豪景花園商場, 青山公路",
+        "stopNameEn": "Hong Kong Garden Commercial Complex, Castle Peak Road",
+        "scheduledEtaTs": 1795887021000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "22": {
+        "seq": 22,
+        "stopName": "御天峰, 青山公路",
+        "stopNameEn": "Vista Cliff, Castle Peak Road",
+        "scheduledEtaTs": 1795887071000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "23": {
+        "seq": 23,
+        "stopName": "御海峰, 青山公路",
+        "stopNameEn": "Vista Cove, Castle Peak Road",
+        "scheduledEtaTs": 1795887091000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "24": {
+        "seq": 24,
+        "stopName": "嘉龍村, 青山公路",
+        "stopNameEn": "Ka Loon Tsuen, Castle Peak Road",
+        "scheduledEtaTs": 1795887126000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "25": {
+        "seq": 25,
+        "stopName": "屯門公路巴士轉乘站(下層), 青山公路",
+        "stopNameEn": "Tuen Mun Road Bus-Bus Interchange (Lower Level), Castle Peak Road",
+        "scheduledEtaTs": 1795887248000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "26": {
+        "seq": 26,
+        "stopName": "大欖涌, 青山公路",
+        "stopNameEn": "Tai Lam Chung, Castle Peak Road",
+        "scheduledEtaTs": 1795887320000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "27": {
+        "seq": 27,
+        "stopName": "小欖, 青山公路",
+        "stopNameEn": "Siu Lam, Castle Peak Road",
+        "scheduledEtaTs": 1795887400000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "28": {
+        "seq": 28,
+        "stopName": "澄麗路, 青山公路",
+        "stopNameEn": "Ching Lai Road, Castle Peak Road",
+        "scheduledEtaTs": 1795887445000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "29": {
+        "seq": 29,
+        "stopName": "小欖村, 青山公路",
+        "stopNameEn": "Siu Lam Tsuen, Castle Peak Road",
+        "scheduledEtaTs": 1795887466000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "30": {
+        "seq": 30,
+        "stopName": "小欖新村, 青山公路",
+        "stopNameEn": "Siu Lam San Tsuen, Castle Peak Road",
+        "scheduledEtaTs": 1795887494000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "31": {
+        "seq": 31,
+        "stopName": "愛琴灣, 青山公路",
+        "stopNameEn": "The Aegean, Castle Peak Road",
+        "scheduledEtaTs": 1795887525000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "32": {
+        "seq": 32,
+        "stopName": "小秀村, 青山公路",
+        "stopNameEn": "Siu Sau Tsuen, Castle Peak Road",
+        "scheduledEtaTs": 1795887550000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "33": {
+        "seq": 33,
+        "stopName": "龍珠島, 青山公路",
+        "stopNameEn": "Pearl Island, Castle Peak Road",
+        "scheduledEtaTs": 1795887580000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "34": {
+        "seq": 34,
+        "stopName": "愛琴海岸, 掃管笏路",
+        "stopNameEn": "Aegean Coast, So Kwun Wat Road",
+        "scheduledEtaTs": 1795887680000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "35": {
+        "seq": 35,
+        "stopName": "掃管笏變電站, 掃管笏路",
+        "stopNameEn": "So Kwun Wat Sub-station, So Kwun Wat Road",
+        "scheduledEtaTs": 1795887723000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "36": {
+        "seq": 36,
+        "stopName": "星堤, 掃管笏路",
+        "stopNameEn": "Avignon, So Kwun Wat Road",
+        "scheduledEtaTs": 1795887763000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "37": {
+        "seq": 37,
+        "stopName": "上源, 掃管笏路",
+        "stopNameEn": "LEPONT, So Kwun Wat Road",
+        "scheduledEtaTs": 1795887803000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "38": {
+        "seq": 38,
+        "stopName": "掃管笏",
+        "stopNameEn": "So Kwun Wat",
+        "scheduledEtaTs": 1795887836000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "39": {
+        "seq": 39,
+        "stopName": "香港黃金海岸, 青山公路",
+        "stopNameEn": "Hong Kong Gold Coast, Castle Peak Road",
+        "scheduledEtaTs": 1795888047000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "40": {
+        "seq": 40,
+        "stopName": "黃金泳灘, 青山公路",
+        "stopNameEn": "Golden Beach, Castle Peak Road",
+        "scheduledEtaTs": 1795888077000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "41": {
+        "seq": 41,
+        "stopName": "咖啡灣, 青山公路",
+        "stopNameEn": "Cafeteria Beach, Castle Peak Road",
+        "scheduledEtaTs": 1795888139000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "42": {
+        "seq": 42,
+        "stopName": "碧翠花園, 青山公路",
+        "stopNameEn": "Bayview Terrace, Castle Peak Road",
+        "scheduledEtaTs": 1795888171000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "43": {
+        "seq": 43,
+        "stopName": "青山灣泳灘, 青山公路",
+        "stopNameEn": "Castle Peak Beach, Castle Peak Road",
+        "scheduledEtaTs": 1795888196000,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "44": {
+        "seq": 44,
+        "stopName": "三聖邨, 青山公路",
+        "stopNameEn": "Sam Shing Estate, Castle Peak Road",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "45": {
+        "seq": 45,
+        "stopName": "屯門兆麟政府綜合大樓, 青山公路",
+        "stopNameEn": "Tuen Mun Siu Lun Government Complex, Castle Peak Road",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "46": {
+        "seq": 46,
+        "stopName": "青善遊樂場, 青山公路",
+        "stopNameEn": "Tsing Sin Playground, Castle Peak Road",
+        "scheduledEtaTs": null,
+        "actualArrivalTs": null,
+        "cumulativeMins": null,
+        "status": "待抵達"
+      },
+      "47": {
+        "seq": 47,
+        "stopName": "置樂花園, 青山公路",
+        "stopNameEn": "Chi Lok Fa Yuen, Castle Peak Road",
+        "scheduledEtaTs": null,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
