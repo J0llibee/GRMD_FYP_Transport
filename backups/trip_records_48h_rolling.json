@@ -45404,18 +45404,18 @@
         "stopName": "香港空運貨站",
         "stopNameEn": "HACTL",
         "scheduledEtaTs": 1795901450000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902164086,
+        "cumulativeMins": 79,
+        "status": "已到站"
       },
       "32": {
         "seq": 32,
         "stopName": "空郵中心",
         "stopNameEn": "AIR MAIL CENTRE",
         "scheduledEtaTs": 1795901517000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902276892,
+        "cumulativeMins": 81,
+        "status": "已到站"
       },
       "33": {
         "seq": 33,
@@ -46091,9 +46091,9 @@
         "stopName": "葵涌道荔景邨",
         "stopNameEn": "LAI KING ESTATE KWAI CHUNG ROAD",
         "scheduledEtaTs": 1795901806000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902164086,
+        "cumulativeMins": 69,
+        "status": "已到站"
       },
       "34": {
         "seq": 34,
@@ -46277,18 +46277,18 @@
         "stopName": "屯門市廣場",
         "stopNameEn": "TUEN MUN TOWN PLAZA",
         "scheduledEtaTs": 1795901904000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902164086,
+        "cumulativeMins": 69,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
         "stopName": "新墟街市",
         "stopNameEn": "SAN HUI MARKET",
         "scheduledEtaTs": 1795901963000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902276892,
+        "cumulativeMins": 71,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
@@ -47909,9 +47909,9 @@
         "stopName": "屯門中央廣場, 海榮路",
         "stopNameEn": "Tuen Mun Central Square, Hoi Wing Road",
         "scheduledEtaTs": 1795902081000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902205794,
+        "cumulativeMins": 58,
+        "status": "已到站"
       },
       "31": {
         "seq": 31,
@@ -48497,9 +48497,9 @@
         "stopName": "西區海底隧道巴士轉乘站",
         "stopNameEn": "Western Harbour Crossing Bus-Bus Interchange",
         "scheduledEtaTs": 1795902119000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902129180,
+        "cumulativeMins": 42,
+        "status": "已到站"
       },
       "26": {
         "seq": 26,
@@ -48755,27 +48755,27 @@
         "stopName": "長沙灣站, 長沙灣道",
         "stopNameEn": "Cheung Sha Wan Station, Cheung Sha Wan Road",
         "scheduledEtaTs": 1795902158000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902164086,
+        "cumulativeMins": 40,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
         "stopName": "怡閣苑, 長沙灣道",
         "stopNameEn": "Yee Kok Court, Cheung Sha Wan Road",
         "scheduledEtaTs": 1795902269000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902238480,
+        "cumulativeMins": 41,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
         "stopName": "欽州街, 長沙灣道",
         "stopNameEn": "Yen Chow Street, Cheung Sha Wan Road",
         "scheduledEtaTs": 1795902329000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902250480,
+        "cumulativeMins": 41,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
@@ -49594,7 +49594,7 @@
         "seq": 38,
         "stopName": "屯門碼頭總站",
         "stopNameEn": "TUEN MUN PIER HEAD B/T",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795905619000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -50486,9 +50486,9 @@
         "stopName": "嘉和里村, 青山公路",
         "stopNameEn": "Kar Wo Lei Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795902165000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902141180,
+        "cumulativeMins": 17,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
@@ -50504,9 +50504,9 @@
         "stopName": "愛琴灣, 青山公路",
         "stopNameEn": "The Aegean, Castle Peak Road",
         "scheduledEtaTs": 1795902280000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902250480,
+        "cumulativeMins": 19,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
@@ -50753,18 +50753,18 @@
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
         "scheduledEtaTs": 1795902132000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902164086,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "兆邦苑",
         "stopNameEn": "SIU PONG COURT",
         "scheduledEtaTs": 1795902226000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902276892,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
@@ -51065,27 +51065,27 @@
         "stopName": "葵涌耀榮里",
         "stopNameEn": "YIU WING LANE KWAI CHUNG",
         "scheduledEtaTs": 1795901957000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902164086,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "葵涌健全街",
         "stopNameEn": "KIN CHUEN STREET KWAI CHUNG",
         "scheduledEtaTs": 1795902006000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902276892,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
         "stopName": "大窩口轉車站-大窩口站",
         "stopNameEn": "TAI WO HAU BBI-TAI WO HAU STATION",
         "scheduledEtaTs": 1795902058000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902276892,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
@@ -51352,7 +51352,7 @@
         "seq": 38,
         "stopName": "屯門碼頭總站",
         "stopNameEn": "TUEN MUN PIER HEAD B/T",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795905619000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -51395,18 +51395,18 @@
         "stopName": "三聖邨, 青山公路",
         "stopNameEn": "Sam Shing Estate, Castle Peak Road",
         "scheduledEtaTs": 1795902158000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902164086,
+        "cumulativeMins": 3,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "青山灣泳灘, 青山公路",
         "stopNameEn": "Castle Peak Beach, Castle Peak Road",
         "scheduledEtaTs": 1795902183000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795902238480,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
@@ -51736,7 +51736,7 @@
         "seq": 41,
         "stopName": "聖保祿醫院, 銅鑼灣道",
         "stopNameEn": "St. Paul's Hospital, Tung Lo Wan Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795905684000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -51745,7 +51745,7 @@
         "seq": 42,
         "stopName": "銅鑼灣 (摩頓台)",
         "stopNameEn": "Causeway Bay (Moreton Terrace)",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795905785000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
