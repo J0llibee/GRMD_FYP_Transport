@@ -27917,9 +27917,9 @@
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
         "scheduledEtaTs": 1795885801000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886336591,
+        "cumulativeMins": 59,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
@@ -28193,18 +28193,18 @@
         "stopName": "天盛苑",
         "stopNameEn": "TIN SHING COURT",
         "scheduledEtaTs": 1795885888000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886336591,
+        "cumulativeMins": 56,
+        "status": "已到站"
       },
       "20": {
         "seq": 20,
         "stopName": "賞湖居",
         "stopNameEn": "SHERWOOD COURT",
         "scheduledEtaTs": 1795886025000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886397286,
+        "cumulativeMins": 57,
+        "status": "已到站"
       },
       "21": {
         "seq": 21,
@@ -28880,18 +28880,18 @@
         "stopName": "兆康苑兆賢閣",
         "stopNameEn": "SIU YIN HOUSE SIU HONG COURT",
         "scheduledEtaTs": 1795886238000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886311587,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
         "stopName": "屯門醫院",
         "stopNameEn": "TUEN MUN HOSPITAL",
         "scheduledEtaTs": 1795886271000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886311587,
+        "cumulativeMins": 46,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -30083,27 +30083,27 @@
         "stopName": "屯門碼頭",
         "stopNameEn": "TUEN MUN PIER HEAD",
         "scheduledEtaTs": 1795886038000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886275776,
+        "cumulativeMins": 30,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "湖景邨湖畔樓",
         "stopNameEn": "WU BOON HOUSE WU KING ESTATE",
         "scheduledEtaTs": 1795886131000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886275776,
+        "cumulativeMins": 30,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "湖景邨湖翠樓",
         "stopNameEn": "WU TSUI HOUSE WU KING ESTATE",
         "scheduledEtaTs": 1795886164000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886397286,
+        "cumulativeMins": 32,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
@@ -30833,9 +30833,9 @@
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
         "scheduledEtaTs": 1795885972000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886311587,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
@@ -31190,9 +31190,9 @@
         "stopName": "荃景圍天橋",
         "stopNameEn": "TSUEN KING CIRCUIT FLYOVER",
         "scheduledEtaTs": 1795886138000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886431680,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
@@ -31511,18 +31511,18 @@
         "stopName": "葵涌健全街",
         "stopNameEn": "KIN CHUEN STREET KWAI CHUNG",
         "scheduledEtaTs": 1795886094000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886311587,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
         "stopName": "大窩口轉車站-大窩口站",
         "stopNameEn": "TAI WO HAU BBI-TAI WO HAU STATION",
         "scheduledEtaTs": 1795886146000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886311587,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "9": {
         "seq": 9,
@@ -32164,7 +32164,7 @@
         "seq": 20,
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795888869000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -32315,27 +32315,27 @@
         "stopName": "菲林明道, 軒尼詩道",
         "stopNameEn": "Fleming Road, Hennessy Road",
         "scheduledEtaTs": 1795886249000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886275776,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "6": {
         "seq": 6,
         "stopName": "盧押道, 軒尼詩道",
         "stopNameEn": "Luard Road, Hennessy Road",
         "scheduledEtaTs": 1795886302000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886275776,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "金鐘 - 太古廣場, 金鐘道",
         "stopNameEn": "Admiralty - Pacific Place, Queensway",
         "scheduledEtaTs": 1795886383000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886397286,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
@@ -32735,9 +32735,9 @@
         "stopName": "機場警署",
         "stopNameEn": "AIRPORT POLICE STATION",
         "scheduledEtaTs": 1795886250000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886397286,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
@@ -32950,7 +32950,7 @@
         "seq": 27,
         "stopName": "美湖居",
         "stopNameEn": "MAYWOOD COURT",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795889808000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -33056,18 +33056,18 @@
         "stopName": "戲曲中心, 廣東道",
         "stopNameEn": "Xiqu Centre, Canton Road",
         "scheduledEtaTs": 1795886341000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886397286,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
         "stopName": "中港城, 九龍公園徑",
         "stopNameEn": "China Hong Kong City, Kowloon Park Drive",
         "scheduledEtaTs": 1795886357000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886397286,
+        "cumulativeMins": 5,
+        "status": "已到站"
       },
       "5": {
         "seq": 5,
@@ -33343,7 +33343,7 @@
         "seq": 35,
         "stopName": "和田邨",
         "stopNameEn": "Wo Tin Estate",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795889876000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -33352,7 +33352,7 @@
         "seq": 36,
         "stopName": "NOVO LAND, 欣寶路",
         "stopNameEn": "NOVO LAND, Yan Po Road",
-        "scheduledEtaTs": null,
+        "scheduledEtaTs": 1795889949000,
         "actualArrivalTs": null,
         "cumulativeMins": null,
         "status": "待抵達"
@@ -33404,9 +33404,9 @@
         "stopName": "堅拿道東, 軒尼詩道",
         "stopNameEn": "Canal Road East, Hennessy Road",
         "scheduledEtaTs": 1795886342000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795886346000,
+        "cumulativeMins": 4,
+        "status": "已到站"
       },
       "4": {
         "seq": 4,
