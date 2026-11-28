@@ -27194,36 +27194,36 @@
         "stopName": "黃金泳灘, 青山公路",
         "stopNameEn": "Golden Beach, Castle Peak Road",
         "scheduledEtaTs": 1795882487000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795882585879,
+        "cumulativeMins": 16,
+        "status": "已到站"
       },
       "16": {
         "seq": 16,
         "stopName": "香港黃金海岸, 青山公路",
         "stopNameEn": "Hong Kong Gold Coast, Castle Peak Road",
         "scheduledEtaTs": 1795882519000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795882651282,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "17": {
         "seq": 17,
         "stopName": "嘉和里村, 青山公路",
         "stopNameEn": "Kar Wo Lei Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795882593000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795882656000,
+        "cumulativeMins": 18,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
         "stopName": "小秀村, 青山公路",
         "stopNameEn": "Siu Sau Tsuen, Castle Peak Road",
         "scheduledEtaTs": 1795882653000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795882710794,
+        "cumulativeMins": 19,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
@@ -27479,27 +27479,27 @@
         "stopName": "新圍苑",
         "stopNameEn": "SAN WAI COURT",
         "scheduledEtaTs": 1795884164000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795882559887,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "10": {
         "seq": 10,
         "stopName": "兆邦苑",
         "stopNameEn": "SIU PONG COURT",
         "scheduledEtaTs": 1795884266000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795882615184,
+        "cumulativeMins": 13,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "寶田轉車站 - 寶田",
         "stopNameEn": "PO TIN BBI - PO TIN",
         "scheduledEtaTs": 1795884364000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795882680581,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
