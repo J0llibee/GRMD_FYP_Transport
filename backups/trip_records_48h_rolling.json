@@ -37778,9 +37778,9 @@
         "stopName": "銅鑼灣 - 崇光百貨, 軒尼詩道",
         "stopNameEn": "Causeway Bay - Sogo Department Store, Hennessy Road",
         "scheduledEtaTs": 1795893206000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893178990,
+        "cumulativeMins": 58,
+        "status": "已到站"
       },
       "35": {
         "seq": 35,
@@ -38000,18 +38000,18 @@
         "stopName": "兆邦苑",
         "stopNameEn": "SIU PONG COURT",
         "scheduledEtaTs": 1795892789000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893104990,
+        "cumulativeMins": 54,
+        "status": "已到站"
       },
       "22": {
         "seq": 22,
         "stopName": "寶田轉車站 - 寶田",
         "stopNameEn": "PO TIN BBI - PO TIN",
         "scheduledEtaTs": 1795892883000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893166990,
+        "cumulativeMins": 55,
+        "status": "已到站"
       },
       "23": {
         "seq": 23,
@@ -38633,9 +38633,9 @@
         "stopName": "屯門公路轉車站",
         "stopNameEn": "TUEN MUN ROAD BBI",
         "scheduledEtaTs": 1795892994000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893078281,
+        "cumulativeMins": 39,
+        "status": "已到站"
       },
       "24": {
         "seq": 24,
@@ -38918,18 +38918,18 @@
         "stopName": "新墟街市",
         "stopNameEn": "SAN HUI MARKET",
         "scheduledEtaTs": 1795892995000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893078281,
+        "cumulativeMins": 39,
+        "status": "已到站"
       },
       "18": {
         "seq": 18,
         "stopName": "紅橋",
         "stopNameEn": "HUNG KIU",
         "scheduledEtaTs": 1795893055000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893141089,
+        "cumulativeMins": 40,
+        "status": "已到站"
       },
       "19": {
         "seq": 19,
@@ -39533,45 +39533,45 @@
         "stopName": "老鼠洲兒童遊樂場, 海榮路",
         "stopNameEn": "Mouse Island Children's Playground, Hoi Wing Road",
         "scheduledEtaTs": 1795892931000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893104990,
+        "cumulativeMins": 12,
+        "status": "已到站"
       },
       "11": {
         "seq": 11,
         "stopName": "三聖邨, 青山公路",
         "stopNameEn": "Sam Shing Estate, Castle Peak Road",
         "scheduledEtaTs": 1795893007000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893166990,
+        "cumulativeMins": 13,
+        "status": "已到站"
       },
       "12": {
         "seq": 12,
         "stopName": "青山灣泳灘, 青山公路",
         "stopNameEn": "Castle Peak Beach, Castle Peak Road",
         "scheduledEtaTs": 1795893030000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893230678,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "13": {
         "seq": 13,
         "stopName": "海景花園, 青山公路",
         "stopNameEn": "Seaview Garden, Castle Peak Road",
         "scheduledEtaTs": 1795893055000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893230678,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "14": {
         "seq": 14,
         "stopName": "咖啡灣, 青山公路",
         "stopNameEn": "Cafeteria Beach, Castle Peak Road",
         "scheduledEtaTs": 1795893097000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893230678,
+        "cumulativeMins": 14,
+        "status": "已到站"
       },
       "15": {
         "seq": 15,
@@ -39836,18 +39836,18 @@
         "stopName": "青雲站",
         "stopNameEn": "TSING WUN STATION",
         "scheduledEtaTs": 1795892851000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893078281,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "鳴琴站",
         "stopNameEn": "MING KUM STATION",
         "scheduledEtaTs": 1795892888000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893078281,
+        "cumulativeMins": 8,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
@@ -40175,18 +40175,18 @@
         "stopName": "葵涌耀榮里",
         "stopNameEn": "YIU WING LANE KWAI CHUNG",
         "scheduledEtaTs": 1795892915000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893141089,
+        "cumulativeMins": 10,
+        "status": "已到站"
       },
       "7": {
         "seq": 7,
         "stopName": "葵涌健全街",
         "stopNameEn": "KIN CHUEN STREET KWAI CHUNG",
         "scheduledEtaTs": 1795892960000,
-        "actualArrivalTs": null,
-        "cumulativeMins": null,
-        "status": "待抵達"
+        "actualArrivalTs": 1795893205090,
+        "cumulativeMins": 11,
+        "status": "已到站"
       },
       "8": {
         "seq": 8,
